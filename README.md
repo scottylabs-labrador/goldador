@@ -61,8 +61,8 @@ uv run lint
 # Run the Python test suite.
 uv run --group test --group validator test
 
-# Validate governance TOML through the remote GitHub-backed validator.
-uv run --group validator validate [REF]
+# Validate governance TOML through the hosted validator API.
+uv run validate REF
 
 # Run the validator API locally on port 8000.
 uv run --group validator validator-server
@@ -73,6 +73,9 @@ uv run --group infra-synchronizer sync-infra
 uv run --group slack-synchronizer sync-slack
 uv run --group google-synchronizer sync-google-drive
 ```
+
+`validate` uses `https://goldador.scottylabs.org` by default. Set
+`VALIDATOR_SERVER_URL` to use a different validator API.
 
 ## Documentation Map
 

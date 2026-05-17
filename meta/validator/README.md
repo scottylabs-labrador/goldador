@@ -9,14 +9,16 @@ Schema formatting checks are handled separately by Taplo and EditorConfig.
 ## Entrypoints
 
 ```zsh
-# Validate the default branch head, or pass a branch, tag, or commit SHA.
-uv run --group validator validate [REF]
+# Validate a branch, tag, or commit SHA through the hosted validator API.
+uv run validate REF
 
 # Run the FastAPI validator service on port 8000.
 uv run --group validator validator-server
 ```
 
-The CLI and API both call the same remote validation path. The API exposes:
+The CLI posts to the hosted API at `https://goldador.scottylabs.org` by default.
+Set `VALIDATOR_SERVER_URL` to point the CLI at another validator server. The API
+exposes:
 
 - `GET /` for a health check.
 - `POST /validate` with JSON body `{"ref": "branch-or-sha"}`.
