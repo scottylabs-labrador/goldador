@@ -41,3 +41,14 @@ variable "vault_token" {
   sensitive   = true
 }
 
+variable "team_oidc_client_ids" {
+  description = "Keycloak team OIDC client_ids"
+  type        = list(string)
+}
+
+variable "team_oidc_client_secrets" {
+  description = "Keycloak team OIDC client secrets keyed by client_id"
+  type        = map(string)
+  sensitive   = true
+}
+

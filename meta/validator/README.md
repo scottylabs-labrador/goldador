@@ -1,6 +1,6 @@
 # Validator
 
-This directory contains the Python-based validator for the governance repository.
+This directory contains the Python-based validator of the project.
 This README describes the checks performed by the validator, as well as other checks.
 
 ## Validator Checks

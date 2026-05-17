@@ -6,7 +6,8 @@ resource "keycloak_group" "teams" {
 
 # Team groups
 locals {
-  team_slugs = toset(keys(var.teams_data))
+  # Leadership group is created in the `leadership.tf` file.
+  team_slugs = setsubtract(toset(keys(var.teams)), toset(["leadership"]))
 }
 
 resource "keycloak_group" "team_groups" {
@@ -28,14 +29,14 @@ resource "keycloak_group_memberships" "team_memberships" {
   for_each = local.team_slugs
   realm_id = keycloak_realm.labrador.id
   group_id = keycloak_group.team_groups[each.key].id
-  members  = var.teams_data[each.key].members
+  members  = var.teams[each.key].members.andrew_ids
 }
 
 resource "keycloak_group_memberships" "team_admins_memberships" {
   for_each = local.team_slugs
   realm_id = keycloak_realm.labrador.id
   group_id = keycloak_group.team_admins_groups[each.key].id
-  members  = var.teams_data[each.key].admins
+  members  = var.teams[each.key].admins.andrew_ids
 }
 
 # Team OIDC clients
@@ -46,15 +47,15 @@ locals {
     root_url    = "http://localhost:3000"
     redirects   = ["http://localhost/api/auth/oauth2/callback/keycloak"]
     web_origins = ["http://localhost"]
-  } }
+  } if var.teams[slug].create_oidc_clients }
 
   # Generate prod-ready clients
-  prod_clients = { for k, v in var.teams_data : "${k}-prod" => {
+  prod_clients = { for k, v in var.teams : "${k}-prod" => {
     client_id   = "${k}-prod"
     root_url    = v.website
     redirects   = ["${v.server}/api/auth/oauth2/callback/keycloak"]
     web_origins = [v.server]
-  } if v.website != "" && v.server != "" }
+  } if v.create_oidc_clients && v.website != "" && v.server != "" }
 
   # Merge them into one map
   all_clients = merge(local.local_clients, local.prod_clients)

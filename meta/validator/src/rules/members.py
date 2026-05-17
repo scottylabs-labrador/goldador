@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import asyncio
-import sys
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
@@ -13,13 +12,11 @@ from github import GithubException
 from meta.clients.github_client import get_github_client
 from meta.clients.keycloak_client import get_keycloak_client
 from meta.logger import get_app_logger
-
-from .reporter import ErrorCode
+from meta.validator.src.reporter import ErrorCode
 
 if TYPE_CHECKING:
     from meta.models import Member
-
-    from .reporter import Reporter
+    from meta.validator.src.reporter import Reporter
 
 
 class MemberValidationError(Exception):
@@ -51,7 +48,7 @@ class MemberValidator:
             asyncio.run(self._validate_async())
         except MemberValidationError as e:
             self.logger.exception(e.message)
-            sys.exit(1)
+            raise
 
     async def _validate_async(self) -> None:
         """Validate each member concurrently using a shared async HTTP client scope."""

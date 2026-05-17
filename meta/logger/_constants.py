@@ -1,3 +1,3 @@
-LOGGER_NAME = "governance"
+LOGGER_NAME = "goldador"
 SUCCESS_LEVEL = 25
 PRINT_LEVEL = 5

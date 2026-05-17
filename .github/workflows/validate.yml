@@ -6,7 +6,7 @@ on:
   push:
     branches:
       - main
-  pull_request_target:
+  pull_request:
     branches:
       - main
 
@@ -46,24 +46,53 @@ jobs:
       - name: Validate TOML Against Schemas
         run: taplo check
 
+  # Rules validation calls a hosted API (see meta/validator/src/server.py POST /validate).
+  # The base URL is hardcoded so fork PRs can run this job without repository secrets.
+  # The endpoint is therefore public in this repo; protect the service appropriately.
   validate-rules:
-    name: Validate Rules
+    name: Validate rules via API
     runs-on: ubuntu-latest
-
     env:
-      SYNC_GITHUB_TOKEN: ${{ secrets.SYNC_GITHUB_TOKEN }}
-      KEYCLOAK_SERVER_URL: ${{ secrets.KEYCLOAK_SERVER_URL }}
-      KEYCLOAK_PASSWORD: ${{ secrets.KEYCLOAK_PASSWORD }}
-      KEYCLOAK_REALM: ${{ secrets.KEYCLOAK_REALM }}
-      KEYCLOAK_CLIENT_ID: ${{ secrets.KEYCLOAK_CLIENT_ID }}
-      KEYCLOAK_USER_REALM: ${{ secrets.KEYCLOAK_USER_REALM }}
-
+      VALIDATOR_SERVER_URL: https://goldador.scottylabs.org
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Resolve Git ref to validate
+        id: meta
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "ref=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
-
-      - name: Validate Rules
-        run: uv run --frozen --no-dev --group validator validate
+      - name: Validate via validator server
+        run: |
+          set -euo pipefail
+          base="${VALIDATOR_SERVER_URL%/}"
+          ref="${{ steps.meta.outputs.ref }}"
+          echo "Requesting validation for ref ${ref}"
+          body="$(python3 -c 'import json,sys; print(json.dumps({"ref": sys.argv[1]}))' "${ref}")"
+          resp_file="$(mktemp)"
+          code="$(
+            curl -sS -o "${resp_file}" -w '%{http_code}' \
+              --connect-timeout 30 --max-time 600 \
+              -X POST "${base}/validate" \
+              -H "Content-Type: application/json" \
+              -H "Accept: application/json" \
+              -d "${body}"
+          )"
+          cat "${resp_file}"
+          echo
+          if [ "${code}" != "200" ]; then
+            echo "::error::Validator returned HTTP ${code}"
+            exit 1
+          fi
+          python3 -c '
+          import json, sys
+          path = sys.argv[1]
+          with open(path, encoding="utf-8") as f:
+              payload = json.load(f)
+          validation = payload.get("validation")
+          if not isinstance(validation, dict) or not validation.get("valid"):
+              print(json.dumps(payload, indent=2))
+              sys.exit(1)
+          ' "${resp_file}"

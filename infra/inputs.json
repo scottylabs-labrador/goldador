@@ -1,54 +1,149 @@
 {
-  "leadership": {
-    "members": [
-      "yh4"
-    ],
+  "github_usernames": {
     "admins": [
-      "yh4"
+      "Yuxiang-Huang"
+    ],
+    "non_admins": [
+      "dsnarne"
     ]
   },
+  "andrew_ids": {
+    "admins": [
+      "yh4"
+    ],
+    "non_admins": []
+  },
   "teams": {
-    "cmuresearch": {
-      "members": [
-        "bryung"
+    "goldador": {
+      "name": "Goldador",
+      "description": "Responsible for governance in Labrador.",
+      "members": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "repos": [
+        "goldador"
       ],
-      "admins": [
-        "bryung"
-      ]
+      "create_oidc_clients": false
+    },
+    "leadership": {
+      "name": "Leadership",
+      "description": "The Labrador leadership team.",
+      "members": {
+        "github_usernames": [
+          "Yuxiang-Huang",
+          "dsnarne"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "repos": [
+        "wiki"
+      ],
+      "create_oidc_clients": false
+    },
+    "cmuresearch": {
+      "name": "CMU Research",
+      "description": "The CMU Research team.",
+      "members": {
+        "github_usernames": [],
+        "andrew_ids": [
+          "bryung"
+        ]
+      },
+      "admins": {
+        "github_usernames": [],
+        "andrew_ids": [
+          "bryung"
+        ]
+      },
+      "repos": [],
+      "create_oidc_clients": true
     },
     "cmuservice": {
-      "members": [
-        "benliu"
-      ],
-      "admins": [
-        "benliu"
-      ],
+      "name": "CMU Service",
+      "description": "The CMU Service team.",
+      "members": {
+        "github_usernames": [],
+        "andrew_ids": [
+          "benliu"
+        ]
+      },
+      "admins": {
+        "github_usernames": [],
+        "andrew_ids": [
+          "benliu"
+        ]
+      },
+      "repos": [],
+      "create_oidc_clients": true,
       "website": "https://cmuservice.shop",
       "server": "https://cmuservice.shop"
     },
     "collegecart": {
-      "members": [
-        "yingyiw",
-        "nayonk",
-        "rushabhj",
-        "rkurihar",
-        "mbatkhuu"
-      ],
-      "admins": [
-        "yingyiw",
-        "nayonk",
-        "rushabhj"
-      ],
+      "name": "CollegeCart",
+      "description": "The CollegeCart team.",
+      "members": {
+        "github_usernames": [],
+        "andrew_ids": [
+          "yingyiw",
+          "nayonk",
+          "rushabhj",
+          "rkurihar",
+          "mbatkhuu"
+        ]
+      },
+      "admins": {
+        "github_usernames": [],
+        "andrew_ids": [
+          "yingyiw",
+          "nayonk",
+          "rushabhj"
+        ]
+      },
+      "repos": [],
+      "create_oidc_clients": true,
       "website": "https://collegecart.org",
       "server": "https://collegecart.org"
     },
     "cmustudy": {
-      "members": [
-        "annadavi"
-      ],
-      "admins": [
-        "annadavi"
-      ],
+      "name": "CMU Study",
+      "description": "The CMU Study team.",
+      "members": {
+        "github_usernames": [],
+        "andrew_ids": [
+          "annadavi"
+        ]
+      },
+      "admins": {
+        "github_usernames": [],
+        "andrew_ids": [
+          "annadavi"
+        ]
+      },
+      "repos": [],
+      "create_oidc_clients": true,
       "website": "https://study.scottylabs.org",
       "server": "https://study.scottylabs.org"
     }

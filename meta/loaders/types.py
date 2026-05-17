@@ -1,4 +1,4 @@
-"""Types shared by governance loaders."""
+"""Types shared by loaders."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Loaders for the governance validator."""
+"""Load member and team TOML (from disk or supplied content)."""
 
 from .members import load_members
 from .teams import load_teams

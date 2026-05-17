@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from meta.loaders.types import LoaderErrorCode
 from meta.logger import get_app_logger
@@ -46,10 +46,34 @@ class Reporter:
         """Insert a validation error into the per-file bucket."""
         self._errors[file_path].append((error, message))
 
+    def as_result(self) -> dict[str, object]:
+        """Serialize accumulated errors as JSON-friendly structures (no logging)."""
+        errors_out: dict[str, list[dict[str, str]]] = {}
+        for file_path, err_list in self._errors.items():
+            if not err_list:
+                continue
+            errors_out[file_path] = [
+                {"code": code.name, "message": message} for code, message in err_list
+            ]
+
+        total_errors = sum(len(errors) for errors in self._errors.values())
+        files_with_errors = sum(1 for errors in self._errors.values() if errors)
+
+        return {
+            "valid": total_errors == 0,
+            "summary": {
+                "files_with_errors": files_with_errors,
+                "error_count": total_errors,
+            },
+            "errors": errors_out,
+        }
+
     def emit(self) -> None:
         """Log the report and return whether the run is valid."""
-        invalid_files = len(self._errors)
-        total_errors = sum(len(errors) for errors in self._errors.values())
+        result = self.as_result()
+        summary = cast("dict[str, int]", result["summary"])
+        invalid_files = summary["files_with_errors"]
+        total_errors = summary["error_count"]
 
         self.logger.info("===== SUMMARY =====")
         self.logger.info("Invalid files: %s", invalid_files)

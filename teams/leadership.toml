@@ -13,3 +13,7 @@ leads = ["Yuxiang-Huang"]
 [[membership.members]]
 github-username = "Yuxiang-Huang"
 title = "Head of Onboarding and Documentation"
+
+[[membership.members]]
+github-username = "dsnarne"
+title = "Head of Innovation"

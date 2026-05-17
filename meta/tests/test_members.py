@@ -7,8 +7,8 @@ from typing import TYPE_CHECKING
 import pytest
 
 from meta.loaders.members import load_members
-from meta.validator.src.members import MemberValidator
 from meta.validator.src.reporter import ErrorCode, Reporter, bind_reporter
+from meta.validator.src.rules.members import MemberValidationError, MemberValidator
 
 from .helper import has_error, no_errors
 from .mock_clients.mock_github_client import (
@@ -32,8 +32,8 @@ from .mock_clients.mock_keycloak_client import (
 if TYPE_CHECKING:
     from _pytest.monkeypatch import MonkeyPatch
 
-GITHUB_CLIENT_FUNCTION_PATH = "meta.validator.src.members.get_github_client"
-KEYCLOAK_CLIENT_FUNCTION_PATH = "meta.validator.src.members.get_keycloak_client"
+GITHUB_CLIENT_FUNCTION_PATH = "meta.validator.src.rules.members.get_github_client"
+KEYCLOAK_CLIENT_FUNCTION_PATH = "meta.validator.src.rules.members.get_keycloak_client"
 
 
 def test_member_valid(monkeypatch: MonkeyPatch) -> None:
@@ -138,7 +138,7 @@ def test_rate_limited_github_username(
         make_get_github_client(mock_github),
     )
 
-    with pytest.raises(SystemExit, match="1"):
+    with pytest.raises(MemberValidationError):
         MemberValidator(members, reporter).validate()
 
 
@@ -217,10 +217,10 @@ def test_mismatched_keycloak_github(monkeypatch: MonkeyPatch) -> None:
     assert has_error(reporter, ErrorCode.MISMATCHED_KEYCLOAK_GITHUB)
 
 
-def test_unexpected_keycloak_client_error_exits(
+def test_unexpected_keycloak_client_error_raises(
     monkeypatch: MonkeyPatch,
 ) -> None:
-    """Unexpected Keycloak errors should hit generic ``except Exception`` and exit."""
+    """Unexpected Keycloak errors should hit generic ``except Exception`` and raise."""
     reporter = Reporter()
     members = load_members(
         bind_reporter(reporter),
@@ -239,11 +239,11 @@ def test_unexpected_keycloak_client_error_exits(
         make_get_keycloak_client(mock_keycloak),
     )
 
-    with pytest.raises(SystemExit, match="1"):
+    with pytest.raises(MemberValidationError):
         MemberValidator(members, reporter).validate()
 
 
-def test_unexpected_keycloak_github_link_error_exits(
+def test_unexpected_keycloak_github_link_error_raises(
     monkeypatch: MonkeyPatch,
 ) -> None:
     """Errors while reading GitHub from Keycloak should abort validation."""
@@ -265,7 +265,7 @@ def test_unexpected_keycloak_github_link_error_exits(
         make_get_keycloak_client(mock_keycloak),
     )
 
-    with pytest.raises(SystemExit, match="1"):
+    with pytest.raises(MemberValidationError):
         MemberValidator(members, reporter).validate()
 
 
@@ -294,7 +294,7 @@ def test_missing_keycloak_slack(monkeypatch: MonkeyPatch) -> None:
     assert has_error(reporter, ErrorCode.MISSING_KEYCLOAK_SLACK)
 
 
-def test_unexpected_keycloak_slack_link_error_exits(
+def test_unexpected_keycloak_slack_link_error_raises(
     monkeypatch: MonkeyPatch,
 ) -> None:
     """Errors while reading Slack from Keycloak should abort validation."""
@@ -316,7 +316,7 @@ def test_unexpected_keycloak_slack_link_error_exits(
         make_get_keycloak_client(mock_keycloak),
     )
 
-    with pytest.raises(SystemExit, match="1"):
+    with pytest.raises(MemberValidationError):
         MemberValidator(members, reporter).validate()
 
 

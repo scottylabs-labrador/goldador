@@ -1,1 +1,1 @@
-"""Clients for the governance repository."""
+"""Project clients."""

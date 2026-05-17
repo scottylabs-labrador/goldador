@@ -1,8 +1,8 @@
-# ScottyLabs Labrador Governance
+# Goldador
 
-This repository formalizes permission as code for the Labrador committee of the
-ScottyLabs organization. See [Governance Wiki](
-    https://github.com/ScottyLabs-Labrador/governance/wiki
+This repository is responsible for the governance of the Labrador committee of the
+ScottyLabs organization. It formalizes permission as code. See [Goldador Wiki](
+    https://github.com/ScottyLabs-Labrador/goldador/wiki
 ) on how to use this repository to obtain permissions.
 
 The rest of the documentation is for maintainers of this repository.

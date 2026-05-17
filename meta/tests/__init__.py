@@ -1,4 +1,4 @@
-"""Tests for the governance validator package."""
+"""Tests for the validator package."""
 
 import subprocess
 
@@ -9,8 +9,7 @@ def main() -> None:
         [  # noqa: S607
             "pytest",
             "meta/tests",
-            "--cov=meta/loaders",
-            "--cov=meta/validator",
+            "--cov=meta/validator/src/rules",
             "--cov-report=term-missing",
         ],
         check=True,

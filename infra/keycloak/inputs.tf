@@ -14,21 +14,20 @@ variable "leadership_group_name" {
   type        = string
 }
 
-variable "leadership_data" {
-  description = "Leadership data"
-  type = object({
-    members = list(string)
-    admins  = list(string)
-  })
-}
-
-variable "teams_data" {
+variable "teams" {
   description = "Teams data"
   type = map(object({
-    members = list(string)
-    admins  = list(string)
-    website = optional(string, "")
-    server  = optional(string, "")
+    members = object({
+      andrew_ids       = list(string)
+      github_usernames = list(string)
+    })
+    admins = object({
+      andrew_ids       = list(string)
+      github_usernames = list(string)
+    })
+    website             = optional(string, "")
+    server              = optional(string, "")
+    create_oidc_clients = bool
   }))
 }
 

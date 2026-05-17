@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import asyncio
-import sys
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
@@ -12,13 +11,11 @@ from github import GithubException
 
 from meta.clients.github_client import get_github_client
 from meta.logger import get_app_logger
-
-from .reporter import ErrorCode
+from meta.validator.src.reporter import ErrorCode
 
 if TYPE_CHECKING:
     from meta.models import Member, Team
-
-    from .reporter import Reporter
+    from meta.validator.src.reporter import Reporter
 
 
 GITHUB_ORG_NAME = "ScottyLabs-Labrador"
@@ -55,7 +52,7 @@ class TeamValidator:
             asyncio.run(self._validate_async())
         except TeamValidationError as e:
             self.logger.exception(e.message)
-            sys.exit(1)
+            raise
 
     async def _validate_async(self) -> None:
         """Validate each team concurrently using a shared async HTTP client scope."""
@@ -96,7 +93,7 @@ class TeamValidator:
         github_client = get_github_client()
         for repo in team.repos:
             try:
-                repo_name = f"{GITHUB_ORG_NAME}/{repo}"
+                repo_name = f"{GITHUB_ORG_NAME}/{repo.name}"
                 github_client.get_repo(repo_name)
             except GithubException as e:
                 if e.status == HTTPStatus.NOT_FOUND:

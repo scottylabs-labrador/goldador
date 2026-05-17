@@ -10,4 +10,3 @@ resource "vault_mount" "kv" {
     version = "2"
   }
 }
-

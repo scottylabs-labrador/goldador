@@ -1,0 +1,14 @@
+name = "Goldador"
+description = "Responsible for governance in Labrador."
+create-oidc-clients = false
+
+[[repos]]
+name = "goldador"
+description = "Definition and automation of ScottyLabs Labrador's governance model"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["Yuxiang-Huang"]
+
+[[membership.members]]
+github-username = "Yuxiang-Huang"
