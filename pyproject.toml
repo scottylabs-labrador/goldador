@@ -10,7 +10,6 @@ dev = ["mypy>=1.19.1", "ruff>=0.15.5", "types-colorama>=0.4.15.20250801"]
 test = ["pytest>=8.3.5", "pytest-cov>=7.1.0"]
 validator = [
   "fastapi>=0.115.6",
-  "httpx>=0.28.1",
   "pygithub>=2.9.0",
   "python-keycloak>=7.1.0",
   "slowapi>=0.1.9",

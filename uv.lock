@@ -326,7 +326,6 @@ test = [
 ]
 validator = [
     { name = "fastapi" },
-    { name = "httpx" },
     { name = "pygithub" },
     { name = "python-keycloak" },
     { name = "slowapi" },
@@ -364,7 +363,6 @@ test = [
 ]
 validator = [
     { name = "fastapi", specifier = ">=0.115.6" },
-    { name = "httpx", specifier = ">=0.28.1" },
     { name = "pygithub", specifier = ">=2.9.0" },
     { name = "python-keycloak", specifier = ">=7.1.0" },
     { name = "slowapi", specifier = ">=0.1.9" },

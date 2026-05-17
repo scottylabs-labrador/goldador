@@ -15,8 +15,15 @@ from meta.validator.src.remote_validation import run_remote_validation
 from meta.validator.src.rules.members import MemberValidationError
 from meta.validator.src.rules.teams import TeamValidationError
 
-# ``sys.argv`` layout: script name, optional Git ref.
-_ARGV_SCRIPT_AND_REF = 2
+# Exceptions that should be reported and turned into a non-zero exit instead of
+# bubbling up as a traceback. Wider environment problems (``RuntimeError``) are
+# included alongside per-domain validation failures.
+_FATAL_ERRORS: tuple[type[Exception], ...] = (
+    GoldadorGitHubError,
+    MemberValidationError,
+    TeamValidationError,
+    RuntimeError,
+)
 
 
 def main() -> None:
@@ -31,17 +38,8 @@ def main() -> None:
 
     try:
         reporter, extras = run_remote_validation(ref)
-    except GoldadorGitHubError as e:
-        logger.critical("%s", e.message)
-        raise SystemExit(1) from e
-    except RuntimeError as e:
+    except _FATAL_ERRORS as e:
         logger.critical("%s", e)
-        raise SystemExit(1) from e
-    except MemberValidationError as e:
-        logger.critical("%s", e.message)
-        raise SystemExit(1) from e
-    except TeamValidationError as e:
-        logger.critical("%s", e.message)
         raise SystemExit(1) from e
 
     logger.info(
@@ -55,10 +53,13 @@ def main() -> None:
 
 
 def _cli_ref(argv: list[str]) -> str:
+    """Parse the optional ref argument from ``argv``; default to the branch head."""
+    # ``argv`` layout: script name, optional Git ref.
+    expected_max_argc = 2
     argc = len(argv)
-    if argc < _ARGV_SCRIPT_AND_REF:
+    if argc < expected_max_argc:
         return resolve_default_branch_head_sha()
-    if argc == _ARGV_SCRIPT_AND_REF:
+    if argc == expected_max_argc:
         return argv[1]
     prog = argv[0] if argv else "validate"
     msg = f"usage: {prog} [REF]"

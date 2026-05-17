@@ -29,7 +29,23 @@ from meta.validator.src.rules.teams import TeamValidationError
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
+# Load environment up-front so the module-level rate-limit reads below see
+# values from ``.env``. ``lifespan`` re-loads at request time for ``--reload``
+# scenarios where the file may have changed since import.
 load_dotenv()
+
+# Git ref names are bounded well below this in practice; the cap exists to
+# defend against accidental or malicious payloads pinned to the request body.
+_REF_MAX_LENGTH = 260
+_DEFAULT_VALIDATE_RATE_LIMIT = "60/minute"
+# Maps validation/environment failures to the HTTP status used in the response
+# body. ``GoldadorGitHubError`` carries its own status when available.
+_FALLBACK_STATUS_CODE = 502
+_STATUS_CODE_BY_EXCEPTION: dict[type[Exception], int] = {
+    RuntimeError: 503,
+    MemberValidationError: 502,
+    TeamValidationError: 502,
+}
 
 
 def _truthy_env(name: str) -> bool:
@@ -37,7 +53,11 @@ def _truthy_env(name: str) -> bool:
 
 
 _RATE_LIMIT_VALIDATE = (
-    os.environ.get("VALIDATOR_VALIDATE_RATE_LIMIT", "60/minute").strip() or "60/minute"
+    os.environ.get(
+        "VALIDATOR_VALIDATE_RATE_LIMIT",
+        _DEFAULT_VALIDATE_RATE_LIMIT,
+    ).strip()
+    or _DEFAULT_VALIDATE_RATE_LIMIT
 )
 _RATE_LIMIT_USE_X_FORWARDED_FOR = _truthy_env(
     "VALIDATOR_RATE_LIMIT_USE_X_FORWARDED_FOR",
@@ -82,7 +102,7 @@ class ValidateRequest(BaseModel):
     ref: str = Field(
         ...,
         min_length=1,
-        max_length=260,
+        max_length=_REF_MAX_LENGTH,
         description="Git ref (branch, tag, or SHA)",
     )
 
@@ -93,8 +113,24 @@ def run_validation_for_ref(ref: str) -> dict[str, Any]:
     return {**extras, "validation": reporter.as_result()}
 
 
+def _status_for(exc: Exception) -> int:
+    """Map a known validator exception to the HTTP status used in the response."""
+    if isinstance(exc, GoldadorGitHubError):
+        return exc.status_code or _FALLBACK_STATUS_CODE
+    return _STATUS_CODE_BY_EXCEPTION.get(type(exc), _FALLBACK_STATUS_CODE)
+
+
+def _error_detail(ref: str, exc: Exception) -> dict[str, str]:
+    """Return the JSON ``detail`` payload for a validator-side ``HTTPException``."""
+    return {
+        "repository": GOLDADOR_REPO_FULL_NAME,
+        "ref": ref,
+        "error": str(exc),
+    }
+
+
 @app.get("/")
-def health() -> dict[str, str]:
+async def health() -> dict[str, str]:
     """Health check."""
     return {"status": "ok"}
 
@@ -109,47 +145,20 @@ async def validate_remote(
     """Validate governance TOML at ``ref`` using the same rules as the CLI."""
     try:
         return await asyncio.to_thread(run_validation_for_ref, body.ref)
-    except GoldadorGitHubError as e:
+    except (
+        GoldadorGitHubError,
+        RuntimeError,
+        MemberValidationError,
+        TeamValidationError,
+    ) as e:
         raise HTTPException(
-            status_code=e.status_code or 502,
-            detail={
-                "repository": GOLDADOR_REPO_FULL_NAME,
-                "ref": body.ref,
-                "error": e.message,
-            },
-        ) from e
-    except RuntimeError as e:
-        raise HTTPException(
-            status_code=503,
-            detail={
-                "repository": GOLDADOR_REPO_FULL_NAME,
-                "ref": body.ref,
-                "error": str(e),
-            },
-        ) from e
-    except MemberValidationError as e:
-        raise HTTPException(
-            status_code=502,
-            detail={
-                "repository": GOLDADOR_REPO_FULL_NAME,
-                "ref": body.ref,
-                "error": e.message,
-            },
-        ) from e
-    except TeamValidationError as e:
-        raise HTTPException(
-            status_code=502,
-            detail={
-                "repository": GOLDADOR_REPO_FULL_NAME,
-                "ref": body.ref,
-                "error": e.message,
-            },
+            status_code=_status_for(e),
+            detail=_error_detail(body.ref, e),
         ) from e
 
 
 def main() -> None:
     """Run the API with uvicorn (dev-friendly defaults)."""
-    load_dotenv()
     uvicorn.run(
         "meta.validator.src.server:app",
         host="0.0.0.0",  # noqa: S104
