@@ -116,23 +116,6 @@ class MockKeycloakClientMismatchedGithub:
         return None
 
 
-class MockKeycloakClientGithubUnexpectedError:
-    """User id resolves; reading the GitHub link raises."""
-
-    def get_user_id_by_username(self, andrew_id: str) -> str:
-        """Return a synthetic Keycloak user id."""
-        return f"kc-user-{andrew_id}"
-
-    def get_user_github_username(self, _user_id: str) -> str | None:
-        """Raise to emulate Keycloak API failure on social-login read."""
-        msg = "unexpected keycloak github link failure"
-        raise RuntimeError(msg)
-
-    def get_user_slack_id(self, _user_id: str) -> str | None:
-        """Unused when GitHub read fails first."""
-        return None
-
-
 class MockKeycloakClientMissingSlack:
     """GitHub link matches; Slack id is missing."""
 
@@ -155,38 +138,13 @@ class MockKeycloakClientMissingSlack:
         return None
 
 
-class MockKeycloakClientSlackUnexpectedError:
-    """GitHub checks pass; reading Slack from Keycloak raises."""
-
-    def __init__(self) -> None:
-        """Initialize per-user id mapping for GitHub answers."""
-        self._andrew_id_by_user_id: dict[str, str] = {}
-
-    def get_user_id_by_username(self, andrew_id: str) -> str:
-        """Return a synthetic Keycloak user id."""
-        user_id = f"kc-user-{andrew_id}"
-        self._andrew_id_by_user_id[user_id] = andrew_id
-        return user_id
-
-    def get_user_github_username(self, user_id: str) -> str | None:
-        """Return the Andrew id as GitHub login."""
-        return self._andrew_id_by_user_id.get(user_id)
-
-    def get_user_slack_id(self, _user_id: str) -> str | None:
-        """Raise to emulate Keycloak API failure on Slack read."""
-        msg = "unexpected keycloak slack link failure"
-        raise RuntimeError(msg)
-
-
 type MockKeycloakClient = (
     MockKeycloakClientValid
     | MockKeycloakClientUserNotFound
     | MockKeycloakClientUnexpectedError
     | MockKeycloakClientMissingGithub
     | MockKeycloakClientMismatchedGithub
-    | MockKeycloakClientGithubUnexpectedError
     | MockKeycloakClientMissingSlack
-    | MockKeycloakClientSlackUnexpectedError
 )
 
 
