@@ -1,15 +1,19 @@
 # Goldador
 
-This repository is responsible for the governance of the Labrador committee of the
-ScottyLabs organization. It formalizes permission as code. See [Goldador Wiki](
-    https://github.com/ScottyLabs-Labrador/goldador/wiki
-) on how to use this repository to obtain permissions.
+Goldador is the permission-as-code repository for the Labrador committee of the
+ScottyLabs organization. It records members and teams in TOML, validates those
+records, and synchronizes the resulting access model to services such as
+GitHub, Slack, Keycloak, OpenBao, Google Drive, and Google Groups.
 
-The rest of the documentation is for maintainers of this repository.
+Member-facing permission details live on the
+[Goldador public guide](https://scottylabs-labrador.github.io/goldador/).
+Setup and contribution instructions live in the
+[Goldador Wiki](https://github.com/ScottyLabs-Labrador/goldador/wiki).
+The rest of this README is for maintainers of this repository.
 
 ## Repository Structure
 
-```py
+```text
 .
 ├── .github            # CI workflows and validation shell scripts
 ├── docs               # ADRs and schema documentation
@@ -27,12 +31,57 @@ The rest of the documentation is for maintainers of this repository.
 └── teams              # Team TOML files
 ```
 
-See README.md in each directory for more details.
+See the README files in nested directories for subsystem-specific details.
 
 ## Development Setup
 
-[UV](https://docs.astral.sh/uv/) is used to manage the dependencies and run commands.
-See [pyproject.toml](pyproject.toml) for more details.
+[uv](https://docs.astral.sh/uv/) is used to manage dependencies and run project
+commands. The development container in
+[`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json) contains
+the recommended editor setup.
 
-Recommended extensions and settings for development are specified in
-[devcontainer.json](.devcontainer/devcontainer.json).
+Install dependencies and run local checks with:
+
+```zsh
+uv sync --all-groups
+uv run lint
+uv run --group test --group validator test
+```
+
+Validation and synchronization commands that call GitHub, Keycloak, Slack, or
+Google APIs require the corresponding environment variables to be present. Those
+commands load `.env` automatically when run locally.
+
+## Common Commands
+
+```zsh
+# Run Ruff and mypy.
+uv run lint
+
+# Run the Python test suite.
+uv run --group test --group validator test
+
+# Validate governance TOML through the remote GitHub-backed validator.
+uv run --group validator validate [REF]
+
+# Run the validator API locally on port 8000.
+uv run --group validator validator-server
+
+# Run synchronizers.
+uv run --group codeowners-synchronizer sync-codeowners
+uv run --group infra-synchronizer sync-infra
+uv run --group slack-synchronizer sync-slack
+uv run --group google-synchronizer sync-google-drive
+```
+
+## Documentation Map
+
+- [`docs/adrs/`](docs/adrs/) records architectural decisions.
+- [`docs/schemas/`](docs/schemas/) explains how to author member and team TOML.
+- [`meta/schemas/README.md`](meta/schemas/README.md) explains the JSON Schemas
+  used by Taplo and the loader.
+- [`meta/validator/README.md`](meta/validator/README.md) documents validation
+  rules and the validator API.
+- [`meta/synchronizers/README.md`](meta/synchronizers/README.md) documents the
+  service synchronizers.
+- [`infra/README.md`](infra/README.md) documents the OpenTofu infrastructure.
