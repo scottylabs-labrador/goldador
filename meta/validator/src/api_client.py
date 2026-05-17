@@ -4,14 +4,16 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
+import subprocess
 from collections.abc import Mapping
 from typing import cast
-from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
 
 DEFAULT_VALIDATOR_SERVER_URL = "https://goldador.scottylabs.org"
 _VALIDATE_TIMEOUT_SECONDS = 600
 _ERROR_BODY_LIMIT = 500
+_CONNECT_TIMEOUT_SECONDS = 30
+_HTTP_STATUS_MARKER = "\n__GOLDADOR_HTTP_STATUS__:"
 
 
 class ValidatorApiError(RuntimeError):
@@ -23,26 +25,66 @@ def validate_ref_via_api(ref: str) -> Mapping[str, object]:
     base_url = os.environ.get("VALIDATOR_SERVER_URL", DEFAULT_VALIDATOR_SERVER_URL)
     url = f"{base_url.rstrip('/')}/validate"
     body = json.dumps({"ref": ref}).encode()
-    request = Request(  # noqa: S310 - URL is project-controlled or env-configured.
-        url,
-        data=body,
-        headers={
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-        method="POST",
-    )
+    output = _curl_post(url, body)
+    response_body, status_code = _split_curl_response(output)
+    if status_code != "200":
+        msg = f"Validator returned HTTP {status_code}: {_error_detail(response_body)}"
+        raise ValidatorApiError(msg)
+    return _decode_response(response_body)
 
+
+def _curl_post(url: str, body: bytes) -> bytes:
+    curl = shutil.which("curl")
+    if curl is None:
+        msg = "curl is required to call the hosted validator API"
+        raise ValidatorApiError(msg)
+
+    command = [
+        curl,
+        "-sS",
+        "--connect-timeout",
+        str(_CONNECT_TIMEOUT_SECONDS),
+        "--max-time",
+        str(_VALIDATE_TIMEOUT_SECONDS),
+        "-X",
+        "POST",
+        url,
+        "-H",
+        "Accept: application/json",
+        "-H",
+        "Content-Type: application/json",
+        "--data-binary",
+        "@-",
+        "--write-out",
+        f"{_HTTP_STATUS_MARKER}%{{http_code}}",
+    ]
+    result = subprocess.run(  # noqa: S603 - command is built from trusted literals.
+        command,
+        input=body,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.decode(errors="replace").strip()
+        if not detail:
+            detail = f"curl exited {result.returncode}"
+        msg = f"Validator API request failed: {detail}"
+        raise ValidatorApiError(msg)
+    return result.stdout
+
+
+def _split_curl_response(output: bytes) -> tuple[bytes, str]:
     try:
-        with urlopen(request, timeout=_VALIDATE_TIMEOUT_SECONDS) as response:  # noqa: S310
-            return _decode_response(response.read())
-    except HTTPError as e:
-        detail = _error_detail(e.read())
-        msg = f"Validator returned HTTP {e.code}: {detail}"
+        body, status = output.rsplit(_HTTP_STATUS_MARKER.encode(), maxsplit=1)
+    except ValueError as e:
+        msg = "Validator API response is missing HTTP status"
         raise ValidatorApiError(msg) from e
-    except (OSError, URLError) as e:
-        msg = f"Validator API request failed: {e}"
-        raise ValidatorApiError(msg) from e
+
+    status_code = status.decode(errors="replace").strip()
+    if not status_code.isdigit():
+        msg = f"Validator API response has invalid HTTP status {status_code!r}"
+        raise ValidatorApiError(msg)
+    return body, status_code
 
 
 def _decode_response(data: bytes) -> Mapping[str, object]:
