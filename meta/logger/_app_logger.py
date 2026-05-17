@@ -7,14 +7,14 @@ from colorama import init
 
 from ._components import AppLogger
 from ._config import get_logger_config
-from ._constants import LOGGER_NAME, PRINT_LEVEL, SUCCESS_LEVEL
+from ._constants import LOGGER_NAME, PRINT_LEVEL, RUNNING_ON_RAILWAY, SUCCESS_LEVEL
 
 
 @lru_cache(maxsize=1)
 def get_app_logger() -> AppLogger:
     """Get the app logger. Cache the result for reuse across the app."""
-    # Colorama: ensures reset after each print
-    init(autoreset=True)
+    # Colorama: ensures reset after each print if not on Railway
+    init(autoreset=not RUNNING_ON_RAILWAY)
 
     # Register the success and print log levels
     logging.addLevelName(SUCCESS_LEVEL, "SUCCESS")
