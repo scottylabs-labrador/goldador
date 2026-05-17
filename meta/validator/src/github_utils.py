@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from http import HTTPStatus
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, NoReturn
 
 from github import GithubException
 
@@ -28,6 +28,12 @@ class GoldadorGitHubError(Exception):
         self.status_code = status_code
 
 
+def _raise_github_api_error(error: GithubException) -> NoReturn:
+    """Wrap a ``GithubException`` as a 502-equivalent ``GoldadorGitHubError``."""
+    msg = f"GitHub API error: {error}"
+    raise GoldadorGitHubError(msg, status_code=502) from error
+
+
 def verify_ref(repo: Repository, ref: str) -> None:
     """Ensure ``ref`` resolves to a commit on ``repo``."""
     try:
@@ -36,37 +42,42 @@ def verify_ref(repo: Repository, ref: str) -> None:
         if e.status == HTTPStatus.NOT_FOUND:
             msg = f"Ref {ref!r} not found in {GOLDADOR_REPO_FULL_NAME}"
             raise GoldadorGitHubError(msg, status_code=400) from e
-        msg = f"GitHub API error: {e}"
-        raise GoldadorGitHubError(msg, status_code=502) from e
+        _raise_github_api_error(e)
 
 
 def _list_toml_paths_and_contents(
     repo: Repository,
     directory: str,
     ref: str,
-) -> list[tuple[str, str]]:
+) -> TomlFileRows:
     """Return sorted ``(path, utf-8 text)`` pairs for ``*.toml`` under ``directory``."""
     try:
         entries = repo.get_contents(directory, ref=ref)
     except GithubException as e:
         if e.status == HTTPStatus.NOT_FOUND:
             return []
-        msg = f"GitHub API error: {e}"
-        raise GoldadorGitHubError(msg, status_code=502) from e
+        _raise_github_api_error(e)
 
     if not isinstance(entries, list):
         entries = [entries]
 
-    out: list[tuple[str, str]] = []
+    pairs: TomlFileRows = []
     for entry in entries:
-        if entry.type != "file" or not str(entry.name).endswith(".toml"):
+        if entry.type != "file" or not entry.name.endswith(".toml"):
             continue
-        cf = repo.get_contents(entry.path, ref=ref)
-        if isinstance(cf, list):
+
+        try:
+            content_file = repo.get_contents(entry.path, ref=ref)
+        except GithubException as e:
+            _raise_github_api_error(e)
+
+        if isinstance(content_file, list):
             continue
-        text = cf.decoded_content.decode("utf-8")
-        out.append((cf.path, text))
-    return sorted(out, key=lambda t: t[0])
+
+        text = content_file.decoded_content.decode("utf-8")
+        pairs.append((content_file.path, text))
+
+    return sorted(pairs, key=lambda pair: pair[0])
 
 
 def resolve_default_branch_head_sha() -> str:
@@ -76,8 +87,7 @@ def resolve_default_branch_head_sha() -> str:
         repo = client.get_repo(GOLDADOR_REPO_FULL_NAME)
         branch = repo.get_branch(repo.default_branch)
     except GithubException as e:
-        msg = f"GitHub API error: {e}"
-        raise GoldadorGitHubError(msg, status_code=502) from e
+        _raise_github_api_error(e)
 
     return str(branch.commit.sha)
 

@@ -1,31 +1,62 @@
 # Validator
 
-This directory contains the Python-based validator of the project.
-This README describes the checks performed by the validator, as well as other checks.
+This directory contains the Python-based validator for governance TOML. The
+validator loads member and team files from GitHub at a requested ref, applies
+project-specific rules, and reports structured validation results for CI.
+
+Schema formatting checks are handled separately by Taplo and EditorConfig.
+
+## Entrypoints
+
+```zsh
+# Validate the default branch head, or pass a branch, tag, or commit SHA.
+uv run --group validator validate [REF]
+
+# Run the FastAPI validator service on port 8000.
+uv run --group validator validator-server
+```
+
+The CLI and API both call the same remote validation path. The API exposes:
+
+- `GET /` for a health check.
+- `POST /validate` with JSON body `{"ref": "branch-or-sha"}`.
+
+## Required Environment
+
+Remote validation requires credentials for the external services it checks:
+
+- `SYNC_GITHUB_TOKEN` for GitHub API calls.
+- `KEYCLOAK_SERVER_URL`, `KEYCLOAK_PASSWORD`, `KEYCLOAK_REALM`,
+  `KEYCLOAK_CLIENT_ID`, and `KEYCLOAK_USER_REALM` for Keycloak checks.
+
+The API also supports rate-limit configuration:
+
+- `VALIDATOR_VALIDATE_RATE_LIMIT`, defaulting to `60/minute`.
+- `VALIDATOR_RATE_LIMIT_USE_X_FORWARDED_FOR`, for deployments behind a proxy.
+- `VALIDATOR_RATE_LIMIT_DISABLED`, for trusted local or internal use.
 
 ## Validator Checks
 
-### TOML Files
+### TOML Loading
 
-- The field orderings in a TOML file must match the the ordering of `properties`
-  in the corresponding JSON schema file.
+- The top-level key ordering in each TOML file must match the ordering of
+  `properties` in the corresponding JSON Schema.
+- Member and team files must be parseable and match the Pydantic models loaded
+  from the TOML contents.
 
 ### Members
 
-- The member's filename must be a valid GitHub username.
-
-- The member's `andrew-id` field must match the username of a user in Keycloak.
-
-- The member's Keycloak user must be linked to a GitHub account and a Slack account,
-  and the GitHub username must match the member's filename.
+- The member filename must be a valid GitHub username.
+- The member's `andrew-id`, when present, must match a Keycloak user.
+- The Keycloak user must be linked to a GitHub account.
+- The linked GitHub username must match the member filename.
+- The Keycloak user must be linked to a Slack account.
 
 ### Teams
 
 - All leads in a team must also be listed as members.
-
-- All team members must be listed in the `members/` directory.
-
-- Each team repository must exist as a GitHub repository in the
+- All team members must be listed in the [`members/`](../../members/) directory.
+- Each team repository must exist in the
   [ScottyLabs-Labrador](https://github.com/ScottyLabs-Labrador) organization.
 
 ## Bash Script Checks
@@ -42,10 +73,12 @@ This README describes the checks performed by the validator, as well as other ch
   any PR that changes more than one file in the `members/` or `teams/`
   directories is automatically rejected.
 
-_Note: See bash scripts in the [.github/scripts/](../../.github/scripts/)_
-_directory for more details._
+See bash scripts in the [`.github/scripts/`](../../.github/scripts/) directory
+for implementation details.
 
-## Check EditorConfig Compliance
+## Other CI Checks
+
+### EditorConfig
 
 We use [EditorConfig](https://editorconfig.org/) to ensure consistent coding styles.
 The VSCode extension [editorconfig.editorconfig](
@@ -55,10 +88,10 @@ You can also run the check locally by installing [editorconfig-checker](
   https://github.com/editorconfig-checker/editorconfig-checker?tab=readme-ov-file#installation
 ) and running `editorconfig-checker`.
 
-## Validate TOML Files
+### TOML Schema and Formatting
 
 We use [Taplo](https://taplo.tamasfe.dev/) to validate the TOML files against
-the schemas defined in the `__meta/schemas/` directory. The VSCode extension
+the schemas defined in the [`meta/schemas/`](../schemas/) directory. The VSCode extension
 [tamasfe.even-better-toml](
   https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml
 ) will show red squiggles in the editor for errors. You can also run the check

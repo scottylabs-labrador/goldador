@@ -1,49 +1,87 @@
 # Infrastructure
 
-This directory implements the Infrastructure as Code (IaC) for the Labrador Governance.
+This directory contains the OpenTofu infrastructure for Labrador governance.
+It consumes generated data from [`inputs.json`](inputs.json), plus sensitive
+runtime variables supplied by CI, and applies the resulting access model to
+identity, secret, GitHub, and Google Group systems.
 
-## Keycloak
+## Layout
 
-The Keycloak module
+```text
+infra/
+├── main.tf            # Composes the infrastructure modules
+├── backend.tf         # Remote state backend configuration
+├── locals.tf          # Decodes inputs.json into local values
+├── variables.tf       # Runtime variables and secrets
+├── inputs.json        # Generated member and team data
+├── github/            # GitHub organization membership and teams
+├── google_group/      # Google Group membership
+├── keycloak/          # Labrador realm, groups, clients, and identity providers
+└── secrets/           # OpenBao auth, policies, and team secrets
+```
 
-- `main.tf`: defines the Labrador realm (imported)
+Do not edit [`inputs.json`](inputs.json) by hand unless you are intentionally
+debugging generated data. It is produced by the infrastructure synchronizer from
+the TOML files in [`members/`](../members/) and [`teams/`](../teams/).
 
-- `saml.tf`: creates the SAML identity provider for login
+## Modules
 
-- `ldap.tf`: creates the LDAP to automatically sync user info when user logs in
+### `keycloak`
 
-- `user_profile.tf`: creates the user profile attributes
+Manages the Labrador Keycloak realm and related access structures:
 
-- `idps.tf`: creates the identity providers for linked accounts
+- `main.tf` imports and configures the Labrador realm.
+- `saml.tf` configures the SAML identity provider for login.
+- `ldap.tf` configures LDAP-backed user lookup.
+- `user_profile.tf` configures user profile attributes.
+- `idps.tf` configures linked identity providers.
+- `openbao.tf` creates the OpenBao OIDC client.
+- `leadership.tf` creates leadership access.
+- `teams.tf` creates team groups and team OIDC clients.
+- `outputs.tf` emits generated secrets consumed by the OpenBao module.
 
-- `openbao.tf`: creates the OpenBao client for OIDC login in OpenBao
+### `secrets`
 
-- `leadership.tf`: creates the leadership permissions
+Manages OpenBao configuration:
 
-- `teams.tf`: creates the teams for the Labrador governance
+- `main.tf` imports and configures the secrets engine.
+- `oidc.tf` configures OIDC login.
+- `leadership.tf` creates leadership permissions.
+- `policies.tf` creates team policies.
+- `teams.tf` stores generated OIDC client secrets for teams.
 
-- `outputs.tf`: outputs the secrets to be stored in OpenBao
+### `github`
 
-## Secrets
+Manages GitHub organization state:
 
-The Secrets module
+- `main.tf` imports the GitHub organization.
+- `membership.tf` manages organization membership.
+- `teams.tf` creates teams, team membership, and repository permissions.
 
-- `main.tf`: defines the secrets engine (imported)
+### `google_group`
 
-- `oidc.tf`: creates the OIDC auth backend for login
+Manages Google Group membership from the generated Andrew ID lists.
 
-- `leadership.tf`: creates the leadership permissions
+## Applying Changes
 
-- `policies.tf`: creates the policies for each team
+Infrastructure changes are applied by the `Sync` GitHub Actions workflow when
+files under [`infra/`](.) change on `main`. The workflow runs:
 
-- `teams.tf`: stores the OIDC client secrets for each team
+```zsh
+tofu init
+tofu validate
+tofu fmt -check -diff
+tofu apply -auto-approve
+```
 
-## GitHub
+Local plans or applies require the same backend credentials and `TF_VAR_*`
+secrets configured in CI. Prefer running `tofu fmt` before opening changes that
+touch Terraform/OpenTofu files.
 
-The GitHub module
+## Data Flow
 
-- `main.tf`: defines the GitHub organization (imported)
-
-- `members.tf`: add members to the GitHub organization
-
-- `teams.tf`: creates the GitHub teams, including members and permission to repos
+1. Maintainers update TOML in [`members/`](../members/) and
+   [`teams/`](../teams/).
+2. The infra synchronizer generates [`inputs.json`](inputs.json).
+3. OpenTofu reads `inputs.json` through [`locals.tf`](locals.tf).
+4. Modules apply the desired access model to external services.
