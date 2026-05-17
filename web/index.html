@@ -196,9 +196,10 @@
       }
 
       h1 {
-        max-width: 14ch;
+        max-width: 100%;
         margin: 0;
-        font-size: clamp(3rem, 9vw, 6rem);
+        font-size: clamp(2.6rem, 5.2vw, 4rem);
+        font-weight: 750;
         letter-spacing: -0.08em;
       }
 
@@ -238,20 +239,41 @@
         color: var(--muted);
       }
 
-      .service-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.55rem;
-        margin-top: 1.1rem;
+      .service-guide {
+        margin-top: 1.35rem;
       }
 
-      .service-list a {
-        padding: 0.38rem 0.7rem;
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        background: var(--accent-soft);
-        font-size: 0.9rem;
-        text-decoration: none;
+      .service-guide h3 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .service-guide dl {
+        display: grid;
+        gap: 0.8rem;
+        margin: 0.8rem 0 0;
+      }
+
+      .service-guide dt a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        color: var(--accent);
+        font-weight: 800;
+        text-decoration-line: underline;
+        text-decoration-thickness: 0.12em;
+      }
+
+      .service-guide dt a::after {
+        content: "↗";
+        font-size: 0.82em;
+        line-height: 1;
+      }
+
+      .service-guide dd {
+        margin: 0.12rem 0 0;
+        color: var(--muted);
+        font-size: 0.95rem;
       }
 
       .section {
@@ -428,17 +450,12 @@
             <span class="brand-kicker">ScottyLabs Labrador</span>
           </span>
         </a>
-        <div class="nav-links">
-          <a href="#permissions">Permissions</a>
-          <a href="https://github.com/scottylabs-labrador/goldador/wiki">Setup guide</a>
-        </div>
       </nav>
 
       <main>
         <section class="hero" aria-labelledby="hero-heading">
           <div>
-            <p class="eyebrow">Labrador access map</p>
-            <h1 id="hero-heading">Know what each role unlocks.</h1>
+            <h1 id="hero-heading">Goldador - ScottyLabs<br />Labrador Governance</h1>
             <p class="hero-copy">
               Goldador is the shared source of truth for Labrador membership, team access, and
               leadership permissions. Use this page to understand what access each role receives
@@ -454,26 +471,52 @@
 
           <aside class="hero-panel" aria-labelledby="services-heading">
             <div>
-              <h2 id="services-heading">Connected services</h2>
+              <h2 id="services-heading">Connected resources</h2>
               <p>
-                These are the user-facing systems Goldador helps keep in sync for Labrador.
+                These are the user-facing resources Goldador helps keep in sync for Labrador.
               </p>
-              <div class="service-list" aria-label="Service links">
-                <a href="https://github.com/ScottyLabs-Labrador">GitHub</a>
-                <a href="https://drive.google.com/drive/folders/0AGTPPYnbmAAzUk9PVA">Google Drive</a>
-                <a href="https://idp.scottylabs.org/realms/labrador/account/account-security/linked-accounts">
-                  Keycloak
-                </a>
-                <a href="https://bao.scottylabs.org/">OpenBao</a>
-                <a href="https://github.com/scottylabs-labrador/wiki/wiki/Secret-Storage">
-                  Secret Storage
-                </a>
+              <div class="service-guide">
+                <h3>What to use each resource for</h3>
+                <dl>
+                  <div>
+                    <dt>
+                      <a href="https://github.com/ScottyLabs-Labrador">GitHub</a>
+                    </dt>
+                    <dd>Code repositories, project teams, reviews, and issue tracking.</dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <a href="https://drive.google.com/drive/folders/0AGTPPYnbmAAzUk9PVA">
+                        Google Drive
+                      </a>
+                    </dt>
+                    <dd>Shared planning documents, handoff notes, and team files.</dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <a href="https://idp.scottylabs.org/realms/labrador/account/account-security/linked-accounts">
+                        Keycloak
+                      </a>
+                    </dt>
+                    <dd>Labrador identity and app login access.</dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <a href="https://bao.scottylabs.org/">OpenBao</a>
+                    </dt>
+                    <dd>Project and committee secrets, scoped by role.</dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <a href="https://github.com/scottylabs-labrador/wiki/wiki/Secret-Storage">
+                        Secret Storage
+                      </a>
+                    </dt>
+                    <dd>Guidance for storing, rotating, and requesting secrets.</dd>
+                  </div>
+                </dl>
               </div>
             </div>
-            <p>
-              Setup instructions and validation requirements live in the
-              <a href="https://github.com/scottylabs-labrador/goldador/wiki">Goldador Wiki</a>.
-            </p>
           </aside>
         </section>
 
@@ -493,15 +536,11 @@
               <p class="summary">For anyone officially registered as part of Labrador.</p>
               <ul>
                 <li>
-                  <a href="https://github.com/ScottyLabs-Labrador">GitHub organization</a>
-                  <strong>member</strong> access.
+                  GitHub organization <strong>member</strong> access.
                 </li>
-                <li>ScottyLabs Google Group <strong>MEMBER</strong> access.</li>
+                <li>ScottyLabs Google Group <strong>member</strong> access.</li>
                 <li>
-                  <a href="https://drive.google.com/drive/folders/0AGTPPYnbmAAzUk9PVA">
-                    ScottyLabs Google Drive
-                  </a>
-                  <strong>contributor</strong> access.
+                  ScottyLabs Google Drive <strong>contributor</strong> access.
                 </li>
               </ul>
             </article>
@@ -515,14 +554,10 @@
                 <li><strong>Write</strong> access to the team’s GitHub repositories.</li>
                 <li>Membership in the team’s Slack channel.</li>
                 <li>
-                  Team app login through
-                  <a href="https://idp.scottylabs.org/realms/labrador/account/account-security/linked-accounts">
-                    Keycloak
-                  </a>.
+                  Team app login through Keycloak.
                 </li>
                 <li>
-                  <strong>Read/list</strong> access to local project secrets in
-                  <a href="https://bao.scottylabs.org/">OpenBao</a>.
+                  <strong>Read/list</strong> access to local project secrets in OpenBao.
                 </li>
               </ul>
             </article>
@@ -533,10 +568,13 @@
               <p class="summary">For team leads responsible for project access and ownership.</p>
               <ul>
                 <li><strong>Admin</strong> access to the team’s GitHub repositories.</li>
-                <li>CODEOWNERS review ownership for the team’s Goldador team file.</li>
+                <li>
+                  CODEOWNERS review ownership for the team’s Goldador team file, meaning team leads review
+                  membership and permission changes before they are applied.
+                </li>
                 <li>
                   <strong>Create, read, update, delete, list, and sudo</strong> access to the
-                  team’s project secrets in <a href="https://bao.scottylabs.org/">OpenBao</a>.
+                  team’s project secrets in OpenBao.
                 </li>
               </ul>
             </article>
@@ -547,14 +585,11 @@
               <p class="summary">For Labrador leadership members who need committee-wide visibility.</p>
               <ul>
                 <li>
-                  <a href="https://idp.scottylabs.org/realms/labrador/account/account-security/linked-accounts">
-                    Keycloak
-                  </a>
-                  <strong>read-only</strong> access.
+                  Keycloak <strong>read-only</strong> access.
                 </li>
                 <li>
                   Committee-wide <strong>create, read, update, delete, list, and sudo</strong>
-                  access to Labrador secrets in <a href="https://bao.scottylabs.org/">OpenBao</a>.
+                  access to Labrador secrets in OpenBao.
                 </li>
               </ul>
               <p class="note">
@@ -568,24 +603,17 @@
               <p class="summary">For leadership leads who administer Labrador-wide access.</p>
               <ul>
                 <li>
-                  <a href="https://github.com/ScottyLabs-Labrador">GitHub organization</a>
-                  <strong>admin</strong> access.
+                  GitHub organization <strong>admin</strong> access.
                 </li>
-                <li>ScottyLabs Google Group <strong>MANAGER</strong> and <strong>MEMBER</strong> access.</li>
+                <li>ScottyLabs Google Group <strong>manager</strong> and <strong>member</strong> access.</li>
                 <li>
-                  <a href="https://drive.google.com/drive/folders/0AGTPPYnbmAAzUk9PVA">
-                    ScottyLabs Google Drive
-                  </a>
-                  <strong>content manager</strong> access.
+                  ScottyLabs Google Drive <strong>content manager</strong> access.
                 </li>
                 <li>
-                  <a href="https://idp.scottylabs.org/realms/labrador/account/account-security/linked-accounts">
-                    Keycloak
-                  </a>
-                  <strong>admin</strong> access.
+                  Keycloak <strong>admin</strong> access.
                 </li>
                 <li>
-                  Admin-level secrets access in <a href="https://bao.scottylabs.org/">OpenBao</a>.
+                  Admin-level secrets access in OpenBao.
                 </li>
                 <li>Default CODEOWNERS review ownership for Goldador and the `teams/` directory.</li>
               </ul>
