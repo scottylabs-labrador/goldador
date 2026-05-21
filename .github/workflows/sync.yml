@@ -6,9 +6,50 @@ on:
       - main
 
 jobs:
+  detect-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      shared: ${{ steps.filter.outputs.shared }}
+      codeowners: ${{ steps.filter.outputs.codeowners }}
+      slack: ${{ steps.filter.outputs.slack }}
+      google-drive: ${{ steps.filter.outputs.google-drive }}
+      infra: ${{ steps.filter.outputs.infra }}
+      iac: ${{ steps.filter.outputs.iac }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            shared:
+              - 'members/**'
+              - 'teams/**'
+              - 'meta/clients/**'
+              - 'meta/loaders/**'
+              - 'meta/logger/**'
+              - 'meta/models/**'
+              - 'meta/synchronizers/src/__init__.py'
+              - 'meta/synchronizers/src/_constants.py'
+              - 'meta/synchronizers/src/abstract.py'
+            codeowners:
+              - 'meta/synchronizers/codeowners.py'
+            slack:
+              - 'meta/synchronizers/slack.py'
+            google-drive:
+              - 'meta/synchronizers/google_drive.py'
+            infra:
+              - 'meta/synchronizers/infra.py'
+            iac:
+              - 'infra/**'
+
   sync-codeowners:
+    needs: detect-changes
     name: Sync Codeowners
     runs-on: ubuntu-latest
+    if: needs.detect-changes.outputs.shared == true ||
+      needs.detect-changes.outputs.codeowners == true
 
     env:
       SYNC_GITHUB_TOKEN: ${{ secrets.SYNC_GITHUB_TOKEN }}
@@ -24,8 +65,11 @@ jobs:
         run: uv run --frozen --no-dev --group codeowners-synchronizer sync-codeowners
 
   sync-slack:
+    needs: detect-changes
     name: Sync Slack
     runs-on: ubuntu-latest
+    if: needs.detect-changes.outputs.shared == true ||
+      needs.detect-changes.outputs.slack == true
 
     env:
       SLACK_USER_TOKEN: ${{ secrets.SLACK_USER_TOKEN }}
@@ -45,3 +89,105 @@ jobs:
 
       - name: Sync Slack
         run: uv run --frozen --no-dev --group slack-synchronizer sync-slack
+
+  sync-google-drive:
+    needs: detect-changes
+    name: Sync Google Drive
+    runs-on: ubuntu-latest
+    if: needs.detect-changes.outputs.shared == true ||
+      needs.detect-changes.outputs.google-drive == true
+
+    env:
+      GOOGLE_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLIENT_EMAIL }}
+      GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
+      SCOTTYLABS_GOOGLE_DRIVE_ID: ${{ secrets.SCOTTYLABS_GOOGLE_DRIVE_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Sync Google Drive
+        run: uv run --frozen --no-dev --group google-synchronizer sync-google-drive
+
+  sync-infra:
+    needs: detect-changes
+    name: Sync Infra
+    runs-on: ubuntu-latest
+    if: needs.detect-changes.outputs.shared == true ||
+      needs.detect-changes.outputs.infra == true
+
+    env:
+      SYNC_GITHUB_TOKEN: ${{ secrets.SYNC_GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Sync Infra
+        run: uv run --frozen --no-dev --group infra-synchronizer sync-infra
+
+  apply-infra:
+    needs: detect-changes
+    name: Apply Infrastructure
+    runs-on: ubuntu-latest
+    if: needs.detect-changes.outputs.iac == true
+
+    env:
+      # --- S3 backend credentials ---
+      S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+      S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+      S3_REGION: ${{ secrets.S3_REGION }}
+      S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+
+      # --- Backend configuration ---
+      TF_BACKEND_BUCKET: ${{ secrets.TF_BACKEND_BUCKET }}
+      TF_BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
+
+      # --- Sensitive runtime variables ---
+      TF_VAR_cmu_ldap_bind_credential: ${{ secrets.TF_VAR_CMU_LDAP_BIND_CREDENTIAL }}
+      TF_VAR_keycloak_client_id: ${{ secrets.TF_VAR_KEYCLOAK_CLIENT_ID }}
+      TF_VAR_keycloak_client_secret: ${{ secrets.TF_VAR_KEYCLOAK_CLIENT_SECRET }}
+      TF_VAR_vault_token: ${{ secrets.TF_VAR_VAULT_TOKEN }}
+      TF_VAR_github_token: ${{ secrets.TF_VAR_GITHUB_TOKEN }}
+      TF_VAR_github_client_id: ${{ secrets.TF_VAR_GITHUB_CLIENT_ID }}
+      TF_VAR_github_client_secret: ${{ secrets.TF_VAR_GITHUB_CLIENT_SECRET }}
+      TF_VAR_slack_client_id: ${{ secrets.TF_VAR_SLACK_CLIENT_ID }}
+      TF_VAR_slack_client_secret: ${{ secrets.TF_VAR_SLACK_CLIENT_SECRET }}
+      TF_VAR_google_group_id: ${{ secrets.TF_VAR_GOOGLE_GROUP_ID }}
+      TF_VAR_google_credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS_JSON }}
+
+    defaults:
+      run:
+        working-directory: infra
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up OpenTofu
+        uses: opentofu/setup-opentofu@v1
+
+      - name: Initialize backend
+        run: |
+          tofu init \
+            -backend-config="bucket=$TF_BACKEND_BUCKET" \
+            -backend-config="key=$TF_BACKEND_KEY" \
+            -backend-config="region=$S3_REGION" \
+            -backend-config="endpoint=$S3_ENDPOINT" \
+            -backend-config="access_key=$S3_ACCESS_KEY_ID" \
+            -backend-config="secret_key=$S3_SECRET_ACCESS_KEY" \
+
+      - name: Validate configuration
+        run: tofu validate
+
+      - name: Check configuration formatting
+        run: tofu fmt -check -diff
+
+      - name: Apply infrastructure changes
+        run: tofu apply -auto-approve

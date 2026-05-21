@@ -1,3 +1,6 @@
-LOGGER_NAME = "governance"
+import os
+
+LOGGER_NAME = "goldador"
 SUCCESS_LEVEL = 25
 PRINT_LEVEL = 5
+RUNNING_ON_RAILWAY = bool(os.getenv("RAILWAY_PROJECT_NAME"))

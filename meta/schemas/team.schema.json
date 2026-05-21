@@ -117,7 +117,7 @@
       ],
       "properties": {
         "name": {
-          "description": "GitHub repository name (e.g. 'governance').",
+          "description": "GitHub repository name (e.g. 'goldador').",
           "type": "string",
           "pattern": "^[a-zA-Z0-9_.-]+$"
         },

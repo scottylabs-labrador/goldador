@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Goldador — Labrador access &amp; membership</title>
+    <meta
+      name="description"
+      content="A role-by-role guide to Labrador membership, team, and leadership permissions in Goldador."
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f7f3eb;
+        --bg-soft: #efe6d6;
+        --fg: #19140f;
+        --muted: #665d51;
+        --accent: #28684f;
+        --accent-strong: #174431;
+        --accent-soft: #dceee4;
+        --card: rgba(255, 252, 247, 0.86);
+        --card-solid: #fffcf7;
+        --border: rgba(83, 65, 45, 0.14);
+        --shadow: 0 24px 70px rgba(45, 34, 20, 0.14);
+        --radius: 24px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #11100e;
+          --bg-soft: #1f1a14;
+          --fg: #f5efe6;
+          --muted: #c3b8a9;
+          --accent: #8bd9aa;
+          --accent-strong: #b6f0cb;
+          --accent-soft: rgba(139, 217, 170, 0.14);
+          --card: rgba(31, 28, 24, 0.86);
+          --card-solid: #1d1a16;
+          --border: rgba(245, 239, 230, 0.14);
+          --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--fg);
+        background:
+          radial-gradient(circle at top left, var(--accent-soft), transparent 34rem),
+          linear-gradient(135deg, var(--bg), var(--bg-soft));
+        line-height: 1.6;
+      }
+
+      a {
+        color: var(--accent);
+        font-weight: 650;
+        text-underline-offset: 0.18em;
+      }
+
+      a:hover,
+      a:focus-visible {
+        color: var(--accent-strong);
+      }
+
+      .page {
+        width: min(1120px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 1.25rem 0 3rem;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.75rem 0 2rem;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        color: var(--fg);
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 2.35rem;
+        height: 2.35rem;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 0.85rem;
+        background: var(--card);
+        box-shadow: var(--shadow);
+      }
+
+      .brand-name {
+        display: block;
+        font-size: 1rem;
+        line-height: 1.2;
+      }
+
+      .brand-kicker {
+        display: block;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 600;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        font-size: 0.95rem;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.75rem;
+        padding: 0.68rem 1.1rem;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 0.98rem;
+        font-weight: 750;
+        text-decoration: none;
+        box-shadow: 0 16px 30px rgba(40, 104, 79, 0.26);
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        background: var(--accent-strong);
+        color: #fff;
+      }
+
+      .button.secondary {
+        background: var(--card);
+        border-color: var(--border);
+        box-shadow: none;
+        color: var(--fg);
+      }
+
+      .button.secondary:hover,
+      .button.secondary:focus-visible {
+        color: var(--accent-strong);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+        gap: 1.5rem;
+        align-items: stretch;
+        padding: 3rem;
+        border: 1px solid var(--border);
+        border-radius: calc(var(--radius) + 0.7rem);
+        background: var(--card);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(24px);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        gap: 0.45rem;
+        margin: 0 0 1rem;
+        padding: 0.32rem 0.72rem;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+        font-size: 0.82rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        line-height: 1.1;
+      }
+
+      h1 {
+        max-width: 100%;
+        margin: 0;
+        font-size: clamp(2.6rem, 5.2vw, 4rem);
+        font-weight: 750;
+        letter-spacing: -0.08em;
+      }
+
+      .hero-copy {
+        max-width: 42rem;
+        margin: 1.1rem 0 0;
+        color: var(--muted);
+        font-size: clamp(1.08rem, 2vw, 1.32rem);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-top: 1.6rem;
+      }
+
+      .hero-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1.5rem;
+        min-height: 100%;
+        padding: 1.35rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--card-solid);
+      }
+
+      .hero-panel h2 {
+        margin: 0;
+        font-size: 1.35rem;
+      }
+
+      .hero-panel p {
+        margin: 0.55rem 0 0;
+        color: var(--muted);
+      }
+
+      .service-guide {
+        margin-top: 1.35rem;
+      }
+
+      .service-guide h3 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .service-guide dl {
+        display: grid;
+        gap: 0.8rem;
+        margin: 0.8rem 0 0;
+      }
+
+      .service-guide dt a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        color: var(--accent);
+        font-weight: 800;
+        text-decoration-line: underline;
+        text-decoration-thickness: 0.12em;
+      }
+
+      .service-guide dt a::after {
+        content: "↗";
+        font-size: 0.82em;
+        line-height: 1;
+      }
+
+      .service-guide dd {
+        margin: 0.12rem 0 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .section {
+        margin-top: 3.5rem;
+      }
+
+      .section-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.15rem;
+      }
+
+      .section-heading h2 {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3rem);
+        letter-spacing: -0.05em;
+      }
+
+      .section-heading p {
+        max-width: 31rem;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .role-grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 1rem;
+      }
+
+      .role-card {
+        display: flex;
+        flex-direction: column;
+        grid-column: span 2;
+        min-height: 100%;
+        padding: 1.35rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: 0 18px 45px rgba(45, 34, 20, 0.08);
+      }
+
+      .role-card.wide {
+        grid-column: span 3;
+      }
+
+      .role-card h3 {
+        margin: 0;
+        font-size: 1.3rem;
+      }
+
+      .role-card .summary {
+        margin: 0.5rem 0 1rem;
+        color: var(--muted);
+      }
+
+      .tag {
+        display: inline-flex;
+        width: fit-content;
+        margin-bottom: 1rem;
+        padding: 0.28rem 0.62rem;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 1.15rem;
+      }
+
+      li + li {
+        margin-top: 0.55rem;
+      }
+
+      .note {
+        margin-top: auto;
+        padding-top: 1.1rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .register {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(18rem, 1.05fr);
+        gap: 1rem;
+        align-items: center;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--accent-soft);
+      }
+
+      .register h2 {
+        margin: 0;
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        letter-spacing: -0.04em;
+      }
+
+      .register p {
+        margin: 0.7rem 0 0;
+        color: var(--muted);
+      }
+
+      footer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-top: 2.5rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 900px) {
+        .hero,
+        .register {
+          grid-template-columns: 1fr;
+          padding: 1.5rem;
+        }
+
+        .section-heading {
+          align-items: start;
+          flex-direction: column;
+        }
+
+        .role-card,
+        .role-card.wide {
+          grid-column: span 6;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .page {
+          width: min(100% - 1rem, 1120px);
+          padding-top: 0.5rem;
+        }
+
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .nav-links {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .hero-actions {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="https://scottylabs-labrador.github.io/goldador/">
+          <span class="brand-mark" aria-hidden="true">G</span>
+          <span>
+            <strong class="brand-name">Goldador</strong>
+            <span class="brand-kicker">ScottyLabs Labrador</span>
+          </span>
+        </a>
+      </nav>
+
+      <main>
+        <section class="hero" aria-labelledby="hero-heading">
+          <div>
+            <h1 id="hero-heading">Goldador - ScottyLabs<br />Labrador Governance</h1>
+            <p class="hero-copy">
+              Goldador is the shared source of truth for Labrador membership, team access, and
+              leadership permissions. Use this page to understand what access each role receives
+              before you register or update your record.
+            </p>
+            <div class="hero-actions">
+              <a class="button" href="https://github.com/scottylabs-labrador/goldador/wiki">
+                Register or update access
+              </a>
+              <a class="button secondary" href="#permissions">Compare roles</a>
+            </div>
+          </div>
+
+          <aside class="hero-panel" aria-labelledby="services-heading">
+            <div>
+              <h2 id="services-heading">Connected resources</h2>
+              <p>
+                These are the user-facing resources Goldador helps keep in sync for Labrador.
+              </p>
+              <div class="service-guide">
+                <h3>What to use each resource for</h3>
+                <dl>
+                  <div>
+                    <dt>
+                      <a href="https://github.com/ScottyLabs-Labrador">GitHub</a>
+                    </dt>
+                    <dd>Code repositories, project teams, reviews, and issue tracking.</dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <a href="https://drive.google.com/drive/folders/0AGTPPYnbmAAzUk9PVA">
+                        Google Drive
+                      </a>
+                    </dt>
+                    <dd>Shared planning documents, handoff notes, and team files.</dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <a href="https://idp.scottylabs.org/realms/labrador/account/account-security/linked-accounts">
+                        Keycloak
+                      </a>
+                    </dt>
+                    <dd>Labrador identity and app login access.</dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <a href="https://bao.scottylabs.org/">OpenBao</a>
+                    </dt>
+                    <dd>Project and committee secrets, scoped by role.</dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <a href="https://github.com/scottylabs-labrador/wiki/wiki/Secret-Storage">
+                        Secret Storage
+                      </a>
+                    </dt>
+                    <dd>Guidance for storing, rotating, and requesting secrets.</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="permissions" class="section" aria-labelledby="permissions-heading">
+          <div class="section-heading">
+            <h2 id="permissions-heading">Role Permissions</h2>
+            <p>
+              Roles build on each other. Team and leadership roles add project or committee access
+              on top of basic Labrador membership.
+            </p>
+          </div>
+
+          <div class="role-grid">
+            <article class="role-card">
+              <span class="tag">Base access</span>
+              <h3>Member</h3>
+              <p class="summary">For anyone officially registered as part of Labrador.</p>
+              <ul>
+                <li>
+                  GitHub organization <strong>member</strong> access.
+                </li>
+                <li>ScottyLabs Google Group <strong>member</strong> access.</li>
+                <li>
+                  ScottyLabs Google Drive <strong>contributor</strong> access.
+                </li>
+              </ul>
+            </article>
+
+            <article class="role-card">
+              <span class="tag">Project access</span>
+              <h3>Team Member</h3>
+              <p class="summary">For contributors listed on a Labrador project team.</p>
+              <ul>
+                <li>Membership in the team’s GitHub team.</li>
+                <li><strong>Write</strong> access to the team’s GitHub repositories.</li>
+                <li>Membership in the team’s Slack channel.</li>
+                <li>
+                  Team app login through Keycloak.
+                </li>
+                <li>
+                  <strong>Read/list</strong> access to local project secrets in OpenBao.
+                </li>
+              </ul>
+            </article>
+
+            <article class="role-card">
+              <span class="tag">Project admin</span>
+              <h3>Team Lead</h3>
+              <p class="summary">For team leads responsible for project access and ownership.</p>
+              <ul>
+                <li><strong>Admin</strong> access to the team’s GitHub repositories.</li>
+                <li>
+                  CODEOWNERS review ownership for the team’s Goldador team file, meaning team leads review
+                  membership and permission changes before they are applied.
+                </li>
+                <li>
+                  <strong>Create, read, update, delete, list, and sudo</strong> access to the
+                  team’s project secrets in OpenBao.
+                </li>
+              </ul>
+            </article>
+
+            <article class="role-card wide">
+              <span class="tag">Committee access</span>
+              <h3>Leadership Member</h3>
+              <p class="summary">For Labrador leadership members who need committee-wide visibility.</p>
+              <ul>
+                <li>
+                  Keycloak <strong>read-only</strong> access.
+                </li>
+                <li>
+                  Committee-wide <strong>create, read, update, delete, list, and sudo</strong>
+                  access to Labrador secrets in OpenBao.
+                </li>
+              </ul>
+              <p class="note">
+                Leadership membership is separate from project team leadership.
+              </p>
+            </article>
+
+            <article class="role-card wide">
+              <span class="tag">Committee admin</span>
+              <h3>Leadership Lead/Admin</h3>
+              <p class="summary">For leadership leads who administer Labrador-wide access.</p>
+              <ul>
+                <li>
+                  GitHub organization <strong>admin</strong> access.
+                </li>
+                <li>ScottyLabs Google Group <strong>manager</strong> and <strong>member</strong> access.</li>
+                <li>
+                  ScottyLabs Google Drive <strong>content manager</strong> access.
+                </li>
+                <li>
+                  Keycloak <strong>admin</strong> access.
+                </li>
+                <li>
+                  Admin-level secrets access in OpenBao.
+                </li>
+                <li>Default CODEOWNERS review ownership for Goldador and the `teams/` directory.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="section register" aria-labelledby="register-heading">
+          <div>
+            <h2 id="register-heading">Ready to set up access?</h2>
+            <p>
+              The wiki keeps the registration steps, validation checklist, and PR review process in
+              one place.
+            </p>
+          </div>
+          <a class="button" href="https://github.com/scottylabs-labrador/goldador/wiki">
+            Open the Goldador Wiki
+          </a>
+        </section>
+      </main>
+
+      <footer>
+        <span>ScottyLabs Labrador · Goldador</span>
+        <span>
+          <a href="https://github.com/scottylabs-labrador/goldador">Repository</a>
+        </span>
+      </footer>
+    </div>
+  </body>
+</html>

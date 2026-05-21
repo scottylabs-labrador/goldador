@@ -1,4 +1,8 @@
-# Populate the leadership group with members and admins from the `admins.json` file.
+# Populate the leadership group with members and admins from `var.leadership_data`.
+#
+# Leadership admins have admin permission in Keycloak. Leadership members who
+# are not admins have read-only permission in Keycloak.
+#
 # We need to use data sources for roles because we don't have enough permission
 # to create composite roles.
 
@@ -11,7 +15,7 @@ resource "keycloak_group" "leadership" {
 resource "keycloak_group_memberships" "leadership_members" {
   realm_id = keycloak_realm.labrador.id
   group_id = keycloak_group.leadership.id
-  members  = var.leadership_data.members
+  members  = var.teams["leadership"].members.andrew_ids
 }
 
 data "keycloak_role" "realm_read_only" {
@@ -35,7 +39,7 @@ resource "keycloak_group" "leadership_admins" {
 resource "keycloak_group_memberships" "leadership_admins" {
   realm_id = keycloak_realm.labrador.id
   group_id = keycloak_group.leadership_admins.id
-  members  = var.leadership_data.admins
+  members  = var.teams["leadership"].admins.andrew_ids
 }
 
 data "keycloak_role" "realm_admin" {

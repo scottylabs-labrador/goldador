@@ -3,22 +3,20 @@
 Creates a Slack channel for each team and invites the team members to the channel.
 """
 
-import os
-import ssl
 import sys
 from typing import TYPE_CHECKING, cast, override
 
-import certifi
 from dotenv import load_dotenv
-from slack_sdk import WebClient
 
 from meta.clients.keycloak_client import get_keycloak_client
+from meta.clients.slack_client import get_slack_client
 from meta.logger import (
     log_operation,
     log_team_sync,
     print_section,
 )
 
+from ._constants import LEADERSHIP
 from .abstract import AbstractSynchronizer
 
 if TYPE_CHECKING:
@@ -42,23 +40,22 @@ class SlackSynchronizer(AbstractSynchronizer):
         # have permission to do so.
         # The bot client is used to invite users to channels since a user can't
         # invite themselves to a channel.
-        slack_user_token = os.getenv("SLACK_USER_TOKEN")
-        if not slack_user_token:
-            msg = "SLACK_USER_TOKEN is not set"
-            self.logger.critical(msg)
-            sys.exit(1)
+        self.user_client = get_slack_client(env_var_name="SLACK_USER_TOKEN")
+        self.bot_client = get_slack_client(env_var_name="SLACK_BOT_TOKEN")
 
-        slack_bot_token = os.getenv("SLACK_BOT_TOKEN")
-        if not slack_bot_token:
-            msg = "SLACK_BOT_TOKEN is not set"
-            self.logger.critical(msg)
-            sys.exit(1)
+    @override
+    def sync(self) -> None:
+        print_section("Syncing Slack")
 
-        ssl_context = ssl.create_default_context(cafile=certifi.where())
-        self.user_client = WebClient(token=slack_user_token, ssl=ssl_context)
-        self.bot_client = WebClient(token=slack_bot_token, ssl=ssl_context)
+        with log_operation("get all Slack channels"):
+            self.channels = self.get_all_channels()
+        self.logger.debug("Found %d Slack channels\n", len(self.channels))
 
-        self.channels = self.get_all_channels()
+        for team_slug, team in self.teams.items():
+            # Leadership Slack channel is private and not managed by Goldador
+            if team_slug == LEADERSHIP:
+                continue
+            self.sync_team(team_slug, team)
 
     def get_all_channels(self) -> list[dict[str, str]]:
         """Get all channels channels and their IDs."""
@@ -84,15 +81,6 @@ class SlackSynchronizer(AbstractSynchronizer):
                 break
 
         return channels
-
-    @override
-    def sync(self) -> None:
-        print_section("Syncing Slack")
-        for team_slug, team in self.teams.items():
-            # Leadership Slack channel is private and not managed by Governance
-            if team_slug == "leadership":
-                continue
-            self.sync_team(team_slug, team)
 
     @log_team_sync()
     def sync_team(self, team_slug: str, team: Team) -> None:

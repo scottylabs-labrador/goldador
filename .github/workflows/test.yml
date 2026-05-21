@@ -9,7 +9,7 @@ on:
 
 jobs:
   test-validator:
-    name: Test
+    name: Test Validator
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

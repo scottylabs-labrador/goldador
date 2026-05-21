@@ -1,6 +1,6 @@
 # Auto-generated CODEOWNERS file from meta/synchronizers/codeowners.py
 
-# Default owners are the Governance team leads
+# Default owners are the Goldador team leads
 * @Yuxiang-Huang
 
 # Owners of the `teams/` directory are the leadership team leads
@@ -8,6 +8,6 @@ teams @Yuxiang-Huang
 
 # The codeowners of each team file are their corresponding leads
 
-teams/governance.toml @Yuxiang-Huang
+teams/goldador.toml @Yuxiang-Huang
 
 teams/leadership.toml @Yuxiang-Huang

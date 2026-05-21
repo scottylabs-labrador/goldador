@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from meta.reporter import ErrorCode, Reporter
+    from meta.validator.src.reporter import ErrorCode, Reporter
 
 
 def no_errors(reporter: Reporter) -> bool:

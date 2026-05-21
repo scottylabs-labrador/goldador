@@ -1,12 +1,13 @@
 from typing import Any
 
-from ._constants import LOGGER_NAME, PRINT_LEVEL
+from ._constants import LOGGER_NAME, PRINT_LEVEL, RUNNING_ON_RAILWAY
 
 
 def get_logger_config() -> dict[str, Any]:
     """Get the logger configuration with handler, formatter and filter."""
     handler_name = "console"
     color_formatter_name = "color"
+    railway_formatter_name = "railway"
     filter_name = "status_filter"
 
     config: dict[str, Any] = {
@@ -28,8 +29,15 @@ def get_logger_config() -> dict[str, Any]:
             color_formatter_name: {
                 "()": "meta.logger.ColorFormatter",
             },
+            railway_formatter_name: {
+                "()": "meta.logger.RailwayLogFormatter",
+            },
         },
         "filters": {filter_name: {"()": "meta.logger.LogStatusFilter"}},
     }
+
+    if RUNNING_ON_RAILWAY:
+        config["handlers"][handler_name]["formatter"] = railway_formatter_name
+        config["handlers"][handler_name]["stream"] = "ext://sys.stdout"
 
     return config

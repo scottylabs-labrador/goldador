@@ -7,6 +7,8 @@ on:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 jobs:
   validate-editorconfig:
@@ -44,18 +46,14 @@ jobs:
       - name: Validate TOML Against Schemas
         run: taplo check
 
+  # Rules validation calls a hosted API (see meta/validator/src/server.py POST /validate).
+  # The base URL is hardcoded so fork PRs can run this job without repository secrets.
+  # The endpoint is therefore public in this repo; protect the service appropriately.
   validate-rules:
-    name: Validate Rules
+    name: Validate rules via API
     runs-on: ubuntu-latest
-
     env:
-      SYNC_GITHUB_TOKEN: ${{ secrets.SYNC_GITHUB_TOKEN }}
-      KEYCLOAK_SERVER_URL: ${{ secrets.KEYCLOAK_SERVER_URL }}
-      KEYCLOAK_PASSWORD: ${{ secrets.KEYCLOAK_PASSWORD }}
-      KEYCLOAK_REALM: ${{ secrets.KEYCLOAK_REALM }}
-      KEYCLOAK_CLIENT_ID: ${{ secrets.KEYCLOAK_CLIENT_ID }}
-      KEYCLOAK_USER_REALM: ${{ secrets.KEYCLOAK_USER_REALM }}
-
+      VALIDATOR_SERVER_URL: https://goldador.scottylabs.org
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -63,5 +61,14 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v7
 
-      - name: Validate Rules
-        run: uv run --frozen --no-dev --group validator validate
+      - name: Resolve Git ref to validate
+        id: meta
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "ref=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate via validator server
+        run: uv run --frozen --no-dev validate "${{ steps.meta.outputs.ref }}"

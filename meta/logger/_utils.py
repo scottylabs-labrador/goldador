@@ -34,7 +34,9 @@ def log_operation(operation_name: str) -> Generator[None]:
         yield
         logger.success("Successfully %s.\n", operation_name)
     except Exception:
-        logger.exception("Failed to %s", operation_name)
+        # We raise the exception again so we don't use logger.exception() here
+        # to prevent duplciated traceback printing.
+        logger.error("Failed to %s:", operation_name)  # noqa: TRY400
         raise
 
 
