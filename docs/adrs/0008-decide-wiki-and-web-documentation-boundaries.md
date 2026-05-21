@@ -4,7 +4,7 @@ Date: 2026-05-16
 
 ## Status
 
-Accepted
+Superseded by [9. consolidate documentation on the web page](0009-consolidate-documentation-on-the-web-page.md)
 
 ## Context
 

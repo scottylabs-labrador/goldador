@@ -16,7 +16,7 @@ uv run validate REF
 uv run --group validator validator-server
 ```
 
-The CLI posts to the hosted API at `https://goldador.scottylabs.org` by default.
+The CLI posts to the hosted API at `https://validator.goldador.scottylabs.org` by default.
 Set `VALIDATOR_SERVER_URL` to point the CLI at another validator server. The API
 exposes:
 

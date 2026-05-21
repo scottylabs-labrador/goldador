@@ -6,11 +6,17 @@ import tomllib
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from pydantic import ValidationError
+
+from meta.loaders.errors import GovernanceLoadError
 from meta.loaders.types import LoaderErrorCode
+from meta.logger import get_app_logger
 from meta.models import Member
 
 from .key_ordering import KeyOrdering
 from .sources import TomlGlobSource, iter_toml_file_sources
+
+logger = get_app_logger()
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -41,9 +47,20 @@ def load_members(
         glob_source=_MEMBERS_GLOB_SOURCE,
         file_contents=file_contents,
     ):
-        data: dict[str, Any] = tomllib.loads(content)
+        try:
+            data: dict[str, Any] = tomllib.loads(content)
+        except tomllib.TOMLDecodeError as e:
+            message = str(e)
+            logger.exception("Failed to parse TOML in %s", file_path)
+            raise GovernanceLoadError(file_path, message) from e
+
         key_ordering.validate(file_path, data, LoaderErrorCode.MEMBER_KEY_ORDERING)
         data["file_path"] = file_path
-        members[Path(file_path).stem] = Member.model_validate(data)
+        try:
+            members[Path(file_path).stem] = Member.model_validate(data)
+        except ValidationError as e:
+            message = str(e)
+            logger.exception("Failed to validate member model in %s", file_path)
+            raise GovernanceLoadError(file_path, message) from e
 
     return members

@@ -6,11 +6,17 @@ import tomllib
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from pydantic import ValidationError
+
+from meta.loaders.errors import GovernanceLoadError
 from meta.loaders.types import LoaderErrorCode
+from meta.logger import get_app_logger
 from meta.models import Repo, Team
 
 from .key_ordering import KeyOrdering
 from .sources import TomlGlobSource, iter_toml_file_sources
+
+logger = get_app_logger()
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -41,27 +47,47 @@ def load_teams(
         glob_source=_TEAMS_GLOB_SOURCE,
         file_contents=file_contents,
     ):
-        data: dict[str, Any] = tomllib.loads(content)
+        try:
+            data: dict[str, Any] = tomllib.loads(content)
+        except tomllib.TOMLDecodeError as e:
+            message = str(e)
+            logger.exception("Failed to parse TOML in %s", file_path)
+            raise GovernanceLoadError(file_path, message) from e
+
         key_ordering.validate(file_path, data, LoaderErrorCode.TEAM_KEY_ORDERING)
-        team = _load_team(file_path, data)
-        teams[Path(file_path).stem] = Team.model_validate(team)
+        try:
+            teams[Path(file_path).stem] = _load_team(file_path, data)
+        except GovernanceLoadError:
+            raise
+        except ValidationError as e:
+            message = str(e)
+            logger.exception("Failed to validate team model in %s", file_path)
+            raise GovernanceLoadError(file_path, message) from e
 
     return teams
 
 
 def _load_team(file_path: str, data: dict[str, Any]) -> Team:
     """Parse one team TOML document."""
-    # The schema guarantees that there is at least one membership record.
-    first = data.get("membership", [])[0]
-    payload: dict[str, Any] = {
-        "name": data["name"],
-        "description": data["description"],
-        "website": data.get("website"),
-        "server": data.get("server"),
-        "create_oidc_clients": data.get("create-oidc-clients", True),
-        "repos": [Repo.model_validate(repo) for repo in data.get("repos", [])],
-        "leads": [str(x) for x in first["leads"]],
-        "members": [str(member["github-username"]) for member in first["members"]],
-        "file_path": file_path,
-    }
+    try:
+        # The schema guarantees that there is at least one membership record.
+        first = data.get("membership", [])[0]
+        payload: dict[str, Any] = {
+            "name": data["name"],
+            "description": data["description"],
+            "website": data.get("website"),
+            "server": data.get("server"),
+            "create_oidc_clients": data.get("create-oidc-clients", True),
+            "repos": [Repo.model_validate(repo) for repo in data.get("repos", [])],
+            "leads": [str(x) for x in first["leads"]],
+            "members": [
+                str(member["github-username"]) for member in first["members"]
+            ],
+            "file_path": file_path,
+        }
+    except (IndexError, KeyError, TypeError) as e:
+        message = f"malformed team structure: {e}"
+        logger.exception("Failed to load team structure in %s", file_path)
+        raise GovernanceLoadError(file_path, message) from e
+
     return Team.model_validate(payload)

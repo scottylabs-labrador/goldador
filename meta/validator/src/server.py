@@ -16,8 +16,10 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
 from starlette.requests import Request  # noqa: TC002
-from starlette.responses import Response  # noqa: TC002
+from starlette.responses import JSONResponse, Response
 
+from meta.loaders.errors import GovernanceLoadError
+from meta.logger import get_app_logger
 from meta.validator.src.github_utils import (
     GOLDADOR_REPO_FULL_NAME,
     GoldadorGitHubError,
@@ -27,7 +29,9 @@ from meta.validator.src.rules.members import MemberValidationError
 from meta.validator.src.rules.teams import TeamValidationError
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
+    from collections.abc import AsyncIterator, Mapping
+else:
+    from collections.abc import Mapping
 
 # Load environment up-front so the module-level rate-limit reads below see
 # values from ``.env``. ``lifespan`` re-loads at request time for ``--reload``
@@ -45,7 +49,10 @@ _STATUS_CODE_BY_EXCEPTION: dict[type[Exception], int] = {
     RuntimeError: 503,
     MemberValidationError: 502,
     TeamValidationError: 502,
+    GovernanceLoadError: 502,
 }
+
+logger = get_app_logger()
 
 
 def _truthy_env(name: str) -> bool:
@@ -122,11 +129,70 @@ def _status_for(exc: Exception) -> int:
 
 def _error_detail(ref: str, exc: Exception) -> dict[str, str]:
     """Return the JSON ``detail`` payload for a validator-side ``HTTPException``."""
-    return {
+    detail = {
         "repository": GOLDADOR_REPO_FULL_NAME,
         "ref": ref,
         "error": str(exc),
     }
+    if isinstance(exc, GovernanceLoadError):
+        detail["file"] = exc.file_path
+    return detail
+
+
+def _log_mapped_error(ref: str, exc: Exception) -> None:
+    """Log a mapped validator failure before it is returned as an HTTP error."""
+    if isinstance(exc, GovernanceLoadError):
+        logger.error(
+            "Validation request failed for ref %s (%s): %s",
+            ref,
+            exc.file_path,
+            exc.message,
+        )
+        return
+
+    logger.error(
+        "Validation request failed for ref %s (%s): %s",
+        ref,
+        type(exc).__name__,
+        exc,
+    )
+
+
+def _log_validation_success(ref: str, result: dict[str, Any]) -> None:
+    """Log a completed validation response summary."""
+    loaded = result.get("loaded")
+    validation = result.get("validation")
+    if not isinstance(loaded, Mapping) or not isinstance(validation, Mapping):
+        logger.info("Validation completed for ref %s", ref)
+        return
+
+    summary = validation.get("summary")
+    if not isinstance(summary, Mapping):
+        logger.info("Validation completed for ref %s", ref)
+        return
+
+    logger.info(
+        "Validation completed for ref %s (%s member files, %s team files, "
+        "%s error(s) in %s file(s))",
+        ref,
+        loaded.get("member_files"),
+        loaded.get("team_files"),
+        summary.get("error_count"),
+        summary.get("files_with_errors"),
+    )
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(
+    request: Request,
+    _exc: Exception,
+) -> JSONResponse:
+    """Log unexpected failures while keeping client responses opaque."""
+    logger.exception("Unhandled validator error for %s", request.url.path)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal Server Error"},
+    )
 
 
 @app.get("/")
@@ -143,18 +209,24 @@ async def validate_remote(
     body: ValidateRequest,
 ) -> dict[str, Any]:
     """Validate governance TOML at ``ref`` using the same rules as the CLI."""
+    logger.info("Validation request started for ref %s", body.ref)
     try:
-        return await asyncio.to_thread(run_validation_for_ref, body.ref)
+        result = await asyncio.to_thread(run_validation_for_ref, body.ref)
     except (
         GoldadorGitHubError,
         RuntimeError,
         MemberValidationError,
         TeamValidationError,
+        GovernanceLoadError,
     ) as e:
+        _log_mapped_error(body.ref, e)
         raise HTTPException(
             status_code=_status_for(e),
             detail=_error_detail(body.ref, e),
         ) from e
+
+    _log_validation_success(body.ref, result)
+    return result
 
 
 def main() -> None:

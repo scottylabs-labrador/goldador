@@ -53,7 +53,7 @@ jobs:
     name: Validate rules via API
     runs-on: ubuntu-latest
     env:
-      VALIDATOR_SERVER_URL: https://goldador.scottylabs.org
+      VALIDATOR_SERVER_URL: https://validator.goldador.scottylabs.org
     steps:
       - name: Checkout
         uses: actions/checkout@v4

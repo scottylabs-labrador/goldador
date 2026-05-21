@@ -14,7 +14,7 @@ and GitHub API tokens to perform the validation.
 
 ## Decision
 
-We are going to deploy the validator as a service at goldador.scottylabs.org.
+We are going to deploy the validator as a service at validator.goldador.scottylabs.org.
 It will take in a GitHub ref as input and return the validation results.
 
 ### Alternative 1: Use pull_request_target
@@ -32,5 +32,5 @@ PR as a CI check.
 
 ## Consequences
 
-We are going to deploy the validator as a service at goldador.scottylabs.org.
+We are going to deploy the validator as a service at validator.goldador.scottylabs.org.
 This involves rewriting the validator to be a Python server.

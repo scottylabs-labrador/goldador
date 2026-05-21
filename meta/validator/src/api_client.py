@@ -9,7 +9,7 @@ import subprocess
 from collections.abc import Mapping
 from typing import cast
 
-DEFAULT_VALIDATOR_SERVER_URL = "https://goldador.scottylabs.org"
+DEFAULT_VALIDATOR_SERVER_URL = "https://validator.goldador.scottylabs.org"
 _VALIDATE_TIMEOUT_SECONDS = 600
 _ERROR_BODY_LIMIT = 500
 _CONNECT_TIMEOUT_SECONDS = 30

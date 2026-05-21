@@ -74,7 +74,11 @@ def _list_toml_paths_and_contents(
         if isinstance(content_file, list):
             continue
 
-        text = content_file.decoded_content.decode("utf-8")
+        try:
+            text = content_file.decoded_content.decode("utf-8")
+        except UnicodeDecodeError as e:
+            msg = f"File {entry.path!r} is not valid UTF-8"
+            raise GoldadorGitHubError(msg, status_code=502) from e
         pairs.append((content_file.path, text))
 
     return sorted(pairs, key=lambda pair: pair[0])
