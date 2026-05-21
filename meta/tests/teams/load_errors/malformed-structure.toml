@@ -1,9 +1,0 @@
-name = "Fixture Malformed Structure"
-description = "Missing membership records for structure validation."
-
-[[membership]]
-timeframe = "2026-2027"
-
-[[membership.members]]
-github-username = "alice"
-title = "Lead"

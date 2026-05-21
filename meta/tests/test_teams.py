@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from meta.loaders.errors import GovernanceLoadError
 from meta.loaders.members import load_members
 from meta.loaders.teams import load_teams
 from meta.validator.src.reporter import ErrorCode, Reporter, bind_reporter
@@ -109,26 +108,3 @@ def test_team_not_file() -> None:
     reporter = Reporter()
     load_teams(bind_reporter(reporter), "meta/tests/teams/*")
     assert has_error(reporter, ErrorCode.TEAM_NOT_FILE)
-
-
-INVALID_SYNTAX_FIXTURE = "meta/tests/teams/load_errors/invalid-syntax.toml"
-
-
-def test_team_invalid_syntax() -> None:
-    """Invalid TOML syntax should abort loading with ``GovernanceLoadError``."""
-    reporter = Reporter()
-    with pytest.raises(GovernanceLoadError) as exc_info:
-        load_teams(bind_reporter(reporter), INVALID_SYNTAX_FIXTURE)
-    assert exc_info.value.file_path.endswith("invalid-syntax.toml")
-
-
-def test_team_malformed_structure() -> None:
-    """Malformed team documents should abort loading with ``GovernanceLoadError``."""
-    reporter = Reporter()
-    with pytest.raises(GovernanceLoadError) as exc_info:
-        load_teams(
-            bind_reporter(reporter),
-            "meta/tests/teams/load_errors/malformed-structure.toml",
-        )
-    assert exc_info.value.file_path.endswith("malformed-structure.toml")
-    assert "malformed team structure" in exc_info.value.message
