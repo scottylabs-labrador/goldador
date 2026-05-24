@@ -6,7 +6,7 @@ records, and synchronizes the resulting access model to services such as
 GitHub, Slack, Keycloak, OpenBao, Google Drive, and Google Groups.
 
 Member-facing permission, setup, and contribution details live on the Goldador
-public guide: <https://scottylabs-labrador.github.io/goldador/>.
+public guide: <https://goldador.scottylabs.org/>.
 The rest of this README is for maintainers of this repository.
 
 ## Repository Structure

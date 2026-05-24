@@ -50,9 +50,9 @@ class CodeownersSynchronizer(AbstractSynchronizer):
 
         leadership_team = self.teams[LEADERSHIP]
         lines.append(
-            "# Owners of the `teams/` directory are the leadership team leads",
+            "# Owners of the `teams/` directory are the leadership team members",
         )
-        lines.append(f"teams{self._get_team_leads_pattern(leadership_team)}")
+        lines.append(f"teams{self._get_team_members_pattern(leadership_team)}")
         lines.append("")
 
         lines.append(
@@ -72,6 +72,13 @@ class CodeownersSynchronizer(AbstractSynchronizer):
         codeowners_pattern = ""
         for lead in sorted(team.leads):
             codeowners_pattern += f" @{lead}"
+        return codeowners_pattern
+
+    def _get_team_members_pattern(self, team: Team) -> str:
+        """Get the codeowners pattern for the team's members."""
+        codeowners_pattern = ""
+        for member in sorted(team.members):
+            codeowners_pattern += f" @{member}"
         return codeowners_pattern
 
 

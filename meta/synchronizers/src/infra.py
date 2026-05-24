@@ -152,8 +152,8 @@ class InfraSynchronizer(AbstractSynchronizer):
     def generate_infra_file(self) -> str:
         """Generate the infrastructure file."""
         github_usernames = GithubUsernames(
-            admins=self.teams[LEADERSHIP].leads,
-            non_admins=list(self.members.keys() - self.teams[LEADERSHIP].leads),
+            admins=self.teams[LEADERSHIP].members,
+            non_admins=list(self.members.keys() - self.teams[LEADERSHIP].members),
         )
 
         andrew_ids = AndrewIds(

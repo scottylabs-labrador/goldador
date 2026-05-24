@@ -1,9 +1,7 @@
 # Contributing to Goldador
 
-For prerequisites, fork setup, and registration steps, see the
-[Register or Update Access](https://scottylabs-labrador.github.io/goldador/#register)
-section of the public guide. This file covers submitting and reviewing pull
-requests against the Goldador repository.
+This page serves as extra information for the [public guide](https://goldador.scottylabs.org/) for registering yourself as a member or updating your team. It
+is **NOT** a guide on how to contribute to the permission-as-code logic of Goldador. For that, Goldador does **not** accept external contributions for now.
 
 ## Editor Setup
 
@@ -19,20 +17,6 @@ Install the recommended VS Code extensions so TOML files auto-format on save.
 - See the
   [VS Code Extensions documentation](https://code.visualstudio.com/docs/configure/extensions/extension-marketplace#_recommended-extensions)
   for more details.
-
-## Submit a PR
-
-Commit your changes, push to your fork, and open a pull request against the
-`main` branch of `scottylabs-labrador/goldador`.
-
-Two hard CI rules apply to every PR:
-
-- Submit the PR from your own GitHub account. PRs that add a member on behalf
-  of someone else are automatically rejected.
-
-- Make one change per PR: add yourself as a member, or join/create one team —
-  not both in the same PR. PRs that change more than one file in `members/` or
-  `teams/` are automatically rejected.
 
 ## PR Review Process
 
@@ -76,7 +60,7 @@ Example squash titles:
 - `feat(member): add Yuxiang to leadership team (#PR)`
 - `feat(team): update description of leadership team (#PR)`
 
-Rationale: a new member or team joining ScottyLabs is a feature, not a chore.
+**Rationale**: a new member or team joining ScottyLabs is a feature, not a chore.
 
 The pull request number (e.g. `(#123)`) is automatically appended to the title
 when the PR is squash-merged by the reviewer, so contributors do not need to

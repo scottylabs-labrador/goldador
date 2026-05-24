@@ -114,7 +114,10 @@ class GoogleDriveSynchronizer(AbstractSynchronizer):
         self,
         permissions: dict[str, str],
     ) -> list[str]:
-        """Get the new member email addresses, both admin and non-admin."""
+        """Get the new member email addresses.
+
+        The members are any members of the Labrador team.
+        """
         new_email_addresses = []
         for contributor in self.members.values():
             if contributor.andrew_id is None:
@@ -130,9 +133,12 @@ class GoogleDriveSynchronizer(AbstractSynchronizer):
         self,
         permissions: dict[str, str],
     ) -> list[str]:
-        """Get the new admin email addresses."""
+        """Get the new admin email addresses.
+
+        The admins are the members of the Leadership team.
+        """
         new_email_addresses = []
-        for github_username in self.teams[LEADERSHIP].leads:
+        for github_username in self.teams[LEADERSHIP].members:
             admin = self.members[github_username]
             if admin.andrew_id is None:
                 continue
