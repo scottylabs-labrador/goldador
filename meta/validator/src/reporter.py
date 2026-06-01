@@ -30,6 +30,7 @@ class ErrorCode(Enum):
     MISMATCHED_KEYCLOAK_GITHUB = "Mismatched GitHub username in Keycloak"
     MISSING_KEYCLOAK_SLACK = "Missing Slack ID in Keycloak"
     GITHUB_REPO_NOT_FOUND = "GitHub repository not found"
+    GOVERNANCE_LOAD_ERROR = "Governance file failed to load"
 
 
 class ValidationErrorEntry(TypedDict):
@@ -47,10 +48,16 @@ class ValidationSummary(TypedDict):
 
 
 class ValidationResult(TypedDict):
-    """JSON-serializable validation report returned to API clients and the CLI."""
+    """Full validation report derived from accumulated errors."""
 
     valid: bool
     summary: ValidationSummary
+    errors: dict[str, list[ValidationErrorEntry]]
+
+
+class ValidationApiPayload(TypedDict):
+    """Wire-format validation payload returned by the API and CLI."""
+
     errors: dict[str, list[ValidationErrorEntry]]
 
 
@@ -70,20 +77,9 @@ class Reporter:
     def from_result(cls, result: Mapping[str, object]) -> Reporter:
         """Hydrate a reporter from an API ``validation`` result."""
         reporter = cls()
-        valid = cls._bool_field(result, "valid")
-        summary = cls._mapping_field(result, "summary")
         errors = cls._mapping_field(result, "errors")
         reporter._insert_result_errors(errors)
-        reporter._validate_hydrated_result(valid=valid, summary=summary)
         return reporter
-
-    @staticmethod
-    def _bool_field(payload: Mapping[str, object], field: str) -> bool:
-        value = payload.get(field)
-        if not isinstance(value, bool):
-            msg = f"Validation result field {field!r} must be a boolean"
-            raise TypeError(msg)
-        return value
 
     @staticmethod
     def _mapping_field(
@@ -131,17 +127,6 @@ class Reporter:
             msg = f"Validation error for {file_path!r} has invalid {field!r}"
             raise TypeError(msg)
         return value
-
-    def _validate_hydrated_result(
-        self,
-        *,
-        valid: bool,
-        summary: Mapping[str, object],
-    ) -> None:
-        hydrated = self.as_result()
-        if hydrated["valid"] != valid or hydrated["summary"] != summary:
-            msg = "Validation result summary does not match hydrated errors"
-            raise ValueError(msg)
 
     def as_result(self) -> ValidationResult:
         """Serialize accumulated errors as JSON-friendly structures (no logging)."""

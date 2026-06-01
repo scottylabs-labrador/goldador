@@ -2,18 +2,99 @@
 
 from __future__ import annotations
 
+import json
+import os
 import sys
 from collections.abc import Mapping
-from typing import TYPE_CHECKING
+from http import HTTPStatus
+from typing import TYPE_CHECKING, cast
 
+import requests
 from dotenv import load_dotenv
+from pydantic import BaseModel, ValidationError
 
 from meta.logger import get_app_logger
-from meta.validator.src.api_client import ValidatorApiError, validate_ref_via_api
 from meta.validator.src.reporter import Reporter
 
 if TYPE_CHECKING:
     import logging
+
+DEFAULT_VALIDATOR_SERVER_URL = "https://validator.goldador.scottylabs.org"
+_VALIDATE_TIMEOUT_SECONDS = 600
+_ERROR_BODY_LIMIT = 500
+_CONNECT_TIMEOUT_SECONDS = 30
+
+
+class ValidatorApiError(RuntimeError):
+    """Raised when the hosted validator API cannot return a usable response."""
+
+
+class _LoadedSummary(BaseModel):
+    member_files: int
+    team_files: int
+
+
+class _ValidationLogContext(BaseModel):
+    repository: str
+    ref: str
+    loaded: _LoadedSummary
+
+
+def validate_ref_via_api(ref: str) -> Mapping[str, object]:
+    """Validate ``ref`` using the hosted validator API."""
+    base_url = os.environ.get("VALIDATOR_SERVER_URL", DEFAULT_VALIDATOR_SERVER_URL)
+    url = f"{base_url.rstrip('/')}/validate"
+    try:
+        response = requests.post(
+            url,
+            json={"ref": ref},
+            headers={"Accept": "application/json"},
+            timeout=(_CONNECT_TIMEOUT_SECONDS, _VALIDATE_TIMEOUT_SECONDS),
+        )
+    except requests.RequestException as e:
+        msg = f"Validator API request failed: {e}"
+        raise ValidatorApiError(msg) from e
+
+    if response.status_code != HTTPStatus.OK:
+        msg = (
+            f"Validator returned HTTP {response.status_code}: "
+            f"{_error_detail(response.content)}"
+        )
+        raise ValidatorApiError(msg)
+    return _decode_response(response.content)
+
+
+def _decode_response(data: bytes) -> Mapping[str, object]:
+    try:
+        payload: object = json.loads(data.decode())
+    except (json.JSONDecodeError, UnicodeDecodeError) as e:
+        msg = "Validator API returned invalid JSON"
+        raise ValidatorApiError(msg) from e
+
+    if not isinstance(payload, Mapping):
+        msg = "Validator API returned a non-object JSON response"
+        raise ValidatorApiError(msg)
+    return cast("Mapping[str, object]", payload)
+
+
+def _error_detail(data: bytes) -> str:
+    text = data.decode(errors="replace").strip()
+    if not text:
+        return "empty response body"
+    try:
+        payload: object = json.loads(text)
+    except json.JSONDecodeError:
+        return text[:_ERROR_BODY_LIMIT]
+
+    if isinstance(payload, Mapping):
+        detail = payload.get("detail")
+        if isinstance(detail, str):
+            return detail
+        if isinstance(detail, Mapping):
+            error = detail.get("error")
+            if isinstance(error, str):
+                return error
+    return text[:_ERROR_BODY_LIMIT]
 
 
 def main() -> None:
@@ -27,7 +108,7 @@ def main() -> None:
         validation = _validation_from_payload(payload)
         reporter = Reporter.from_result(validation)
         _log_validation_context(logger, payload)
-    except (TypeError, ValidatorApiError, ValueError) as e:
+    except (TypeError, ValidatorApiError, ValidationError, ValueError) as e:
         logger.critical("%s", e)
         raise SystemExit(1) from e
 
@@ -58,31 +139,12 @@ def _log_validation_context(
     logger: logging.Logger,
     payload: Mapping[str, object],
 ) -> None:
-    loaded = payload.get("loaded")
-    if not isinstance(loaded, Mapping):
-        msg = "Validator API response is missing object 'loaded'"
-        raise TypeError(msg)
+    context = _ValidationLogContext.model_validate(payload)
 
     logger.info(
         "Validating %s @ %s (%s member files, %s team files)",
-        _string_field(payload, "repository"),
-        _string_field(payload, "ref"),
-        _int_field(loaded, "member_files"),
-        _int_field(loaded, "team_files"),
+        context.repository,
+        context.ref,
+        context.loaded.member_files,
+        context.loaded.team_files,
     )
-
-
-def _string_field(payload: Mapping[str, object], field: str) -> str:
-    value = payload.get(field)
-    if not isinstance(value, str):
-        msg = f"Validator API response field {field!r} must be a string"
-        raise TypeError(msg)
-    return value
-
-
-def _int_field(payload: Mapping[str, object], field: str) -> int:
-    value = payload.get(field)
-    if not isinstance(value, int) or isinstance(value, bool):
-        msg = f"Validator API response field {field!r} must be an integer"
-        raise TypeError(msg)
-    return value

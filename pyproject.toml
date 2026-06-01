@@ -3,10 +3,20 @@ name = "goldador"
 version = "0.1.0"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = ["colorama>=0.4.6", "dotenv>=0.9.9", "pydantic>=2.12.5"]
+dependencies = [
+  "colorama>=0.4.6",
+  "dotenv>=0.9.9",
+  "pydantic>=2.12.5",
+  "requests>=2.33.1",
+]
 
 [dependency-groups]
-dev = ["mypy>=1.19.1", "ruff>=0.15.5", "types-colorama>=0.4.15.20250801"]
+dev = [
+  "mypy>=1.19.1",
+  "ruff>=0.15.5",
+  "types-colorama>=0.4.15.20250801",
+  "types-requests>=2.33.0.20260518",
+]
 test = ["pytest>=8.3.5", "pytest-cov>=7.1.0"]
 validator = [
   "fastapi>=0.115.6",

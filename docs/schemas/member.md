@@ -3,7 +3,7 @@
 > [!NOTE]
 > This is for individuals seeking to register themselves as a member.
 
-Create a new TOML file in `members/` with your GitHub username as the filename:
+Create a new TOML file in `members/` with your **GitHub username** as the filename:
 
 ```toml
 full-name = "Your Name"

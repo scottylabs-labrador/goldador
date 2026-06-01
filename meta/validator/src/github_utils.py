@@ -8,14 +8,30 @@ from typing import TYPE_CHECKING, NoReturn
 from github import GithubException
 
 from meta.clients.github_client import get_github_client
+from meta.loaders.sources import TomlGlobSource
+from meta.loaders.types import LoaderErrorCode
 
 if TYPE_CHECKING:
     from github.Repository import Repository
+
+    from meta.loaders.types import RecordFn
 
 # Canonical org/repo for governance data (must match the public goldador repo URL).
 GOLDADOR_REPO_FULL_NAME = "scottylabs-labrador/goldador"
 
 TomlFileRows = list[tuple[str, str]]
+
+_NOT_TOML_MESSAGE = "Not a .toml file"
+_MEMBERS_GLOB_SOURCE = TomlGlobSource(
+    repo_subdir="members",
+    not_file_code=LoaderErrorCode.MEMBER_NOT_FILE,
+    not_file_message="Not a file",
+)
+_TEAMS_GLOB_SOURCE = TomlGlobSource(
+    repo_subdir="teams",
+    not_file_code=LoaderErrorCode.TEAM_NOT_FILE,
+    not_file_message="not a file",
+)
 
 
 class GoldadorGitHubError(Exception):
@@ -41,16 +57,31 @@ def verify_ref(repo: Repository, ref: str) -> None:
     except GithubException as e:
         if e.status == HTTPStatus.NOT_FOUND:
             msg = f"Ref {ref!r} not found in {GOLDADOR_REPO_FULL_NAME}"
-            raise GoldadorGitHubError(msg, status_code=400) from e
+            raise GoldadorGitHubError(msg, status_code=404) from e
         _raise_github_api_error(e)
+
+
+def _record_directory_entry_error(
+    record: RecordFn | None,
+    glob_source: TomlGlobSource,
+    entry_name: str,
+    message: str,
+) -> None:
+    if record is None:
+        return
+    path = f"{glob_source.repo_subdir}/{entry_name}"
+    record(path, glob_source.not_file_code, message)
 
 
 def _list_toml_paths_and_contents(
     repo: Repository,
-    directory: str,
     ref: str,
+    *,
+    glob_source: TomlGlobSource,
+    record: RecordFn | None = None,
 ) -> TomlFileRows:
     """Return sorted ``(path, utf-8 text)`` pairs for ``*.toml`` under ``directory``."""
+    directory = glob_source.repo_subdir
     try:
         entries = repo.get_contents(directory, ref=ref)
     except GithubException as e:
@@ -63,7 +94,21 @@ def _list_toml_paths_and_contents(
 
     pairs: TomlFileRows = []
     for entry in entries:
-        if entry.type != "file" or not entry.name.endswith(".toml"):
+        if entry.type != "file":
+            _record_directory_entry_error(
+                record,
+                glob_source,
+                entry.name,
+                glob_source.not_file_message,
+            )
+            continue
+        if not entry.name.endswith(".toml"):
+            _record_directory_entry_error(
+                record,
+                glob_source,
+                entry.name,
+                _NOT_TOML_MESSAGE,
+            )
             continue
 
         try:
@@ -72,6 +117,12 @@ def _list_toml_paths_and_contents(
             _raise_github_api_error(e)
 
         if isinstance(content_file, list):
+            _record_directory_entry_error(
+                record,
+                glob_source,
+                entry.name,
+                glob_source.not_file_message,
+            )
             continue
 
         try:
@@ -96,11 +147,25 @@ def resolve_default_branch_head_sha() -> str:
     return str(branch.commit.sha)
 
 
-def fetch_goldador_toml_at_ref(ref: str) -> tuple[TomlFileRows, TomlFileRows]:
+def fetch_goldador_toml_at_ref(
+    ref: str,
+    *,
+    record: RecordFn | None = None,
+) -> tuple[TomlFileRows, TomlFileRows]:
     """Return ``(member_tomls, team_tomls)`` as GitHub path and TOML text pairs."""
     client = get_github_client()
     repo = client.get_repo(GOLDADOR_REPO_FULL_NAME)
     verify_ref(repo, ref)
-    member_rows = _list_toml_paths_and_contents(repo, "members", ref)
-    team_rows = _list_toml_paths_and_contents(repo, "teams", ref)
+    member_rows = _list_toml_paths_and_contents(
+        repo,
+        ref,
+        glob_source=_MEMBERS_GLOB_SOURCE,
+        record=record,
+    )
+    team_rows = _list_toml_paths_and_contents(
+        repo,
+        ref,
+        glob_source=_TEAMS_GLOB_SOURCE,
+        record=record,
+    )
     return member_rows, team_rows

@@ -19,14 +19,17 @@ from starlette.requests import Request  # noqa: TC002
 from starlette.responses import JSONResponse, Response
 
 from meta.loaders.errors import GovernanceLoadError
+from meta.loaders.members import load_members
+from meta.loaders.teams import load_teams
 from meta.logger import get_app_logger
 from meta.validator.src.github_utils import (
     GOLDADOR_REPO_FULL_NAME,
     GoldadorGitHubError,
+    fetch_goldador_toml_at_ref,
 )
-from meta.validator.src.remote_validation import run_remote_validation
-from meta.validator.src.rules.members import MemberValidationError
-from meta.validator.src.rules.teams import TeamValidationError
+from meta.validator.src.reporter import ErrorCode, Reporter, bind_reporter
+from meta.validator.src.rules.members import MemberValidationError, MemberValidator
+from meta.validator.src.rules.teams import TeamValidationError, TeamValidator
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Mapping
@@ -46,10 +49,8 @@ _DEFAULT_VALIDATE_RATE_LIMIT = "60/minute"
 # body. ``GoldadorGitHubError`` carries its own status when available.
 _FALLBACK_STATUS_CODE = 502
 _STATUS_CODE_BY_EXCEPTION: dict[type[Exception], int] = {
-    RuntimeError: 503,
     MemberValidationError: 502,
     TeamValidationError: 502,
-    GovernanceLoadError: 502,
 }
 
 logger = get_app_logger()
@@ -116,8 +117,31 @@ class ValidateRequest(BaseModel):
 
 def run_validation_for_ref(ref: str) -> dict[str, Any]:
     """Fetch TOML from GitHub at ``ref`` and return structured validation results."""
-    reporter, extras = run_remote_validation(ref)
-    return {**extras, "validation": reporter.as_result()}
+    reporter = Reporter()
+    record = bind_reporter(reporter)
+    member_tomls, team_tomls = fetch_goldador_toml_at_ref(ref, record=record)
+    try:
+        members = load_members(record, file_contents=member_tomls)
+        MemberValidator(members, reporter).validate()
+
+        teams = load_teams(record, file_contents=team_tomls)
+        TeamValidator(teams, members, reporter).validate()
+    except GovernanceLoadError as e:
+        reporter.insert_error(
+            e.file_path,
+            ErrorCode.GOVERNANCE_LOAD_ERROR,
+            e.message,
+        )
+
+    return {
+        "repository": GOLDADOR_REPO_FULL_NAME,
+        "ref": ref,
+        "loaded": {
+            "member_files": len(member_tomls),
+            "team_files": len(team_tomls),
+        },
+        "validation": {"errors": reporter.as_result()["errors"]},
+    }
 
 
 def _status_for(exc: Exception) -> int:
@@ -137,6 +161,22 @@ def _error_detail(ref: str, exc: Exception) -> dict[str, str]:
     if isinstance(exc, GovernanceLoadError):
         detail["file"] = exc.file_path
     return detail
+
+
+def _governance_load_result(ref: str, exc: GovernanceLoadError) -> dict[str, Any]:
+    """Serialize a load failure as a validation result payload."""
+    reporter = Reporter()
+    reporter.insert_error(
+        exc.file_path,
+        ErrorCode.GOVERNANCE_LOAD_ERROR,
+        exc.message,
+    )
+    return {
+        "repository": GOLDADOR_REPO_FULL_NAME,
+        "ref": ref,
+        "loaded": {"member_files": 0, "team_files": 0},
+        "validation": {"errors": reporter.as_result()["errors"]},
+    }
 
 
 def _log_mapped_error(ref: str, exc: Exception) -> None:
@@ -166,10 +206,20 @@ def _log_validation_success(ref: str, result: dict[str, Any]) -> None:
         logger.info("Validation completed for ref %s", ref)
         return
 
-    summary = validation.get("summary")
-    if not isinstance(summary, Mapping):
+    errors = validation.get("errors")
+    if not isinstance(errors, Mapping):
         logger.info("Validation completed for ref %s", ref)
         return
+
+    error_count = 0
+    files_with_errors = 0
+    for entries in errors.values():
+        if not isinstance(entries, list):
+            logger.info("Validation completed for ref %s", ref)
+            return
+        if entries:
+            files_with_errors += 1
+        error_count += len(entries)
 
     logger.info(
         "Validation completed for ref %s (%s member files, %s team files, "
@@ -177,8 +227,8 @@ def _log_validation_success(ref: str, result: dict[str, Any]) -> None:
         ref,
         loaded.get("member_files"),
         loaded.get("team_files"),
-        summary.get("error_count"),
-        summary.get("files_with_errors"),
+        error_count,
+        files_with_errors,
     )
 
 
@@ -212,12 +262,18 @@ async def validate_remote(
     logger.info("Validation request started for ref %s", body.ref)
     try:
         result = await asyncio.to_thread(run_validation_for_ref, body.ref)
+    except GovernanceLoadError as e:
+        logger.info(
+            "Validation request for ref %s returned governance load errors",
+            body.ref,
+        )
+        result = _governance_load_result(body.ref, e)
+        _log_validation_success(body.ref, result)
+        return result
     except (
         GoldadorGitHubError,
-        RuntimeError,
         MemberValidationError,
         TeamValidationError,
-        GovernanceLoadError,
     ) as e:
         _log_mapped_error(body.ref, e)
         raise HTTPException(
