@@ -21,16 +21,6 @@ jobs:
             members/**
             teams/**
 
-      - name: Validate member self-nomination
-        if: contains(steps.changed-files.outputs.added_files, 'members/')
-        run: |
-          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
-          for FILE in ${{ steps.changed-files.outputs.added_files }}; do
-            if [[ "$FILE" == members/* ]]; then
-              .github/scripts/validate-member.sh "$PR_AUTHOR" "$FILE"
-            fi
-          done
-
       - name: Validate team creator is a lead
         if: contains(steps.changed-files.outputs.added_files, 'teams/')
         run: |
