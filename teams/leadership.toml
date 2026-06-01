@@ -8,7 +8,7 @@ description = "A central hub for ScottyLabs Labrador documentations"
 
 [[membership]]
 timeframe = "2026-2027"
-leads = ["Yuxiang-Huang", "dsnarne"]
+leads = ["Yuxiang-Huang"]
 
 [[membership.members]]
 github-username = "Yuxiang-Huang"
