@@ -1,0 +1,15 @@
+name = "ScottyStack"
+description = "Responsible for maintenance of ScottyLabs Full Stack Template"
+website = "stack.scottylabs.org"
+server = "api.stack.scottylabs.org"
+
+[[repos]]
+name = "ScottyStack"
+description = "ScottyLabs Full Stack Template"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["Yuxiang-Huang"]
+
+[[membership.members]]
+github-username = "Yuxiang-Huang"

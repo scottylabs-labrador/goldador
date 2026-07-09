@@ -4,9 +4,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Goldador — Labrador access &amp; membership</title>
+  <title>Goldador - ScottyLabs Labrador Governance</title>
   <meta name="description"
     content="A role-by-role guide to Labrador membership, team, and leadership permissions in Goldador." />
+  <link rel="icon" href="favicon.ico" sizes="any" />
   <style>
     :root {
       color-scheme: light dark;
@@ -100,15 +101,37 @@
       text-decoration: none;
     }
 
+    .brand>span {
+      padding: 0.35rem 0.55rem;
+      margin: -0.35rem -0.55rem;
+      border-radius: 0.65rem;
+      transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+    }
+
+    .brand:hover>span,
+    .brand:focus-visible>span {
+      background: var(--accent-soft);
+    }
+
+    .brand:hover .brand-name,
+    .brand:focus-visible .brand-name {
+      color: var(--accent);
+    }
+
+    .brand:hover .brand-kicker,
+    .brand:focus-visible .brand-kicker {
+      color: var(--accent-strong);
+    }
+
     .brand-mark {
-      display: grid;
+      display: block;
       width: 2.35rem;
       height: 2.35rem;
-      place-items: center;
-      border: 1px solid var(--border);
-      border-radius: 0.85rem;
-      background: var(--card);
-      box-shadow: var(--shadow);
+      flex-shrink: 0;
+      border-radius: 50%;
+      object-fit: cover;
     }
 
     .brand-name {
@@ -470,8 +493,8 @@
 <body>
   <div class="page">
     <nav class="nav" aria-label="Primary navigation">
-      <a class="brand" href="https://goldador.scottylabs.org/" target="_blank" rel="noopener noreferrer">
-        <span class="brand-mark" aria-hidden="true">G</span>
+      <a class="brand" href="https://github.com/scottylabs-labrador/goldador" target="_blank" rel="noopener noreferrer">
+        <img class="brand-mark" src="icon.png" alt="" width="38" height="38" />
         <span>
           <strong class="brand-name">Goldador</strong>
           <span class="brand-kicker">ScottyLabs Labrador</span>
@@ -655,6 +678,8 @@
               </li>
               <li><strong>Admin</strong> access to Keycloak.</li>
               <li><strong>Admin</strong> access in OpenBao.</li>
+              <li><i>Note: leadership admins include directors and senior advisors.
+                  These permissions should only be used for emergency fixes.</i></li>
             </ul>
           </article>
         </div>
@@ -665,6 +690,10 @@
           <h2 id="register-heading">
             <a href="#register" class="heading-anchor">Register</a>
           </h2>
+          <p>
+            If you are a non-technical member of the team, you can
+            complete Step 1 and ask a technical member to finish registering you.
+          </p>
         </div>
 
         <div class="role-grid">

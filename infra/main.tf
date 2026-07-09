@@ -51,7 +51,7 @@ module "secrets" {
 
   # Data
   team_slugs               = toset(keys(local.non_leadership_teams))
-  team_oidc_client_ids     = module.keycloak.team_oidc_client_ids
+  team_oidc_clients        = module.keycloak.team_oidc_clients
   team_oidc_client_secrets = module.keycloak.team_oidc_client_secrets
 }
 

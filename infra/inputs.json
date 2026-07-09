@@ -1,15 +1,19 @@
 {
   "github_usernames": {
     "admins": [
-      "Yuxiang-Huang"
+      "Yuxiang-Huang",
+      "dsnarne",
+      "hanabenko",
+      "alanpham06"
     ],
-    "non_admins": [
-      "dsnarne"
-    ]
+    "non_admins": []
   },
   "andrew_ids": {
     "admins": [
-      "yh4"
+      "yh4",
+      "dnarne",
+      "hbenko",
+      "alanp"
     ],
     "non_admins": []
   },
@@ -44,7 +48,38 @@
       "members": {
         "github_usernames": [
           "Yuxiang-Huang",
-          "dsnarne"
+          "dsnarne",
+          "hanabenko",
+          "alanpham06"
+        ],
+        "andrew_ids": [
+          "yh4",
+          "dnarne",
+          "hbenko",
+          "alanp"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "Yuxiang-Huang",
+          "hanabenko"
+        ],
+        "andrew_ids": [
+          "yh4",
+          "hbenko"
+        ]
+      },
+      "repos": [
+        "wiki"
+      ],
+      "create_oidc_clients": false
+    },
+    "scottystack": {
+      "name": "ScottyStack",
+      "description": "Responsible for maintenance of ScottyLabs Full Stack Template",
+      "members": {
+        "github_usernames": [
+          "Yuxiang-Huang"
         ],
         "andrew_ids": [
           "yh4"
@@ -59,9 +94,11 @@
         ]
       },
       "repos": [
-        "wiki"
+        "ScottyStack"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": true,
+      "website": "stack.scottylabs.org",
+      "server": "api.stack.scottylabs.org"
     },
     "cmuresearch": {
       "name": "CMU Research",
@@ -98,8 +135,8 @@
       },
       "repos": [],
       "create_oidc_clients": true,
-      "website": "https://cmuservice.shop",
-      "server": "https://cmuservice.shop"
+      "website": "cmuservice.shop",
+      "server": "cmuservice.shop"
     },
     "collegecart": {
       "name": "CollegeCart",
@@ -124,8 +161,8 @@
       },
       "repos": [],
       "create_oidc_clients": true,
-      "website": "https://collegecart.org",
-      "server": "https://collegecart.org"
+      "website": "collegecart.org",
+      "server": "collegecart.org"
     },
     "cmustudy": {
       "name": "CMU Study",
@@ -144,8 +181,8 @@
       },
       "repos": [],
       "create_oidc_clients": true,
-      "website": "https://study.scottylabs.org",
-      "server": "https://study.scottylabs.org"
+      "website": "study.scottylabs.org",
+      "server": "study.scottylabs.org"
     }
   }
 }
