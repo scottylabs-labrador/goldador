@@ -48,8 +48,8 @@ jobs:
     needs: detect-changes
     name: Sync Codeowners
     runs-on: ubuntu-latest
-    if: needs.detect-changes.outputs.shared == true ||
-      needs.detect-changes.outputs.codeowners == true
+    if: needs.detect-changes.outputs.shared == 'true' ||
+      needs.detect-changes.outputs.codeowners == 'true'
 
     env:
       SYNC_GITHUB_TOKEN: ${{ secrets.SYNC_GITHUB_TOKEN }}
@@ -68,8 +68,8 @@ jobs:
     needs: detect-changes
     name: Sync Slack
     runs-on: ubuntu-latest
-    if: needs.detect-changes.outputs.shared == true ||
-      needs.detect-changes.outputs.slack == true
+    if: needs.detect-changes.outputs.shared == 'true' ||
+      needs.detect-changes.outputs.slack == 'true'
 
     env:
       SLACK_USER_TOKEN: ${{ secrets.SLACK_USER_TOKEN }}
@@ -94,8 +94,8 @@ jobs:
     needs: detect-changes
     name: Sync Google Drive
     runs-on: ubuntu-latest
-    if: needs.detect-changes.outputs.shared == true ||
-      needs.detect-changes.outputs.google-drive == true
+    if: needs.detect-changes.outputs.shared == 'true' ||
+      needs.detect-changes.outputs.google-drive == 'true'
 
     env:
       GOOGLE_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLIENT_EMAIL }}
@@ -116,8 +116,8 @@ jobs:
     needs: detect-changes
     name: Sync Infra
     runs-on: ubuntu-latest
-    if: needs.detect-changes.outputs.shared == true ||
-      needs.detect-changes.outputs.infra == true
+    if: needs.detect-changes.outputs.shared == 'true' ||
+      needs.detect-changes.outputs.infra == 'true'
 
     env:
       SYNC_GITHUB_TOKEN: ${{ secrets.SYNC_GITHUB_TOKEN }}
@@ -136,7 +136,7 @@ jobs:
     needs: detect-changes
     name: Apply Infrastructure
     runs-on: ubuntu-latest
-    if: needs.detect-changes.outputs.iac == true
+    if: needs.detect-changes.outputs.iac == 'true'
 
     env:
       # --- S3 backend credentials ---

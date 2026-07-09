@@ -48,8 +48,8 @@ LEGACY_DATA = {
         },
         "repos": [],
         "create_oidc_clients": True,
-        "website": "https://cmuservice.shop",
-        "server": "https://cmuservice.shop",
+        "website": "cmuservice.shop",
+        "server": "cmuservice.shop",
     },
     "collegecart": {
         "name": "CollegeCart",
@@ -64,8 +64,8 @@ LEGACY_DATA = {
         },
         "repos": [],
         "create_oidc_clients": True,
-        "website": "https://collegecart.org",
-        "server": "https://collegecart.org",
+        "website": "collegecart.org",
+        "server": "collegecart.org",
     },
     "cmustudy": {
         "name": "CMU Study",
@@ -80,8 +80,8 @@ LEGACY_DATA = {
         },
         "repos": [],
         "create_oidc_clients": True,
-        "website": "https://study.scottylabs.org",
-        "server": "https://study.scottylabs.org",
+        "website": "study.scottylabs.org",
+        "server": "study.scottylabs.org",
     },
 }
 

@@ -15,7 +15,8 @@ description = """
 A brief description of the team.
 """
 
-# The website and server are notrequired until the team is ready to deploy.
+# The website and server are not required until the team is ready to deploy.
+# Omit the https:// prefix for the website and server.
 website = "your-team-website.com"
 server = "your-team-server.com"
 

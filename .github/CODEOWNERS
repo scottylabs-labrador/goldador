@@ -3,11 +3,13 @@
 # Default owners are the Goldador team leads
 * @Yuxiang-Huang
 
-# Owners of the `teams/` directory are the leadership team leads
-teams @Yuxiang-Huang
+# Owners of the `teams/` directory are the leadership team members
+teams @Yuxiang-Huang @alanpham06 @dsnarne @hanabenko
 
 # The codeowners of each team file are their corresponding leads
 
 teams/goldador.toml @Yuxiang-Huang
 
-teams/leadership.toml @Yuxiang-Huang
+teams/leadership.toml @Yuxiang-Huang @hanabenko
+
+teams/scottystack.toml @Yuxiang-Huang

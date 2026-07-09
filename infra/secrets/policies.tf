@@ -58,11 +58,29 @@ resource "vault_policy" "team_admins_policies" {
   for_each = local.team_admin_group_names
   name     = each.value.name
   policy   = <<-EOT
+    path "${vault_mount.kv.path}/data/${each.key}" {
+        capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+    }
+
     path "${vault_mount.kv.path}/data/${each.key}/*" {
         capabilities = ["create", "read", "update", "delete", "list", "sudo"]
     }
 
+    path "${vault_mount.kv.path}/metadata/${each.key}" {
+        capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+    }
+
     path "${vault_mount.kv.path}/metadata/${each.key}/*" {
+        capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+    }
+
+    # OpenBao picks the most specific pattern across all policies, so we need to
+    # override the local folder permissions for admins here.
+    path "${vault_mount.kv.path}/data/${each.key}/local" {
+        capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+    }
+
+    path "${vault_mount.kv.path}/data/${each.key}/local/*" {
         capabilities = ["create", "read", "update", "delete", "list", "sudo"]
     }
   EOT

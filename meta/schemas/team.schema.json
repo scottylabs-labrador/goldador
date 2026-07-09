@@ -17,13 +17,11 @@
     },
     "website": {
       "type": "string",
-      "format": "url",
-      "description": "Website URL associated with the team."
+      "description": "Website domain associated with the team."
     },
     "server": {
       "type": "string",
-      "format": "url",
-      "description": "Server URL associated with the team."
+      "description": "Server domain associated with the team."
     },
     "create-oidc-clients": {
       "type": "boolean",

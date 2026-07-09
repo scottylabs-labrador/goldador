@@ -41,7 +41,7 @@ resource "keycloak_group_memberships" "team_admins_memberships" {
 
 # Team OIDC clients
 locals {
-  # Generate local-only clients
+  # Generate local clients
   local_clients = { for slug in local.team_slugs : "${slug}-local" => {
     client_id   = "${slug}-local"
     root_url    = "http://localhost:3000"
@@ -49,16 +49,32 @@ locals {
     web_origins = ["http://localhost"]
   } if var.teams[slug].create_oidc_clients }
 
-  # Generate prod-ready clients
+  # Generate development clients
+  dev_clients = { for k, v in var.teams : "${k}-dev" => {
+    client_id   = "${k}-dev"
+    root_url    = "https://dev.${v.website}"
+    redirects   = ["https://dev.${v.server}/api/auth/oauth2/callback/keycloak"]
+    web_origins = ["https://dev.${v.server}"]
+  } if v.create_oidc_clients && v.website != "" && v.server != "" }
+
+  # Generate staging clients
+  staging_clients = { for k, v in var.teams : "${k}-staging" => {
+    client_id   = "${k}-staging"
+    root_url    = "https://staging.${v.website}"
+    redirects   = ["https://staging.${v.server}/api/auth/oauth2/callback/keycloak"]
+    web_origins = ["https://staging.${v.server}"]
+  } if v.create_oidc_clients && v.website != "" && v.server != "" }
+
+  # Generate prod clients
   prod_clients = { for k, v in var.teams : "${k}-prod" => {
     client_id   = "${k}-prod"
-    root_url    = v.website
-    redirects   = ["${v.server}/api/auth/oauth2/callback/keycloak"]
-    web_origins = [v.server]
+    root_url    = "https://${v.website}"
+    redirects   = ["https://${v.server}/api/auth/oauth2/callback/keycloak"]
+    web_origins = ["https://${v.server}"]
   } if v.create_oidc_clients && v.website != "" && v.server != "" }
 
   # Merge them into one map
-  all_clients = merge(local.local_clients, local.prod_clients)
+  all_clients = merge(local.local_clients, local.dev_clients, local.staging_clients, local.prod_clients)
 }
 
 resource "keycloak_openid_client" "team_oidc_clients" {
