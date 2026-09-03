@@ -52,6 +52,50 @@
       ],
       "create_oidc_clients": false
     },
+    "labrador-recruit": {
+      "name": "Labrador Recruit",
+      "description": "Internal recruitment review platform for ScottyLabs leadership. Human review workflow over committee applications - no AI applicant evaluation.",
+      "members": {
+        "github_usernames": [
+          "Yuxiang-Huang",
+          "hanabenko",
+          "dsnarne",
+          "alanpham06",
+          "laasyaaki",
+          "jagong-cmu",
+          "christinamli",
+          "Hef50",
+          "SamEthanMathew"
+        ],
+        "andrew_ids": [
+          "yh4",
+          "hbenko",
+          "dnarne",
+          "alanp",
+          "laki",
+          "jagong",
+          "cmli2",
+          "hareshmu",
+          "semathew"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "Yuxiang-Huang",
+          "hanabenko"
+        ],
+        "andrew_ids": [
+          "yh4",
+          "hbenko"
+        ]
+      },
+      "repos": [
+        "labrador-recruit"
+      ],
+      "create_oidc_clients": true,
+      "website": "recruit.scottylabs.org",
+      "server": "api.recruit.scottylabs.org"
+    },
     "leadership": {
       "name": "Leadership",
       "description": "The Labrador leadership team.",
