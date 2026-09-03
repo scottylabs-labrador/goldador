@@ -1,0 +1,46 @@
+name = "Labrador Recruit"
+description = "Internal recruitment review platform for ScottyLabs leadership. Human review workflow over committee applications - no AI applicant evaluation."
+website = "recruit.scottylabs.org"
+server = "api.recruit.scottylabs.org"
+
+[[repos]]
+name = "labrador-recruit"
+description = "Internal recruitment review platform for ScottyLabs leadership."
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["Yuxiang-Huang", "hanabenko"]
+
+[[membership.members]]
+github-username = "Yuxiang-Huang"
+
+[[membership.members]]
+github-username = "hanabenko"
+
+[[membership.members]]
+github-username = "dsnarne"
+title = "Reviewer"
+
+[[membership.members]]
+github-username = "alanpham06"
+title = "Reviewer"
+
+[[membership.members]]
+github-username = "laasyaaki"
+title = "Reviewer"
+
+[[membership.members]]
+github-username = "jagong-cmu"
+title = "Reviewer"
+
+[[membership.members]]
+github-username = "christinamli"
+title = "Reviewer"
+
+[[membership.members]]
+github-username = "Hef50"
+title = "Reviewer"
+
+[[membership.members]]
+github-username = "SamEthanMathew"
+title = "Reviewer"
