@@ -1,0 +1,21 @@
+name = "AI-Powered Newsletter"
+
+description = """
+AI-powered newsletter service that allows the user to customize based on their interest
+"""
+
+create-oidc-clients = true
+
+[[repos]]
+name = "ai-newsletter"
+description = "main repo"
+
+[[membership]]
+
+timeframe = "Fall 2026"
+
+leads = ["jczq1"]
+
+[[membership.members]]
+github-username = "jczq1"
+title = "Developer"
