@@ -187,8 +187,8 @@
         "wiki"
       ],
       "create_oidc_clients": true,
-      "website": "https://wiki.scottylabs.org",
-      "server": "https://api.wiki.scottylabs.org"
+      "website": "wiki.scottylabs.org",
+      "server": "api.wiki.scottylabs.org"
     },
     "cmuresearch": {
       "name": "CMU Research",
