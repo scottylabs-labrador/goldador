@@ -1,0 +1,15 @@
+name = "Meet"
+description = "when2meet for ScottyLabs."
+website = "meet.scottylabs.org"
+server = "api.meet.scottylabs.org"
+
+[[repos]]
+name = "meet"
+description = "when2meet for ScottyLabs"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["Yuxiang-Huang"]
+
+[[membership.members]]
+github-username = "Yuxiang-Huang"
