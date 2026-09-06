@@ -138,6 +138,32 @@
       ],
       "create_oidc_clients": false
     },
+    "meet": {
+      "name": "Meet",
+      "description": "when2meet for ScottyLabs.",
+      "members": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "repos": [
+        "meet"
+      ],
+      "create_oidc_clients": true,
+      "website": "meet.scottylabs.org",
+      "server": "api.meet.scottylabs.org"
+    },
     "scottystack": {
       "name": "ScottyStack",
       "description": "Responsible for maintenance of ScottyLabs Full Stack Template",
