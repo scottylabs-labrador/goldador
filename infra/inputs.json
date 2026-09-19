@@ -1,38 +1,56 @@
 {
   "github_usernames": {
     "admins": [
+      "Hef50",
+      "SamEthanMathew",
       "Yuxiang-Huang",
+      "alanpham06",
+      "christinamli",
       "dsnarne",
       "hanabenko",
-      "alanpham06",
-      "laasyaaki",
       "jagong-cmu",
-      "christinamli",
-      "Hef50",
-      "SamEthanMathew"
+      "laasyaaki"
     ],
     "non_admins": [
+      "a-varigonda",
+      "ashah48",
       "bmood25",
+      "cheezypegasus",
       "csongfm",
-      "a-varigonda"
+      "graceguo16",
+      "noe2971",
+      "rarangil",
+      "rayank7674",
+      "sophiez3",
+      "tejaschaudhari131",
+      "veriivy"
     ]
   },
   "andrew_ids": {
     "admins": [
-      "yh4",
-      "dnarne",
-      "hbenko",
       "alanp",
-      "laki",
-      "jagong",
       "cmli2",
+      "dnarne",
       "hareshmu",
-      "semathew"
+      "hbenko",
+      "jagong",
+      "laki",
+      "semathew",
+      "yh4"
     ],
     "non_admins": [
+      "aahans",
+      "audreyz2",
+      "avarigon",
       "bmood",
       "cesong",
-      "avarigon"
+      "charlie3",
+      "nchandy",
+      "rarangil",
+      "rkha",
+      "sophiez3",
+      "tchaudha",
+      "yumengg2"
     ]
   },
   "teams": {
@@ -89,38 +107,38 @@
       "description": "Internal recruitment review platform for ScottyLabs leadership. Human review workflow over committee applications - no AI applicant evaluation.",
       "members": {
         "github_usernames": [
-          "Yuxiang-Huang",
-          "hanabenko",
-          "dsnarne",
-          "alanpham06",
-          "laasyaaki",
-          "jagong-cmu",
-          "christinamli",
           "Hef50",
-          "SamEthanMathew"
+          "SamEthanMathew",
+          "Yuxiang-Huang",
+          "alanpham06",
+          "christinamli",
+          "dsnarne",
+          "hanabenko",
+          "jagong-cmu",
+          "laasyaaki"
         ],
         "andrew_ids": [
-          "yh4",
-          "hbenko",
-          "dnarne",
           "alanp",
-          "laki",
-          "jagong",
           "cmli2",
+          "dnarne",
           "hareshmu",
-          "semathew"
+          "hbenko",
+          "jagong",
+          "laki",
+          "semathew",
+          "yh4"
         ]
       },
       "admins": {
         "github_usernames": [
+          "SamEthanMathew",
           "Yuxiang-Huang",
-          "hanabenko",
-          "SamEthanMathew"
+          "hanabenko"
         ],
         "andrew_ids": [
-          "yh4",
           "hbenko",
-          "semathew"
+          "semathew",
+          "yh4"
         ]
       },
       "repos": [
@@ -135,26 +153,26 @@
       "description": "The Labrador leadership team.",
       "members": {
         "github_usernames": [
+          "Hef50",
+          "SamEthanMathew",
           "Yuxiang-Huang",
+          "alanpham06",
+          "christinamli",
           "dsnarne",
           "hanabenko",
-          "alanpham06",
-          "laasyaaki",
           "jagong-cmu",
-          "christinamli",
-          "Hef50",
-          "SamEthanMathew"
+          "laasyaaki"
         ],
         "andrew_ids": [
-          "yh4",
-          "dnarne",
-          "hbenko",
           "alanp",
-          "laki",
-          "jagong",
           "cmli2",
+          "dnarne",
           "hareshmu",
-          "semathew"
+          "hbenko",
+          "jagong",
+          "laki",
+          "semathew",
+          "yh4"
         ]
       },
       "admins": {
@@ -163,8 +181,8 @@
           "hanabenko"
         ],
         "andrew_ids": [
-          "yh4",
-          "hbenko"
+          "hbenko",
+          "yh4"
         ]
       },
       "repos": [
@@ -192,7 +210,7 @@
         ]
       },
       "repos": [
-        "meet"
+        "Meet"
       ],
       "create_oidc_clients": true,
       "website": "meet.scottylabs.org",
@@ -294,18 +312,18 @@
       "members": {
         "github_usernames": [],
         "andrew_ids": [
-          "yingyiw",
+          "mbatkhuu",
           "nayonk",
           "rushabhj",
-          "mbatkhuu"
+          "yingyiw"
         ]
       },
       "admins": {
         "github_usernames": [],
         "andrew_ids": [
-          "yingyiw",
           "nayonk",
-          "rushabhj"
+          "rushabhj",
+          "yingyiw"
         ]
       },
       "repos": [],

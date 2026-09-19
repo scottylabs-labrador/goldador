@@ -4,7 +4,7 @@ website = "meet.scottylabs.org"
 server = "api.meet.scottylabs.org"
 
 [[repos]]
-name = "meet"
+name = "Meet"
 description = "when2meet for ScottyLabs"
 
 [[membership]]
