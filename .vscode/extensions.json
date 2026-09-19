@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "tamasfe.even-better-toml",
-    "editorconfig.editorconfig"
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
   ]
 }
