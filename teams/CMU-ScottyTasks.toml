@@ -1,0 +1,40 @@
+# The name is used to identify the team publicly (e.g. GitHub org team name).
+name = "CMU-ScottyTasks"
+
+description = """
+A mobile gamified task/habit tracker with a leaderboard system and a personalized, upgradable Scotty dog avatar."
+"""
+
+# Set the `create-oidc-clients` field to `false` if the team does not need OIDC
+# clients. OIDC clients are necessary if you want to use ScottyLabs' auth system!
+#
+# It defaults to true if not specified, so please remove this section if the team
+# DO need OIDC clients.
+create-oidc-clients = false
+
+# List of repositories owned by the team.
+# Note that the owners of the repositories must be ScottyLabs-Labrador.
+[[repos]]
+name = "CMU-ScottyTasks"         # As it appears at the end of the GitHub repository URL
+description = "ScottyTasks app."
+
+# List of membership records by timeframe.
+# Note that only the first record will be used for synchronization.
+[[membership]]
+
+# The timeframe can be any string, but we suggest using either the year or semester.
+# E.g. "2026-2027" or "Spring 2026".
+timeframe = "2026-2027"
+
+# List of the GitHub usernames of the leads for this timeframe.
+leads = ["dishon949", "MichaelfromSBS"]
+
+# List of members for this timeframe.
+# [[membership.members]]
+# github-username = "member-1"
+# title = "Member 1's title"   # The title is optional.
+
+[[membership.members]]
+github-username = "dishon949"
+[[membership.members]]
+github-username = "MichaelfromSBS"
