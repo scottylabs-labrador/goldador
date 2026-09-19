@@ -55,11 +55,11 @@ LEGACY_DATA = {
         "name": "CollegeCart",
         "description": "The CollegeCart team.",
         "members": {
-            "andrew_ids": ["yingyiw", "nayonk", "rushabhj", "mbatkhuu"],
+            "andrew_ids": ["mbatkhuu", "nayonk", "rushabhj", "yingyiw"],
             "github_usernames": [],
         },
         "admins": {
-            "andrew_ids": ["yingyiw", "nayonk", "rushabhj"],
+            "andrew_ids": ["nayonk", "rushabhj", "yingyiw"],
             "github_usernames": [],
         },
         "repos": [],
@@ -152,8 +152,8 @@ class InfraSynchronizer(AbstractSynchronizer):
     def generate_infra_file(self) -> str:
         """Generate the infrastructure file."""
         github_usernames = GithubUsernames(
-            admins=self.teams[LEADERSHIP].members,
-            non_admins=list(self.members.keys() - self.teams[LEADERSHIP].members),
+            admins=sorted(self.teams[LEADERSHIP].members),
+            non_admins=sorted(self.members.keys() - self.teams[LEADERSHIP].members),
         )
 
         andrew_ids = AndrewIds(
@@ -167,14 +167,14 @@ class InfraSynchronizer(AbstractSynchronizer):
                 "name": team.name,
                 "description": team.description,
                 "members": TeamMembersData(
-                    github_usernames=team.members,
+                    github_usernames=sorted(team.members),
                     andrew_ids=self._get_andrew_ids(team.members),
                 ),
                 "admins": TeamMembersData(
-                    github_usernames=team.leads,
+                    github_usernames=sorted(team.leads),
                     andrew_ids=self._get_andrew_ids(team.leads),
                 ),
-                "repos": [repo.name for repo in team.repos],
+                "repos": sorted(repo.name for repo in team.repos),
                 "create_oidc_clients": team.create_oidc_clients,
                 "website": team.website,
                 "server": team.server,
@@ -197,7 +197,7 @@ class InfraSynchronizer(AbstractSynchronizer):
             self.members[github_username].andrew_id
             for github_username in github_usernames
         ]
-        return [andrew_id for andrew_id in raw if andrew_id is not None]
+        return sorted(andrew_id for andrew_id in raw if andrew_id is not None)
 
 
 def main() -> None:
