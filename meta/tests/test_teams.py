@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
@@ -45,6 +46,17 @@ def test_team_wrong_key_ordering() -> None:
     reporter = Reporter()
     load_teams(bind_reporter(reporter), "meta/tests/teams/wrong-key-ordering.toml")
     assert has_error(reporter, ErrorCode.TEAM_KEY_ORDERING)
+
+
+def test_team_filename_not_lowercase() -> None:
+    """Team file names must be fully lowercase."""
+    reporter = Reporter()
+    content = Path("meta/tests/teams/valid.toml").read_text(encoding="utf-8")
+    load_teams(
+        bind_reporter(reporter),
+        file_contents=[("teams/MixedCase.toml", content)],
+    )
+    assert has_error(reporter, ErrorCode.TEAM_FILENAME_NOT_LOWERCASE)
 
 
 def test_team_unknown_member_cross_reference(monkeypatch: MonkeyPatch) -> None:

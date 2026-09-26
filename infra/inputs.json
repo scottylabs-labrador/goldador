@@ -12,19 +12,33 @@
       "laasyaaki"
     ],
     "non_admins": [
+      "EnspikondPlusPlus",
+      "HarishSenthilkumar",
       "Yutai007",
       "a-varigonda",
+      "aanya21gupta",
+      "appleorange",
+      "arhavthakkar",
       "ashah48",
+      "ay93546",
       "bmood25",
       "cheezypegasus",
       "csongfm",
+      "davidx2-gif",
+      "didikana",
+      "dishon949",
       "graceguo16",
       "ipyoon",
+      "justinwu80",
       "noe2971",
       "rarangil",
       "rayank7674",
+      "rohansp007",
+      "s520y",
+      "sagelu1",
       "samad2084",
       "sophiez3",
+      "szzxt",
       "tejaschaudhari131",
       "veriivy"
     ]
@@ -43,17 +57,31 @@
     ],
     "non_admins": [
       "aahans",
+      "aanyag2",
+      "abthakka",
+      "audreyya",
       "audreyz2",
       "avarigon",
       "bmood",
       "cesong",
       "charlie3",
+      "darisan",
+      "davidx2",
+      "hsenthil",
       "ipae",
+      "ivanz",
+      "jzwu",
       "nchandy",
+      "ndishon",
       "rarangil",
       "rkha",
+      "rparthip",
+      "sabellah",
+      "sagelu",
       "samad",
+      "seany2",
       "sophiez3",
+      "susanzuo",
       "tchaudha",
       "yumengg2",
       "yutailon"
@@ -65,10 +93,12 @@
       "description": "Web extension to push an automatic, customizable, summary of emails and Canvas, Ed, Piazza and other softwares' posts, creating a daily/weekly to-do list.\n",
       "members": {
         "github_usernames": [
-          "a-varigonda"
+          "a-varigonda",
+          "rohansp007"
         ],
         "andrew_ids": [
-          "avarigon"
+          "avarigon",
+          "rparthip"
         ]
       },
       "admins": {
@@ -84,14 +114,46 @@
       ],
       "create_oidc_clients": false
     },
+    "cmu-scottytasks": {
+      "name": "CMU-ScottyTasks",
+      "description": "A mobile gamified task/habit tracker with a leaderboard system and a personalized, upgradable Scotty dog avatar.\"\n",
+      "members": {
+        "github_usernames": [
+          "dishon949"
+        ],
+        "andrew_ids": [
+          "ndishon"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "dishon949"
+        ],
+        "andrew_ids": [
+          "ndishon"
+        ]
+      },
+      "repos": [
+        "CMU-ScottyTasks"
+      ],
+      "create_oidc_clients": false
+    },
     "goldador": {
       "name": "Goldador",
       "description": "Responsible for governance in Labrador.",
       "members": {
         "github_usernames": [
-          "Yuxiang-Huang"
+          "SamEthanMathew",
+          "Yuxiang-Huang",
+          "a-varigonda",
+          "dishon949",
+          "hanabenko"
         ],
         "andrew_ids": [
+          "avarigon",
+          "hbenko",
+          "ndishon",
+          "semathew",
           "yh4"
         ]
       },

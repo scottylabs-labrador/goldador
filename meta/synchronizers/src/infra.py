@@ -131,6 +131,7 @@ class TeamMembersData(BaseModel):
 class InfraSynchronizer(AbstractSynchronizer):
     """Infrastructure synchronizer."""
 
+    GOLDADOR = "goldador"
     INFRA_FILE_PATH = "infra/inputs.json"
     COMMIT_MESSAGE = "chore: auto-update infra/inputs.json"
 
@@ -161,14 +162,24 @@ class InfraSynchronizer(AbstractSynchronizer):
             non_admins=self._get_andrew_ids(github_usernames.non_admins),
         )
 
+        all_team_leads = {
+            lead for team in self.teams.values() for lead in team.leads
+        }
+
         teams_data = {}
         for team_slug, team in self.teams.items():
+            # Team leads need write on goldador so GitHub CODEOWNERS can
+            # request them as reviewers.
+            member_usernames = set(team.members)
+            if team_slug == self.GOLDADOR:
+                member_usernames |= all_team_leads
+
             entry: dict[str, Any] = {
                 "name": team.name,
                 "description": team.description,
                 "members": TeamMembersData(
-                    github_usernames=sorted(team.members),
-                    andrew_ids=self._get_andrew_ids(team.members),
+                    github_usernames=sorted(member_usernames),
+                    andrew_ids=self._get_andrew_ids(sorted(member_usernames)),
                 ),
                 "admins": TeamMembersData(
                     github_usernames=sorted(team.leads),
