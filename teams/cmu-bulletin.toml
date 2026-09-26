@@ -11,13 +11,11 @@ website = "cmubulletin.com"
 server = "your-team-server.com"
 
 
-
 # List of repositories owned by the team.
 # Note that the owners of the repositories must be ScottyLabs-Labrador.
 [[repos]]
-name = "CMU-Bulletin" # As it appears at the end of the GitHub repository URL
+name = "CMU-Bulletin"      # As it appears at the end of the GitHub repository URL
 description = "Main repo."
-
 
 
 # List of membership records by timeframe.
