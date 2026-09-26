@@ -1,0 +1,41 @@
+# The name is used to identify the team publicly (e.g. GitHub org team name).
+name = "CMU Bulletin"
+
+description = """
+A brief description of the team.
+"""
+
+# The website and server are not required until the team is ready to deploy.
+# Omit the https:// prefix for the website and server.
+website = "cmubulletin.com"
+server = "your-team-server.com"
+
+
+
+# List of repositories owned by the team.
+# Note that the owners of the repositories must be ScottyLabs-Labrador.
+[[repos]]
+name = "CMU-Bulletin" # As it appears at the end of the GitHub repository URL
+description = "Main repo."
+
+
+
+# List of membership records by timeframe.
+# Note that only the first record will be used for synchronization.
+[[membership]]
+
+# The timeframe can be any string, but we suggest using either the year or semester.
+# E.g. "2026-2027" or "Spring 2026".
+timeframe = "2026-2027"
+
+# List of the GitHub usernames of the leads for this timeframe.
+leads = ["ziwei-che"]
+
+# List of members for this timeframe.
+[[membership.members]]
+github-username = "member-1"
+title = "Member 1's title" # The title is optional.
+
+[[membership.members]]
+github-username = "member-2"
+title = "Member 2's title"
