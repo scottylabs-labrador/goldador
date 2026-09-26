@@ -12,21 +12,60 @@
       "laasyaaki"
     ],
     "non_admins": [
+      "AA2026",
+      "EnspikondPlusPlus",
+      "EthanZ2007",
+      "HarishSenthilkumar",
+      "JiayiH08",
+      "KeyaanMatrix",
+      "NainaEnock",
       "Yutai007",
       "a-varigonda",
+      "aanya21gupta",
+      "amishigupta",
+      "appleorange",
+      "arhavthakkar",
+      "arjunmaganti",
+      "arren51",
       "ashah48",
+      "ay93546",
       "bmood25",
+      "brady-q",
+      "carolyne-chiang",
       "cheezypegasus",
       "csongfm",
+      "davidx2-gif",
+      "didikana",
+      "dishon949",
+      "dzhou08",
+      "eitankrajewski",
       "graceguo16",
+      "henhen1235",
+      "hnaracodes",
       "ipyoon",
+      "janek0420",
+      "justinwu80",
+      "k3t6hup",
+      "kevin20074321",
+      "klz037",
+      "kzz9984",
       "noe2971",
+      "nosleep32",
       "rarangil",
       "rayank7674",
+      "riishp",
+      "rocketrules",
+      "rohansp007",
+      "s520y",
+      "sagelu1",
       "samad2084",
       "sophiez3",
+      "sophiezxh",
+      "stingray8",
+      "szzxt",
       "tejaschaudhari131",
-      "veriivy"
+      "veriivy",
+      "ziwei-che"
     ]
   },
   "andrew_ids": {
@@ -43,20 +82,59 @@
     ],
     "non_admins": [
       "aahans",
+      "aanyag2",
+      "aayana",
+      "abthakka",
+      "amaganti",
+      "amishig",
+      "aravagar",
+      "audreyya",
       "audreyz2",
       "avarigon",
+      "avijendr",
       "bmood",
+      "bquo",
+      "carolyne",
       "cesong",
       "charlie3",
+      "darisan",
+      "davidx2",
+      "dhzhou",
+      "ekrajews",
+      "ethanzhe",
+      "hhxu",
+      "hnara",
+      "hsenthil",
       "ipae",
+      "ivanz",
+      "janekim",
+      "jiayihu",
+      "jzwu",
+      "kasubash",
+      "kelseyli",
+      "keyaans",
+      "ktan2",
+      "kzzhao",
+      "liweix",
+      "nainae",
       "nchandy",
+      "ndishon",
       "rarangil",
       "rkha",
+      "rpachava",
+      "rparthip",
+      "sabellah",
+      "sagelu",
       "samad",
+      "seany2",
       "sophiez3",
+      "susanzuo",
+      "szhang4",
       "tchaudha",
+      "tingrayc",
       "yumengg2",
-      "yutailon"
+      "yutailon",
+      "ziweiche"
     ]
   },
   "teams": {
@@ -65,10 +143,18 @@
       "description": "Web extension to push an automatic, customizable, summary of emails and Canvas, Ed, Piazza and other softwares' posts, creating a daily/weekly to-do list.\n",
       "members": {
         "github_usernames": [
-          "a-varigonda"
+          "a-varigonda",
+          "ay93546",
+          "brady-q",
+          "rocketrules",
+          "rohansp007"
         ],
         "andrew_ids": [
-          "avarigon"
+          "aravagar",
+          "audreyya",
+          "avarigon",
+          "bquo",
+          "rparthip"
         ]
       },
       "admins": {
@@ -84,15 +170,75 @@
       ],
       "create_oidc_clients": false
     },
+    "cmu-bulletin": {
+      "name": "CMU Bulletin",
+      "description": "Your one-stop shop for everything happening at Carnegie Mellon. Never miss an event on campus again.\n",
+      "members": {
+        "github_usernames": [
+          "ziwei-che"
+        ],
+        "andrew_ids": [
+          "ziweiche"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "ziwei-che"
+        ],
+        "andrew_ids": [
+          "ziweiche"
+        ]
+      },
+      "repos": [
+        "CMU-Bulletin"
+      ],
+      "create_oidc_clients": true,
+      "website": "cmubulletin.com",
+      "server": "your-team-server.com"
+    },
+    "cmu-scottytasks": {
+      "name": "CMU-ScottyTasks",
+      "description": "A mobile gamified task/habit tracker with a leaderboard system and a personalized, upgradable Scotty dog avatar.\"\n",
+      "members": {
+        "github_usernames": [
+          "dishon949"
+        ],
+        "andrew_ids": [
+          "ndishon"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "dishon949"
+        ],
+        "andrew_ids": [
+          "ndishon"
+        ]
+      },
+      "repos": [
+        "CMU-ScottyTasks"
+      ],
+      "create_oidc_clients": false
+    },
     "goldador": {
       "name": "Goldador",
       "description": "Responsible for governance in Labrador.",
       "members": {
         "github_usernames": [
-          "Yuxiang-Huang"
+          "SamEthanMathew",
+          "Yuxiang-Huang",
+          "a-varigonda",
+          "dishon949",
+          "hanabenko",
+          "ziwei-che"
         ],
         "andrew_ids": [
-          "yh4"
+          "avarigon",
+          "hbenko",
+          "ndishon",
+          "semathew",
+          "yh4",
+          "ziweiche"
         ]
       },
       "admins": {

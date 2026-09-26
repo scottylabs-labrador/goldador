@@ -13,6 +13,7 @@ class LoaderErrorCode(Enum):
     MEMBER_KEY_ORDERING = "MEMBER_KEY_ORDERING"
     TEAM_NOT_FILE = "TEAM_NOT_FILE"
     TEAM_KEY_ORDERING = "TEAM_KEY_ORDERING"
+    TEAM_FILENAME_NOT_LOWERCASE = "TEAM_FILENAME_NOT_LOWERCASE"
 
 
 # (file_path, error_code_name, message). ``error_code_name`` must match an

@@ -60,6 +60,7 @@ check:
 
 ### Teams
 
+- The team filename must be lowercase.
 - All leads in a team must also be listed as members.
 - All team members must be listed in the [`members/`](../../members/) directory.
 - Each team repository must exist in the
