@@ -33,9 +33,4 @@ leads = ["ziwei-che"]
 
 # List of members for this timeframe.
 [[membership.members]]
-github-username = "member-1"
-title = "Member 1's title" # The title is optional.
-
-[[membership.members]]
-github-username = "member-2"
-title = "Member 2's title"
+github-username = "ziwei-che"
