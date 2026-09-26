@@ -41,3 +41,11 @@ leads = ["cahove"]
 [[membership.members]]
 github-username = "cahove"
 title = "Frontend Developer" # The title is optional.
+
+[[membership.members]]
+github-username = "Aaron123456789123456789"
+title = "Backend Developer"                 # The title is optional.
+
+[[membership.members]]
+github-username = "KevinL135"
+title = "Backend Developer"   # The title is optional.
