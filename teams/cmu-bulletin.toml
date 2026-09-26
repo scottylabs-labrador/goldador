@@ -2,7 +2,7 @@
 name = "CMU Bulletin"
 
 description = """
-A brief description of the team.
+Your one-stop shop for everything happening at Carnegie Mellon. Never miss an event on campus again.
 """
 
 # The website and server are not required until the team is ready to deploy.
