@@ -27,7 +27,7 @@ description = "ScottyTasks app."
 timeframe = "2026-2027"
 
 # List of the GitHub usernames of the leads for this timeframe.
-leads = ["dishon949"]
+leads = ["dishon949", "MichaelfromSBS"]
 
 # List of members for this timeframe.
 # [[membership.members]]
@@ -36,3 +36,5 @@ leads = ["dishon949"]
 
 [[membership.members]]
 github-username = "dishon949"
+[[membership.members]]
+github-username = "MichaelfromSBS"
