@@ -1,0 +1,37 @@
+name = "Meder"
+description = """
+Personal Health
+"""
+create-oidc-clients = false
+
+[[repos]]
+name = "Meder"
+description = "Personal Health"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["arren51"]
+
+[[membership.members]]
+github-username = "arren51"
+
+[[membership.members]]
+github-username = "ashah48"
+
+[[membership.members]]
+github-username = "maxwellliu07"
+
+[[membership.members]]
+github-username = "EthanZ2007"
+
+# [[membership.members]]
+# github-username = "aapin1"
+
+# [[membership.members]]
+# github-username = "d4niellaa"
+
+# [[membership.members]]
+# github-username = "lukasyao6"
+
+# [[membership.members]]
+# github-username = "woshizhaoyue"
