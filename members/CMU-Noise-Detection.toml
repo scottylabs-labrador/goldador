@@ -1,0 +1,18 @@
+name = "CMU Noise Detection"
+description = ""
+create-oidc-clients = false
+
+[[repos]]
+name = "CMU-Noise-Detection"
+description = "Place small sound-sensing devices in selected campus locations. These devices would measure the current sound environment and classify each space into categories such as quiet, conversation-heavy, lively, or noisy. The results would then be shown on an interactive campus map, along with recommendations for activities that fit each space.
+"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["kevin20074321"]
+
+[[membership.members]]
+github-username = "sagelu1"
+
+[[membership.members]]
+github-username = "appleorange"
