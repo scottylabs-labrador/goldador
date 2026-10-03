@@ -1,0 +1,17 @@
+name = "cmu-noise-detection"
+description = "a noise detection system that notify students of the general noise level and busyness of popular CMU common areas"
+create-oidc-clients = false
+
+[[repos]]
+name = "cmu-noise-detection"
+description = "a noise detection system that notify students of the general noise level and busyness of popular CMU common areas"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["kevin20074321"]
+
+[[membership.members]]
+github-username = "sagelu1"
+
+[[membership.members]]
+github-username = "appleorange"
