@@ -1,0 +1,63 @@
+name = "Scotty Delivery"
+description = "Scotty Delivery is a on-campus food delivery service, founded by students, operated by students, and serving students, faculty, and staff of our university"
+website = ""
+server = ""
+
+[[repos]]
+name = "ScottyDelivery"
+description = "Scotty Delivery is a on-campus food delivery service, founded by students, operated by students, and serving students, faculty, and staff of our university."
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["Yutai007", "ryanwong05", "veriivy", "k3t6hup", "ju1iaw"]
+
+[[membership.members]]
+github-username = "Yutai007"
+
+[[membership.members]]
+github-username = "ryanwong05"
+
+[[membership.members]]
+github-username = "dzhou08"
+
+[[membership.members]]
+github-username = "ethanliu2026"
+
+[[membership.members]]
+github-username = "duallyhazard"
+
+[[membership.members]]
+github-username = "veriivy"
+
+[[membership.members]]
+github-username = "k3t6hup"
+
+[[membership.members]]
+github-username = "electricSoda"
+
+[[membership.members]]
+github-username = "tfeng12753"
+
+[[membership.members]]
+github-username = "ju1iaw"
+
+[[membership.members]]
+github-username = "KeyaanMatrix"
+
+[[membership.members]]
+github-username = "stingray8"
+
+[[membership.members]]
+github-username = "didikana"
+
+[[membership.members]]
+github-username = "noe2971"
+
+[[membership.members]]
+github-username = "shainag03"
+
+[[membership.members]]
+github-username = "riishp"
+
+[[membership.members]]
+github-username = "carolyne-chiang"
