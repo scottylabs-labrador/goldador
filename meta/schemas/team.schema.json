@@ -76,35 +76,6 @@
     "additionalProperties": false
   },
   "additionalProperties": false,
-  "allOf": [
-    {
-      "$comment": "Require 'website' and 'server' when 'create-oidc-clients' is missing or true.",
-      "if": {
-        "anyOf": [
-          {
-            "not": {
-              "required": [
-                "create-oidc-clients"
-              ]
-            }
-          },
-          {
-            "properties": {
-              "create-oidc-clients": {
-                "const": true
-              }
-            }
-          }
-        ]
-      },
-      "then": {
-        "required": [
-          "website",
-          "server"
-        ]
-      }
-    }
-  ],
   "definitions": {
     "repo": {
       "type": "object",
