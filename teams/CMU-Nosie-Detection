@@ -1,0 +1,17 @@
+name = "CMU Nosie Detection"
+description = "CMU Nosie Detection"
+create-oidc-clients = false
+
+[[repos]]
+name = "CMU Nosie Detection"
+description = "CMU Nosie Detection"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["kevin20074321"]
+
+[[membership.members]]
+github-username = "appleorange"
+
+[[membership.members]]
+github-username = "sagelu1"
