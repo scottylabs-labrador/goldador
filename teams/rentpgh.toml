@@ -1,0 +1,21 @@
+# The name is used to identify the team publicly (e.g. GitHub org team name).
+name = "The Pittsburgh Student Renters Network"
+description = """
+The Pittsburgh Student Renters Network (TPSRN) helps students navigate the rental market by sharing reliable information about buildings and landlords.
+"""
+create-oidc-clients = false
+
+# List of repositories owned by the team.
+# Note that the owners of the repositories must be ScottyLabs-Labrador.
+[[repos]]
+name = "student_housing_colab_with_gsa" # As it appears at the end of the GitHub repository URL
+description = "Project to develop a way for CMU students to share their rental experiences and see what landlords/buildings/units are good or bad."
+
+# List of membership records by timeframe.
+# Note that only the first record will be used for synchronization.
+[[membership]]
+timeframe = "2025-2026"
+leads = ["atimmins7"]
+
+[[membership.members]]
+github-username = "atimmins7"
