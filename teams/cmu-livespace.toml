@@ -1,0 +1,17 @@
+name = "cmu-livespace"
+description = "Privacy-preserving real-time space monitoring using ESP32, mmWave radar, and acoustic sensing to estimate ambient noise and crowd activity in shared environments."
+create-oidc-clients = false
+repos = []
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["kevin20074321"]
+
+[[membership.members]]
+github-username = "kevin20074321"
+
+[[membership.members]]
+github-username = "sagelu1"
+
+[[membership.members]]
+github-username = "appleorange"
