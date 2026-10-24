@@ -1,4 +1,4 @@
-"""Process-lifetime cache of member identities that already passed remote checks."""
+"""Process-lifetime cache of remote checks that already succeeded."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import threading
 _lock = threading.Lock()
 _verified_github_usernames: set[str] = set()
 _verified_keycloak_pairs: set[tuple[str, str]] = set()
+_verified_github_repos: set[str] = set()
 
 
 def _github_username_key(github_username: str) -> str:
@@ -40,8 +41,26 @@ def remember_keycloak_pair(andrew_id: str, github_username: str) -> None:
         _verified_keycloak_pairs.add(key)
 
 
+def _github_repo_key(repo_name: str) -> str:
+    """Normalize a GitHub repository name the same way GitHub compares them."""
+    return repo_name.lower()
+
+
+def github_repo_verified(repo_name: str) -> bool:
+    """Return whether ``repo_name`` already resolved to an existing repository."""
+    with _lock:
+        return _github_repo_key(repo_name) in _verified_github_repos
+
+
+def remember_github_repo(repo_name: str) -> None:
+    """Record that ``repo_name`` resolved to an existing repository."""
+    with _lock:
+        _verified_github_repos.add(_github_repo_key(repo_name))
+
+
 def clear_verified_identities() -> None:
-    """Drop every cached identity."""
+    """Drop every cached identity and repository."""
     with _lock:
         _verified_github_usernames.clear()
         _verified_keycloak_pairs.clear()
+        _verified_github_repos.clear()

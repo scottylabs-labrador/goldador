@@ -16,9 +16,9 @@ A brief description of the team.
 """
 
 # The website and server are not required until the team is ready to deploy.
-# Omit the https:// prefix. With OIDC left on, omitting either domain creates
-# only the local client. Dev, staging, and prod clients are created once both
-# domains are set.
+# Omit the https:// prefix. With OIDC left on, omitting the server creates
+# only the local client. Dev, staging, and prod clients are created once the
+# server is set. An empty website uses "+" as the root URL.
 website = "your-team-website.com"
 server = "your-team-server.com"
 

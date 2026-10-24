@@ -44,6 +44,7 @@
       "davidx2-gif",
       "didikana",
       "dishon949",
+      "duallyhazard",
       "dzhou08",
       "eitankrajewski",
       "ethanliu2026",
@@ -60,15 +61,18 @@
       "khushij312",
       "klz037",
       "kzz9984",
+      "lordkarv",
+      "mambabhi",
       "maxwellliu07",
+      "mbatkhuu",
       "nicholascui225",
+      "nihal-j",
       "noe2971",
       "nosleep32",
       "pnimmaga-jpg",
       "rarangil",
       "rayank7674",
       "riishp",
-      "rocketrules",
       "rohansp007",
       "ryanwong05",
       "s520y",
@@ -105,12 +109,12 @@
       "aanyag2",
       "aaronch2",
       "aayana",
+      "abhii",
       "abthakka",
       "amaganti",
       "amishig",
       "angely",
       "appinto",
-      "aravagar",
       "aryangup",
       "audreyya",
       "audreyz2",
@@ -145,13 +149,16 @@
       "keyaans",
       "khushij",
       "ktan2",
+      "kvattem",
       "kzzhao",
       "liweix",
+      "mbatkhuu",
       "myliu2",
       "nainae",
       "nchandy",
       "ncui2",
       "ndishon",
+      "nihaljos",
       "pnimmaga",
       "rarangil",
       "renfeirw",
@@ -164,6 +171,7 @@
       "samad",
       "sdavidi",
       "seany2",
+      "sgli",
       "shainag",
       "sophiez3",
       "srianeek",
@@ -187,12 +195,10 @@
           "ay93546",
           "brady-q",
           "pnimmaga-jpg",
-          "rocketrules",
           "rohansp007",
           "the-srianeesh"
         ],
         "andrew_ids": [
-          "aravagar",
           "audreyya",
           "avarigon",
           "bquo",
@@ -219,10 +225,14 @@
       "description": "Briefly allows users to curate multiple newsletters\nbased on their interests like in sports or finance.\nAn AI will automatically generate the newsletter described and email\nit to users at user-specified times.\n",
       "members": {
         "github_usernames": [
+          "Aaron123456789123456789",
+          "KevinL135",
           "cahove"
         ],
         "andrew_ids": [
-          "chove"
+          "aaronch2",
+          "chove",
+          "kevinlu3"
         ]
       },
       "admins": {
@@ -358,32 +368,70 @@
       ],
       "create_oidc_clients": false
     },
+    "cmumaps-mobile": {
+      "name": "CMU Maps Mobile",
+      "description": "Mobile app for CMU Maps.",
+      "members": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "repos": [
+        "cmumaps-mobile"
+      ],
+      "create_oidc_clients": true,
+      "website": "",
+      "server": "mobile.maps.scottylabs.org"
+    },
     "goldador": {
       "name": "Goldador",
       "description": "Responsible for governance in Labrador.",
       "members": {
         "github_usernames": [
           "SamEthanMathew",
+          "Yutai007",
           "Yuxiang-Huang",
           "a-varigonda",
           "cahove",
+          "carolyne-chiang",
           "dishon949",
           "hanabenko",
           "henhen1235",
           "jahuang24",
+          "k3t6hup",
           "nicholascui225",
+          "ryanwong05",
+          "stingray8",
+          "veriivy",
           "ziwei-che"
         ],
         "andrew_ids": [
+          "audreyz2",
           "avarigon",
+          "carolyne",
           "chove",
           "hbenko",
           "hhxu",
           "jarretth",
+          "kasubash",
           "ncui2",
           "ndishon",
+          "renfeirw",
           "semathew",
+          "tingrayc",
           "yh4",
+          "yutailon",
           "ziweiche"
         ]
       },
@@ -514,6 +562,66 @@
       "website": "meet.scottylabs.org",
       "server": "api.meet.scottylabs.org"
     },
+    "scotty-delivery": {
+      "name": "Scotty Delivery",
+      "description": "Scotty Delivery is a on-campus food delivery service, founded by students, operated by students, and serving students, faculty, and staff of our university",
+      "members": {
+        "github_usernames": [
+          "KeyaanMatrix",
+          "Yutai007",
+          "carolyne-chiang",
+          "didikana",
+          "dzhou08",
+          "ethanliu2026",
+          "k3t6hup",
+          "noe2971",
+          "riishp",
+          "ryanwong05",
+          "shainag03",
+          "stingray8",
+          "veriivy"
+        ],
+        "andrew_ids": [
+          "audreyz2",
+          "carolyne",
+          "darisan",
+          "dhzhou",
+          "ethanlil",
+          "kasubash",
+          "keyaans",
+          "nchandy",
+          "renfeirw",
+          "rpachava",
+          "shainag",
+          "tingrayc",
+          "yutailon"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "Yutai007",
+          "carolyne-chiang",
+          "k3t6hup",
+          "ryanwong05",
+          "stingray8",
+          "veriivy"
+        ],
+        "andrew_ids": [
+          "audreyz2",
+          "carolyne",
+          "kasubash",
+          "renfeirw",
+          "tingrayc",
+          "yutailon"
+        ]
+      },
+      "repos": [
+        "Scotty-Delivery"
+      ],
+      "create_oidc_clients": true,
+      "website": "",
+      "server": ""
+    },
     "scottystack": {
       "name": "ScottyStack",
       "description": "Responsible for maintenance of ScottyLabs Full Stack Template",
@@ -610,26 +718,6 @@
       "create_oidc_clients": true,
       "website": "collegecart.org",
       "server": "collegecart.org"
-    },
-    "cmustudy": {
-      "name": "CMU Study",
-      "description": "The CMU Study team.",
-      "members": {
-        "github_usernames": [],
-        "andrew_ids": [
-          "annadavi"
-        ]
-      },
-      "admins": {
-        "github_usernames": [],
-        "andrew_ids": [
-          "annadavi"
-        ]
-      },
-      "repos": [],
-      "create_oidc_clients": true,
-      "website": "study.scottylabs.org",
-      "server": "study.scottylabs.org"
     }
   }
 }

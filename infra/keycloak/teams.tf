@@ -45,33 +45,33 @@ locals {
   local_clients = { for slug in local.team_slugs : "${slug}-local" => {
     client_id   = "${slug}-local"
     root_url    = "http://localhost:3000"
-    redirects   = ["http://localhost/api/auth/oauth2/callback/keycloak"]
+    redirects   = ["http://localhost/api/auth/oauth2/callback/keycloak", "http://localhost/api/auth/callback/keycloak"]
     web_origins = ["http://localhost"]
   } if var.teams[slug].create_oidc_clients }
 
   # Generate development clients
   dev_clients = { for k, v in var.teams : "${k}-dev" => {
     client_id   = "${k}-dev"
-    root_url    = "https://dev.${v.website}"
-    redirects   = ["https://dev.${v.server}/api/auth/oauth2/callback/keycloak"]
+    root_url    = v.website != "" ? "https://dev.${v.website}" : ""
+    redirects   = ["https://dev.${v.server}/api/auth/oauth2/callback/keycloak", "https://dev.${v.server}/api/auth/callback/keycloak"]
     web_origins = ["https://dev.${v.server}"]
-  } if v.create_oidc_clients && v.website != "" && v.server != "" }
+  } if v.create_oidc_clients && v.server != "" }
 
   # Generate staging clients
   staging_clients = { for k, v in var.teams : "${k}-staging" => {
     client_id   = "${k}-staging"
-    root_url    = "https://staging.${v.website}"
-    redirects   = ["https://staging.${v.server}/api/auth/oauth2/callback/keycloak"]
+    root_url    = v.website != "" ? "https://staging.${v.website}" : ""
+    redirects   = ["https://staging.${v.server}/api/auth/oauth2/callback/keycloak", "https://staging.${v.server}/api/auth/callback/keycloak"]
     web_origins = ["https://staging.${v.server}"]
-  } if v.create_oidc_clients && v.website != "" && v.server != "" }
+  } if v.create_oidc_clients && v.server != "" }
 
   # Generate prod clients
   prod_clients = { for k, v in var.teams : "${k}-prod" => {
     client_id   = "${k}-prod"
-    root_url    = "https://${v.website}"
-    redirects   = ["https://${v.server}/api/auth/oauth2/callback/keycloak"]
+    root_url    = v.website != "" ? "https://${v.website}" : ""
+    redirects   = ["https://${v.server}/api/auth/oauth2/callback/keycloak", "https://${v.server}/api/auth/callback/keycloak"]
     web_origins = ["https://${v.server}"]
-  } if v.create_oidc_clients && v.website != "" && v.server != "" }
+  } if v.create_oidc_clients && v.server != "" }
 
   # Merge them into one map
   all_clients = merge(local.local_clients, local.dev_clients, local.staging_clients, local.prod_clients)
