@@ -568,7 +568,7 @@
       "website": "meet.scottylabs.org",
       "server": "api.meet.scottylabs.org"
     },
-    "reserve_cmu": {
+    "reserve-cmu": {
       "name": "ReserveCMU",
       "description": "ReserveCMU is a one-stop-shop website/app for all things related to reservations on CMU campus. Users can reserve any facilities or spaces on campus, including study spaces, music rooms, meeting rooms, sports facilities, etc.\n",
       "members": {
