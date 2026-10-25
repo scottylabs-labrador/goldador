@@ -405,8 +405,10 @@
           "Yutai007",
           "Yuxiang-Huang",
           "a-varigonda",
+          "bmood25",
           "cahove",
           "carolyne-chiang",
+          "davidx2-gif",
           "dishon949",
           "hanabenko",
           "henhen1235",
@@ -421,8 +423,10 @@
         "andrew_ids": [
           "audreyz2",
           "avarigon",
+          "bmood",
           "carolyne",
           "chove",
+          "davidx2",
           "hbenko",
           "hhxu",
           "jarretth",
@@ -563,6 +567,44 @@
       "create_oidc_clients": true,
       "website": "meet.scottylabs.org",
       "server": "api.meet.scottylabs.org"
+    },
+    "reserve_cmu": {
+      "name": "ReserveCMU",
+      "description": "ReserveCMU is a one-stop-shop website/app for all things related to reservations on CMU campus. Users can reserve any facilities or spaces on campus, including study spaces, music rooms, meeting rooms, sports facilities, etc.\n",
+      "members": {
+        "github_usernames": [
+          "amishigupta",
+          "bmood25",
+          "davidx2-gif",
+          "faribahnuha",
+          "nosleep32",
+          "sophiez3",
+          "sophiezxh"
+        ],
+        "andrew_ids": [
+          "amishig",
+          "bmood",
+          "davidx2",
+          "fmn",
+          "liweix",
+          "sophiez3",
+          "szhang4"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "bmood25",
+          "davidx2-gif"
+        ],
+        "andrew_ids": [
+          "bmood",
+          "davidx2"
+        ]
+      },
+      "repos": [
+        "ReserveCMU"
+      ],
+      "create_oidc_clients": false
     },
     "scotty-delivery": {
       "name": "Scotty Delivery",
