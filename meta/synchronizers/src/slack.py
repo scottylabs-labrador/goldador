@@ -63,7 +63,7 @@ class SlackSynchronizer(AbstractSynchronizer):
         cursor: str | None = None
         while True:
             response = self.bot_client.conversations_list(
-                types="public_channel",
+                types="public_channel,private_channel",
                 cursor=cursor,
             )
 
