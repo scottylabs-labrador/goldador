@@ -401,10 +401,12 @@
       "description": "Responsible for governance in Labrador.",
       "members": {
         "github_usernames": [
+          "NainaEnock",
           "SamEthanMathew",
           "Yutai007",
           "Yuxiang-Huang",
           "a-varigonda",
+          "aanya21gupta",
           "bmood25",
           "cahove",
           "carolyne-chiang",
@@ -421,6 +423,7 @@
           "ziwei-che"
         ],
         "andrew_ids": [
+          "aanyag2",
           "audreyz2",
           "avarigon",
           "bmood",
@@ -431,6 +434,7 @@
           "hhxu",
           "jarretth",
           "kasubash",
+          "nainae",
           "ncui2",
           "ndishon",
           "renfeirw",
@@ -665,6 +669,42 @@
       "create_oidc_clients": true,
       "website": "",
       "server": ""
+    },
+    "scottycoffee": {
+      "name": "Scotty's Coffee",
+      "description": "A CMU-only platform designed to make networking between students feel less like collecting connections and more like having real conversations.",
+      "members": {
+        "github_usernames": [
+          "NainaEnock",
+          "aanya21gupta",
+          "janek0420",
+          "kzz9984",
+          "mambabhi",
+          "samad2084"
+        ],
+        "andrew_ids": [
+          "aanyag2",
+          "abhii",
+          "janekim",
+          "kzzhao",
+          "nainae",
+          "samad"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "NainaEnock",
+          "aanya21gupta"
+        ],
+        "andrew_ids": [
+          "aanyag2",
+          "nainae"
+        ]
+      },
+      "repos": [
+        "scotty-coffee"
+      ],
+      "create_oidc_clients": false
     },
     "scottystack": {
       "name": "ScottyStack",
