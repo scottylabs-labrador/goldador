@@ -342,7 +342,7 @@
         ]
       },
       "repos": [
-        "ResearchStarter"
+        "CMUResearch"
       ],
       "create_oidc_clients": false
     },
