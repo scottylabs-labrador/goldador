@@ -1,0 +1,46 @@
+# The name is used to identify the team publicly (e.g. GitHub org team name).
+name = "FlashTeX"
+
+description = """
+FlashTeX is a blazing-fast (La)TeX engine written in Rust. The two main parts of the project
+are an ultra-fast compiler written in rust that supports incremental compilation and live-preview and
+a lightweight, native ide.
+"""
+
+# The website and server are not required until the team is ready to deploy.
+# Omit the https:// prefix. With OIDC left on, omitting the server creates
+# only the local client. Dev, staging, and prod clients are created once the
+# server is set. An empty website uses "+" as the root URL.
+website = "flash-tex.github.io/flashtex/"
+server = "N/A"                            #to add in the future
+
+# Set the `create-oidc-clients` field to `false` if the team does not need OIDC
+# clients. OIDC clients are necessary if you want to use ScottyLabs' auth system!
+#
+# It defaults to true if not specified, so please remove this section if the team
+# DO need OIDC clients.
+
+#unsure rn
+create-oidc-clients = false
+
+# List of repositories owned by the team.
+# Note that the owners of the repositories must be ScottyLabs-Labrador.
+[[repos]]
+name = "flashtex"                      # discuss moving this to ScottyLabs-Labrador at some point
+description = "the main flashtex repo" #we should probably split the engine and app at some point
+
+# List of membership records by timeframe.
+# Note that only the first record will be used for synchronization.
+[[membership]]
+
+# The timeframe can be any string, but we suggest using either the year or semester.
+# E.g. "2026-2027" or "Spring 2026".
+timeframe = "2026-2027"
+
+# List of the GitHub usernames of the leads for this timeframe.
+leads = ["GoKubar"] #jaysen & aarush add yourselves
+
+# List of members for this timeframe.
+[[membership.members]]
+github-username = "GoKubar"
+title = "Lead"              # The title is optional.
