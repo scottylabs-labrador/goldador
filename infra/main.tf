@@ -66,14 +66,11 @@ module "github" {
   teams            = local.teams
 }
 
-module "google_group" {
-  source = "./google_group"
+module "grouper" {
+  source = "./grouper"
 
   # Credentials
-  google_credentials_json = var.google_credentials_json
-
-  # IDs
-  google_group_id = var.google_group_id
+  grouper_password = var.cmu_ldap_bind_credential
 
   # Data
   andrew_ids = local.andrew_ids
