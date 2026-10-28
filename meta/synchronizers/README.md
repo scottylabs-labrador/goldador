@@ -4,7 +4,8 @@ This directory contains Python-based synchronizers that project the desired
 Labrador access model from [`members/`](../../members/) and
 [`teams/`](../../teams/) into external systems or generated repository files.
 
-Each synchronizer loads the same member and team models, then performs one
+Each synchronizer loads the same member and team models, with leadership's
+members and leads read from Labrador's roles in Grouper, then performs one
 targeted side effect.
 
 ## Entrypoints
@@ -32,6 +33,7 @@ The CODEOWNERS synchronizer updates
 Required environment:
 
 - `SYNC_GITHUB_TOKEN`
+- `GROUPER_PASSWORD`
 
 ## Infra
 
@@ -47,6 +49,7 @@ The infra synchronizer updates [`../../infra/inputs.json`](../../infra/inputs.js
 Required environment:
 
 - `SYNC_GITHUB_TOKEN`
+- `GROUPER_PASSWORD`
 
 ## Slack
 
@@ -67,6 +70,7 @@ Required environment:
 - `KEYCLOAK_REALM`
 - `KEYCLOAK_CLIENT_ID`
 - `KEYCLOAK_USER_REALM`
+- `GROUPER_PASSWORD`
 
 ## Google Drive
 
@@ -84,6 +88,7 @@ Required environment:
 - `GOOGLE_PRIVATE_KEY`
 - `SCOTTYLABS_GOOGLE_DRIVE_ID`
 - `SCOTTYLABS_LEADERSHIP_FOLDER_ID`
+- `GROUPER_PASSWORD`
 
 ## CI Behavior
 

@@ -3,7 +3,7 @@
 This directory contains the OpenTofu infrastructure for Labrador governance.
 It consumes generated data from [`inputs.json`](inputs.json), plus sensitive
 runtime variables supplied by CI, and applies the resulting access model to
-identity, secret, GitHub, and Google Group systems.
+identity, secret, GitHub, and Grouper systems.
 
 ## Layout
 
@@ -15,7 +15,7 @@ infra/
 ├── variables.tf       # Runtime variables and secrets
 ├── inputs.json        # Generated member and team data
 ├── github/            # GitHub organization membership and teams
-├── google_group/      # Google Group membership
+├── grouper/           # Labrador's general group in Grouper
 ├── keycloak/          # Labrador realm, groups, clients, and identity providers
 └── secrets/           # OpenBao auth, policies, and team secrets
 ```
@@ -58,9 +58,9 @@ Manages GitHub organization state:
 - `membership.tf` manages organization membership.
 - `teams.tf` creates teams, team membership, and repository permissions.
 
-### `google_group`
+### `grouper`
 
-Manages Google Group membership from the generated Andrew ID lists.
+Manages the members of Labrador's general group in Grouper from the generated Andrew ID lists, leaving out leadership, which ScottyLabs governance adds to Grouper's role groups.
 
 ## Applying Changes
 

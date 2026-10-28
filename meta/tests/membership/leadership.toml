@@ -1,0 +1,7 @@
+name = "Leadership"
+description = "Leadership's members and leads come from Grouper, so it has no membership."
+create-oidc-clients = false
+
+[[repos]]
+name = "fixture-repo"
+description = "Repository fixture."

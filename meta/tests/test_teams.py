@@ -8,9 +8,10 @@ from typing import TYPE_CHECKING
 import pytest
 from github import GithubException
 
+from meta.loaders.errors import GovernanceLoadError
 from meta.loaders.members import load_members
 from meta.loaders.teams import load_teams
-from meta.models import Repo, Team
+from meta.models import Member, Repo, Team
 from meta.validator.src.github_utils import GitHubRateLimitError
 from meta.validator.src.reporter import ErrorCode, Reporter, bind_reporter
 from meta.validator.src.rules.teams import TeamValidationError, TeamValidator
@@ -89,6 +90,21 @@ def test_team_lead_not_in_members(monkeypatch: MonkeyPatch) -> None:
     )
     TeamValidator(teams, members, reporter).validate()
     assert has_error(reporter, ErrorCode.LEAD_CROSS_REFERENCE)
+
+
+def test_team_without_membership() -> None:
+    """Every team except leadership must have a membership record."""
+    with pytest.raises(GovernanceLoadError, match="malformed team structure"):
+        load_teams(None, "meta/tests/membership/no-membership.toml")
+
+
+def test_leadership_without_membership() -> None:
+    """Leadership may have no membership, since its members come from Grouper."""
+    reporter = Reporter()
+    teams = load_teams(bind_reporter(reporter), "meta/tests/membership/leadership.toml")
+    assert no_errors(reporter)
+    assert teams["leadership"].members == []
+    assert teams["leadership"].leads == []
 
 
 def test_rate_limited_github_team_repo_raises(monkeypatch: MonkeyPatch) -> None:
@@ -183,6 +199,13 @@ class _SelectiveRepoClient(MockGithubClientValid):
             raise GithubException(status=404, data={"message": "Not Found"})
 
 
+_FIXTURE_MEMBERS = {
+    "alice": Member.model_validate(
+        {"full-name": "Alice Example", "file_path": "members/alice.toml"},
+    ),
+}
+
+
 def _teams(*repo_names: str) -> dict[str, Team]:
     """Build a one-team index whose only remote check is repository existence."""
     team = Team(
@@ -193,8 +216,8 @@ def _teams(*repo_names: str) -> dict[str, Team]:
         repos=[
             Repo(name=name, description="Fixture repository.") for name in repo_names
         ],
-        leads=[],
-        members=[],
+        leads=["alice"],
+        members=["alice"],
     )
     return {"fixture": team}
 
@@ -208,11 +231,11 @@ def test_cached_repo_skips_github(monkeypatch: MonkeyPatch) -> None:
     )
 
     first = Reporter()
-    TeamValidator(_teams("fixture-repo"), {}, first).validate()
+    TeamValidator(_teams("fixture-repo"), _FIXTURE_MEMBERS, first).validate()
     assert no_errors(first)
     assert github.get_repo_calls == ["ScottyLabs-Labrador/fixture-repo"]
 
-    TeamValidator(_teams("fixture-repo"), {}, Reporter()).validate()
+    TeamValidator(_teams("fixture-repo"), _FIXTURE_MEMBERS, Reporter()).validate()
     assert github.get_repo_calls == ["ScottyLabs-Labrador/fixture-repo"]
 
 
@@ -227,7 +250,11 @@ def test_existing_repo_stays_cached_when_another_is_missing(
     )
 
     first = Reporter()
-    TeamValidator(_teams("fixture-repo", "missing-repo"), {}, first).validate()
+    TeamValidator(
+        _teams("fixture-repo", "missing-repo"),
+        _FIXTURE_MEMBERS,
+        first,
+    ).validate()
     assert has_error(first, ErrorCode.GITHUB_REPO_NOT_FOUND)
     assert github.get_repo_calls == [
         "ScottyLabs-Labrador/fixture-repo",
@@ -235,7 +262,11 @@ def test_existing_repo_stays_cached_when_another_is_missing(
     ]
 
     second = Reporter()
-    TeamValidator(_teams("fixture-repo", "missing-repo"), {}, second).validate()
+    TeamValidator(
+        _teams("fixture-repo", "missing-repo"),
+        _FIXTURE_MEMBERS,
+        second,
+    ).validate()
     assert github.get_repo_calls == [
         "ScottyLabs-Labrador/fixture-repo",
         "ScottyLabs-Labrador/missing-repo",
@@ -253,11 +284,11 @@ def test_github_repo_cache_is_case_insensitive(monkeypatch: MonkeyPatch) -> None
     )
 
     first = Reporter()
-    TeamValidator(_teams("Fixture-Repo"), {}, first).validate()
+    TeamValidator(_teams("Fixture-Repo"), _FIXTURE_MEMBERS, first).validate()
     assert no_errors(first)
     assert github.get_repo_calls == ["ScottyLabs-Labrador/Fixture-Repo"]
 
-    TeamValidator(_teams("fixture-repo"), {}, Reporter()).validate()
+    TeamValidator(_teams("fixture-repo"), _FIXTURE_MEMBERS, Reporter()).validate()
     assert github.get_repo_calls == ["ScottyLabs-Labrador/Fixture-Repo"]
 
 
@@ -270,11 +301,11 @@ def test_github_repo_not_found_is_not_cached(monkeypatch: MonkeyPatch) -> None:
     )
 
     first = Reporter()
-    TeamValidator(_teams("missing-repo"), {}, first).validate()
+    TeamValidator(_teams("missing-repo"), _FIXTURE_MEMBERS, first).validate()
     assert has_error(first, ErrorCode.GITHUB_REPO_NOT_FOUND)
     assert github.get_repo_calls == ["ScottyLabs-Labrador/missing-repo"]
 
-    TeamValidator(_teams("missing-repo"), {}, Reporter()).validate()
+    TeamValidator(_teams("missing-repo"), _FIXTURE_MEMBERS, Reporter()).validate()
     assert github.get_repo_calls == [
         "ScottyLabs-Labrador/missing-repo",
         "ScottyLabs-Labrador/missing-repo",
