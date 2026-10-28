@@ -57,6 +57,7 @@ jobs:
 
     env:
       SYNC_GITHUB_TOKEN: ${{ secrets.SYNC_GITHUB_TOKEN }}
+      GROUPER_PASSWORD: ${{ secrets.TF_VAR_CMU_LDAP_BIND_CREDENTIAL }}
 
     steps:
       - name: Checkout repository
@@ -83,6 +84,7 @@ jobs:
       KEYCLOAK_REALM: ${{ secrets.KEYCLOAK_REALM }}
       KEYCLOAK_CLIENT_ID: ${{ secrets.KEYCLOAK_CLIENT_ID }}
       KEYCLOAK_USER_REALM: ${{ secrets.KEYCLOAK_USER_REALM }}
+      GROUPER_PASSWORD: ${{ secrets.TF_VAR_CMU_LDAP_BIND_CREDENTIAL }}
 
     steps:
       - name: Checkout repository
@@ -106,6 +108,7 @@ jobs:
       GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
       SCOTTYLABS_GOOGLE_DRIVE_ID: ${{ secrets.SCOTTYLABS_GOOGLE_DRIVE_ID }}
       SCOTTYLABS_LEADERSHIP_FOLDER_ID: ${{ secrets.SCOTTYLABS_LEADERSHIP_FOLDER_ID }}
+      GROUPER_PASSWORD: ${{ secrets.TF_VAR_CMU_LDAP_BIND_CREDENTIAL }}
 
     steps:
       - name: Checkout repository
@@ -130,6 +133,7 @@ jobs:
 
     env:
       SYNC_GITHUB_TOKEN: ${{ secrets.SYNC_GITHUB_TOKEN }}
+      GROUPER_PASSWORD: ${{ secrets.TF_VAR_CMU_LDAP_BIND_CREDENTIAL }}
 
     steps:
       - name: Checkout repository

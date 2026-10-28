@@ -1,0 +1,7 @@
+name = "No Membership Team"
+description = "Every team except leadership needs a membership record."
+create-oidc-clients = false
+
+[[repos]]
+name = "fixture-repo"
+description = "Repository fixture."

@@ -12,6 +12,7 @@ from meta.loaders.errors import GovernanceLoadError
 from meta.loaders.types import LoaderErrorCode
 from meta.logger import get_app_logger
 from meta.models import Repo, Team
+from meta.synchronizers.src._constants import LEADERSHIP
 
 from .key_ordering import KeyOrdering
 from .sources import TomlGlobSource, iter_toml_file_sources
@@ -83,8 +84,12 @@ def _validate_filename_lowercase(file_path: str, record: RecordFn | None) -> Non
 def _load_team(file_path: str, data: dict[str, Any]) -> Team:
     """Parse one team TOML document."""
     try:
-        # The schema guarantees that there is at least one membership record.
-        first = data.get("membership", [])[0]
+        # The schema guarantees that there is at least one membership record, except
+        # for leadership, whose members and leads come from Grouper
+        default: list[dict[str, list[Any]]] = (
+            [{"leads": [], "members": []}] if Path(file_path).stem == LEADERSHIP else []
+        )
+        first = data.get("membership", default)[0]
         payload: dict[str, Any] = {
             "name": data["name"],
             "description": data["description"],
@@ -93,9 +98,7 @@ def _load_team(file_path: str, data: dict[str, Any]) -> Team:
             "create_oidc_clients": data.get("create-oidc-clients", True),
             "repos": [Repo.model_validate(repo) for repo in data.get("repos", [])],
             "leads": [str(x) for x in first["leads"]],
-            "members": [
-                str(member["github-username"]) for member in first["members"]
-            ],
+            "members": [str(member["github-username"]) for member in first["members"]],
             "file_path": file_path,
         }
     except (IndexError, KeyError, TypeError) as e:

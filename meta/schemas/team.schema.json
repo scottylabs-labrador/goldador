@@ -3,8 +3,7 @@
   "required": [
     "name",
     "description",
-    "repos",
-    "membership"
+    "repos"
   ],
   "properties": {
     "name": {
@@ -37,7 +36,7 @@
     },
     "membership": {
       "type": "array",
-      "description": "List of membership records by timeframe.",
+      "description": "List of membership records by timeframe. Required for every team except leadership, whose members and leads come from Grouper.",
       "items": {
         "type": "object",
         "required": [

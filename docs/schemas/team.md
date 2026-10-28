@@ -41,6 +41,7 @@ description = "A brief description of repo 2."
 
 # List of membership records by timeframe.
 # Note that only the first record will be used for synchronization.
+# Required for every team except leadership, whose members and leads come from Grouper.
 [[membership]]
 
 # The timeframe can be any string, but we suggest using either the year or semester.
