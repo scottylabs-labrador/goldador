@@ -53,22 +53,6 @@ LEGACY_DATA = {
         "website": "collegecart.org",
         "server": "collegecart.org",
     },
-    "cmustudy": {
-        "name": "CMU Study",
-        "description": "The CMU Study team.",
-        "members": {
-            "andrew_ids": ["annadavi"],
-            "github_usernames": [],
-        },
-        "admins": {
-            "andrew_ids": ["annadavi"],
-            "github_usernames": [],
-        },
-        "repos": [],
-        "create_oidc_clients": True,
-        "website": "study.scottylabs.org",
-        "server": "study.scottylabs.org",
-    },
 }
 
 

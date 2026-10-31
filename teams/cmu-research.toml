@@ -3,7 +3,7 @@ description = "CMU Research Team"
 create-oidc-clients = false
 
 [[repos]]
-name = "ResearchStarter"
+name = "CMUResearch"
 description = "CMU Research Project"
 
 [[membership]]
