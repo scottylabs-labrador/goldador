@@ -13,6 +13,7 @@
     ],
     "non_admins": [
       "AA2026",
+      "Aaron123456789123456789",
       "EnspikondPlusPlus",
       "EthanZ2007",
       "HarishSenthilkumar",
@@ -24,6 +25,7 @@
       "a-gupta123",
       "a-varigonda",
       "aanya21gupta",
+      "aapin1",
       "amishigupta",
       "angely32",
       "appleorange",
@@ -42,6 +44,7 @@
       "davidx2-gif",
       "didikana",
       "dishon949",
+      "duallyhazard",
       "dzhou08",
       "eitankrajewski",
       "ethanliu2026",
@@ -58,15 +61,18 @@
       "khushij312",
       "klz037",
       "kzz9984",
+      "lordkarv",
+      "mambabhi",
       "maxwellliu07",
+      "mbatkhuu",
       "nicholascui225",
+      "nihal-j",
       "noe2971",
       "nosleep32",
       "pnimmaga-jpg",
       "rarangil",
       "rayank7674",
       "riishp",
-      "rocketrules",
       "rohansp007",
       "ryanwong05",
       "s520y",
@@ -74,6 +80,7 @@
       "sahilmmehta",
       "samad2084",
       "sdavidi-ai",
+      "shainag03",
       "sophiez3",
       "sophiezxh",
       "stingray8",
@@ -100,12 +107,14 @@
     "non_admins": [
       "aahans",
       "aanyag2",
+      "aaronch2",
       "aayana",
+      "abhii",
       "abthakka",
       "amaganti",
       "amishig",
       "angely",
-      "aravagar",
+      "appinto",
       "aryangup",
       "audreyya",
       "audreyz2",
@@ -140,13 +149,16 @@
       "keyaans",
       "khushij",
       "ktan2",
+      "kvattem",
       "kzzhao",
       "liweix",
+      "mbatkhuu",
       "myliu2",
       "nainae",
       "nchandy",
       "ncui2",
       "ndishon",
+      "nihaljos",
       "pnimmaga",
       "rarangil",
       "renfeirw",
@@ -159,6 +171,8 @@
       "samad",
       "sdavidi",
       "seany2",
+      "sgli",
+      "shainag",
       "sophiez3",
       "srianeek",
       "susanzuo",
@@ -181,12 +195,10 @@
           "ay93546",
           "brady-q",
           "pnimmaga-jpg",
-          "rocketrules",
           "rohansp007",
           "the-srianeesh"
         ],
         "andrew_ids": [
-          "aravagar",
           "audreyya",
           "avarigon",
           "bquo",
@@ -213,10 +225,14 @@
       "description": "Briefly allows users to curate multiple newsletters\nbased on their interests like in sports or finance.\nAn AI will automatically generate the newsletter described and email\nit to users at user-specified times.\n",
       "members": {
         "github_usernames": [
+          "Aaron123456789123456789",
+          "KevinL135",
           "cahove"
         ],
         "andrew_ids": [
-          "chove"
+          "aaronch2",
+          "chove",
+          "kevinlu3"
         ]
       },
       "admins": {
@@ -234,16 +250,56 @@
       "website": "",
       "server": ""
     },
+    "cmu-blockparty": {
+      "name": "BlockParty",
+      "description": "A way to track your meal block usage progress. This would help\n                you track if you are behind or ahead of schedule, and you can eat\n                accordingly. Integration with SIO will allow users to check past\n                orders + receipts.",
+      "members": {
+        "github_usernames": [
+          "csongfm",
+          "eitankrajewski",
+          "henhen1235",
+          "justinwu80",
+          "klz037",
+          "rayank7674",
+          "s520y",
+          "sdavidi-ai"
+        ],
+        "andrew_ids": [
+          "cesong",
+          "ekrajews",
+          "hhxu",
+          "jzwu",
+          "kelseyli",
+          "rkha",
+          "sdavidi",
+          "seany2"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "henhen1235"
+        ],
+        "andrew_ids": [
+          "hhxu"
+        ]
+      },
+      "repos": [
+        "BlockParty"
+      ],
+      "create_oidc_clients": true
+    },
     "cmu-bulletin": {
       "name": "CMU Bulletin",
       "description": "Your one-stop shop for everything happening at Carnegie Mellon. Never miss an event on campus again.\n",
       "members": {
         "github_usernames": [
           "angely32",
+          "victoriasun2007",
           "ziwei-che"
         ],
         "andrew_ids": [
           "angely",
+          "vmsun",
           "ziweiche"
         ]
       },
@@ -286,7 +342,7 @@
         ]
       },
       "repos": [
-        "ResearchStarter"
+        "CMUResearch"
       ],
       "create_oidc_clients": false
     },
@@ -314,30 +370,78 @@
       ],
       "create_oidc_clients": false
     },
+    "cmumaps-mobile": {
+      "name": "CMU Maps Mobile",
+      "description": "Mobile app for CMU Maps.",
+      "members": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "repos": [
+        "cmumaps-mobile"
+      ],
+      "create_oidc_clients": true,
+      "website": "",
+      "server": "mobile.maps.scottylabs.org"
+    },
     "goldador": {
       "name": "Goldador",
       "description": "Responsible for governance in Labrador.",
       "members": {
         "github_usernames": [
+          "NainaEnock",
           "SamEthanMathew",
+          "Yutai007",
           "Yuxiang-Huang",
           "a-varigonda",
+          "aanya21gupta",
+          "bmood25",
           "cahove",
+          "carolyne-chiang",
+          "davidx2-gif",
           "dishon949",
           "hanabenko",
+          "henhen1235",
           "jahuang24",
+          "k3t6hup",
           "nicholascui225",
+          "ryanwong05",
+          "stingray8",
+          "veriivy",
           "ziwei-che"
         ],
         "andrew_ids": [
+          "aanyag2",
+          "audreyz2",
           "avarigon",
+          "bmood",
+          "carolyne",
           "chove",
+          "davidx2",
           "hbenko",
+          "hhxu",
           "jarretth",
+          "kasubash",
+          "nainae",
           "ncui2",
           "ndishon",
+          "renfeirw",
           "semathew",
+          "tingrayc",
           "yh4",
+          "yutailon",
           "ziweiche"
         ]
       },
@@ -468,6 +572,140 @@
       "website": "meet.scottylabs.org",
       "server": "api.meet.scottylabs.org"
     },
+    "reserve-cmu": {
+      "name": "ReserveCMU",
+      "description": "ReserveCMU is a one-stop-shop website/app for all things related to reservations on CMU campus. Users can reserve any facilities or spaces on campus, including study spaces, music rooms, meeting rooms, sports facilities, etc.\n",
+      "members": {
+        "github_usernames": [
+          "amishigupta",
+          "bmood25",
+          "davidx2-gif",
+          "faribahnuha",
+          "nosleep32",
+          "sophiez3",
+          "sophiezxh"
+        ],
+        "andrew_ids": [
+          "amishig",
+          "bmood",
+          "davidx2",
+          "fmn",
+          "liweix",
+          "sophiez3",
+          "szhang4"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "bmood25",
+          "davidx2-gif"
+        ],
+        "andrew_ids": [
+          "bmood",
+          "davidx2"
+        ]
+      },
+      "repos": [
+        "ReserveCMU"
+      ],
+      "create_oidc_clients": false
+    },
+    "scotty-delivery": {
+      "name": "Scotty Delivery",
+      "description": "Scotty Delivery is a on-campus food delivery service, founded by students, operated by students, and serving students, faculty, and staff of our university",
+      "members": {
+        "github_usernames": [
+          "KeyaanMatrix",
+          "Yutai007",
+          "carolyne-chiang",
+          "didikana",
+          "dzhou08",
+          "ethanliu2026",
+          "k3t6hup",
+          "noe2971",
+          "riishp",
+          "ryanwong05",
+          "shainag03",
+          "stingray8",
+          "veriivy"
+        ],
+        "andrew_ids": [
+          "audreyz2",
+          "carolyne",
+          "darisan",
+          "dhzhou",
+          "ethanlil",
+          "kasubash",
+          "keyaans",
+          "nchandy",
+          "renfeirw",
+          "rpachava",
+          "shainag",
+          "tingrayc",
+          "yutailon"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "Yutai007",
+          "carolyne-chiang",
+          "k3t6hup",
+          "ryanwong05",
+          "stingray8",
+          "veriivy"
+        ],
+        "andrew_ids": [
+          "audreyz2",
+          "carolyne",
+          "kasubash",
+          "renfeirw",
+          "tingrayc",
+          "yutailon"
+        ]
+      },
+      "repos": [
+        "Scotty-Delivery"
+      ],
+      "create_oidc_clients": true,
+      "website": "",
+      "server": ""
+    },
+    "scottycoffee": {
+      "name": "Scotty's Coffee",
+      "description": "A CMU-only platform designed to make networking between students feel less like collecting connections and more like having real conversations.",
+      "members": {
+        "github_usernames": [
+          "NainaEnock",
+          "aanya21gupta",
+          "janek0420",
+          "kzz9984",
+          "mambabhi",
+          "samad2084"
+        ],
+        "andrew_ids": [
+          "aanyag2",
+          "abhii",
+          "janekim",
+          "kzzhao",
+          "nainae",
+          "samad"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "NainaEnock",
+          "aanya21gupta"
+        ],
+        "andrew_ids": [
+          "aanyag2",
+          "nainae"
+        ]
+      },
+      "repos": [
+        "scotty-coffee"
+      ],
+      "create_oidc_clients": false
+    },
     "scottystack": {
       "name": "ScottyStack",
       "description": "Responsible for maintenance of ScottyLabs Full Stack Template",
@@ -564,26 +802,6 @@
       "create_oidc_clients": true,
       "website": "collegecart.org",
       "server": "collegecart.org"
-    },
-    "cmustudy": {
-      "name": "CMU Study",
-      "description": "The CMU Study team.",
-      "members": {
-        "github_usernames": [],
-        "andrew_ids": [
-          "annadavi"
-        ]
-      },
-      "admins": {
-        "github_usernames": [],
-        "andrew_ids": [
-          "annadavi"
-        ]
-      },
-      "repos": [],
-      "create_oidc_clients": true,
-      "website": "study.scottylabs.org",
-      "server": "study.scottylabs.org"
     }
   }
 }

@@ -79,10 +79,9 @@ jobs:
       SLACK_USER_TOKEN: ${{ secrets.SLACK_USER_TOKEN }}
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       KEYCLOAK_SERVER_URL: ${{ secrets.KEYCLOAK_SERVER_URL }}
-      KEYCLOAK_PASSWORD: ${{ secrets.KEYCLOAK_PASSWORD }}
+      KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
       KEYCLOAK_REALM: ${{ secrets.KEYCLOAK_REALM }}
       KEYCLOAK_CLIENT_ID: ${{ secrets.KEYCLOAK_CLIENT_ID }}
-      KEYCLOAK_USER_REALM: ${{ secrets.KEYCLOAK_USER_REALM }}
 
     steps:
       - name: Checkout repository

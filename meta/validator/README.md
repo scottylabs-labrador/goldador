@@ -38,8 +38,8 @@ Local and remote validation require credentials for the external services they
 check:
 
 - `SYNC_GITHUB_TOKEN` for GitHub API calls.
-- `KEYCLOAK_SERVER_URL`, `KEYCLOAK_PASSWORD`, `KEYCLOAK_REALM`,
-  `KEYCLOAK_CLIENT_ID`, and `KEYCLOAK_USER_REALM` for Keycloak checks.
+- `KEYCLOAK_SERVER_URL`, `KEYCLOAK_CLIENT_SECRET`, `KEYCLOAK_REALM`, and
+  `KEYCLOAK_CLIENT_ID` for Keycloak checks.
 
 ## Validator Checks
 
