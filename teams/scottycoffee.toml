@@ -1,0 +1,53 @@
+# The name is used to identify the team publicly (e.g. GitHub org team name).
+name = "Scotty's Coffee"
+description = "A CMU-only platform designed to make networking between students feel less like collecting connections and more like having real conversations."
+
+# The website and server are not required until the team is ready to deploy.
+# Omit the https:// prefix. With OIDC left on, omitting the server creates
+# only the local client. Dev, staging, and prod clients are created once the
+# server is set. An empty website uses "+" as the root URL.
+# website = "your-team-website.com"
+# server = "your-team-server.com"
+
+# Set the `create-oidc-clients` field to `false` if the team does not need OIDC
+# clients. OIDC clients are necessary if you want to use ScottyLabs' auth system!
+#
+# It defaults to true if not specified, so please remove this section if the team
+# DO need OIDC clients.
+create-oidc-clients = false
+
+# List of repositories owned by the team.
+# Note that the owners of the repositories must be ScottyLabs-Labrador.
+[[repos]]
+name = "scotty-coffee"                    # As it appears at the end of the GitHub repository URL
+description = "Code for Scotty's Coffee."
+
+# List of membership records by timeframe.
+# Note that only the first record will be used for synchronization.
+[[membership]]
+
+# The timeframe can be any string, but we suggest using either the year or semester.
+# E.g. "2026-2027" or "Spring 2026".
+timeframe = "2026-2027"
+
+# List of the GitHub usernames of the leads for this timeframe.
+leads = ["aanya21gupta", "NainaEnock"]
+
+# List of members for this timeframe.
+[[membership.members]]
+github-username = "aanya21gupta"
+
+[[membership.members]]
+github-username = "janek0420"
+
+[[membership.members]]
+github-username = "kzz9984"
+
+[[membership.members]]
+github-username = "NainaEnock"
+
+[[membership.members]]
+github-username = "samad2084"
+
+[[membership.members]]
+github-username = "mambabhi"

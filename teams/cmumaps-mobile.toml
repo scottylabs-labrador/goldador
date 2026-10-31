@@ -1,0 +1,15 @@
+name = "CMU Maps Mobile"
+description = "Mobile app for CMU Maps."
+website = ""
+server = "mobile.maps.scottylabs.org"
+
+[[repos]]
+name = "cmumaps-mobile"
+description = "Mobile app for CMU Maps"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["Yuxiang-Huang"]
+
+[[membership.members]]
+github-username = "Yuxiang-Huang"
