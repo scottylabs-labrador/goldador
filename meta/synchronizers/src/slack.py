@@ -1,6 +1,7 @@
 """Slack synchronizer.
 
 Creates a Slack channel for each team and invites the team members to the channel.
+Leadership members are invited to every team channel.
 """
 
 import sys
@@ -51,11 +52,13 @@ class SlackSynchronizer(AbstractSynchronizer):
             self.channels = self.get_all_channels()
         self.logger.debug("Found %d Slack channels\n", len(self.channels))
 
+        leadership_slack_ids = self.get_slack_ids(self.teams[LEADERSHIP].members)
+
         for team_slug, team in self.teams.items():
             # Leadership Slack channel is private and not managed by Goldador
             if team_slug == LEADERSHIP:
                 continue
-            self.sync_team(team_slug, team)
+            self.sync_team(team_slug, team, leadership_slack_ids)
 
     def get_all_channels(self) -> list[dict[str, str]]:
         """Get all channels channels and their IDs."""
@@ -83,13 +86,25 @@ class SlackSynchronizer(AbstractSynchronizer):
         return channels
 
     @log_team_sync()
-    def sync_team(self, team_slug: str, team: Team) -> None:
+    def sync_team(
+        self,
+        team_slug: str,
+        team: Team,
+        leadership_slack_ids: set[str],
+    ) -> None:
         """Sync a team."""
         channel_id = self.get_or_create_channel(team_slug)
 
-        # Get the desired members' Slack IDs for the team
-        desired_members = set()
-        for member_id in team.members:
+        # Leadership is invited to every team channel.
+        desired_members = self.get_slack_ids(team.members) | leadership_slack_ids
+
+        # Sync the channel
+        self.sync_channel(team, channel_id, desired_members)
+
+    def get_slack_ids(self, github_usernames: list[str]) -> set[str]:
+        """Resolve GitHub usernames to Slack user IDs."""
+        slack_ids: set[str] = set()
+        for member_id in github_usernames:
             member = self.members[member_id]
             andrew_id = member.andrew_id
             if andrew_id is None:
@@ -105,10 +120,9 @@ class SlackSynchronizer(AbstractSynchronizer):
             if member_slack_id is None:
                 continue
 
-            desired_members.add(member_slack_id)
+            slack_ids.add(member_slack_id)
 
-        # Sync the channel
-        self.sync_channel(team, channel_id, desired_members)
+        return slack_ids
 
     def get_or_create_channel(self, team_slug: str) -> str:
         """Get or create a Slack channel for a team."""

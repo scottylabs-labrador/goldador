@@ -56,7 +56,7 @@ The Slack synchronizer creates and maintains public Slack channels for teams.
 - It skips the leadership team because that channel is private and unmanaged by
   Goldador.
 - It resolves Slack IDs through Keycloak social login links.
-- It invites team members who are not already in the channel.
+- It invites team members and all leadership members who are not already in the channel.
 
 Required environment:
 

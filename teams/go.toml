@@ -1,0 +1,13 @@
+name = "Go"
+description = "Link shortener: go.scottylabs.org"
+
+[[repos]]
+name = "go.scottylabs.org"
+description = "Link shortener for ScottyLabs"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["Yuxiang-Huang"]
+
+[[membership.members]]
+github-username = "Yuxiang-Huang"

@@ -396,6 +396,30 @@
       "website": "",
       "server": "mobile.maps.scottylabs.org"
     },
+    "go": {
+      "name": "Go",
+      "description": "Link shortener: go.scottylabs.org",
+      "members": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "Yuxiang-Huang"
+        ],
+        "andrew_ids": [
+          "yh4"
+        ]
+      },
+      "repos": [
+        "go.scottylabs.org"
+      ],
+      "create_oidc_clients": true
+    },
     "goldador": {
       "name": "Goldador",
       "description": "Responsible for governance in Labrador.",
@@ -618,6 +642,7 @@
           "KeyaanMatrix",
           "Yutai007",
           "carolyne-chiang",
+          "cheezypegasus",
           "didikana",
           "dzhou08",
           "ethanliu2026",
@@ -632,6 +657,7 @@
         "andrew_ids": [
           "audreyz2",
           "carolyne",
+          "charlie3",
           "darisan",
           "dhzhou",
           "ethanlil",
