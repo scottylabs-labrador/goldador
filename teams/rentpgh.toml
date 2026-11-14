@@ -1,0 +1,15 @@
+name = "The Pittsburgh Student Renters Network"
+description = "The Pittsburgh Student Renters Network (TPSRN) helps students navigate the rental market"
+website = "rent-pgh.com"
+create-oidc-clients = false
+
+[[repos]]
+name = "student_housing_colab_with_gsa"
+description = "Project to develop a way for CMU students to share their rental experiences and see what landlords/buildings/units are good or bad."
+
+[[membership]]
+timeframe = "2025-2026"
+leads = ["atimmins7"]
+
+[[membership.members]]
+github-username = "atimmins7"
