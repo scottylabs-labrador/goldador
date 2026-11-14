@@ -291,11 +291,13 @@
       "description": "A way to track your meal block usage progress. This would help\n                you track if you are behind or ahead of schedule, and you can eat\n                accordingly. Integration with SIO will allow users to check past\n                orders + receipts.",
       "members": {
         "github_usernames": [
+          "JiayiH08",
           "csongfm",
           "eitankrajewski",
           "henhen1235",
           "justinwu80",
           "klz037",
+          "lordkarv",
           "rayank7674",
           "s520y",
           "sdavidi-ai"
@@ -304,8 +306,10 @@
           "cesong",
           "ekrajews",
           "hhxu",
+          "jiayihu",
           "jzwu",
           "kelseyli",
+          "kvattem",
           "rkha",
           "sdavidi",
           "seany2"
@@ -313,10 +317,12 @@
       },
       "admins": {
         "github_usernames": [
-          "henhen1235"
+          "henhen1235",
+          "s520y"
         ],
         "andrew_ids": [
-          "hhxu"
+          "hhxu",
+          "seany2"
         ]
       },
       "repos": [
@@ -508,6 +514,7 @@
           "nicholascui225",
           "rarangil",
           "ryanwong05",
+          "s520y",
           "stingray8",
           "veriivy",
           "ziwei-che"
@@ -530,6 +537,7 @@
           "ndishon",
           "rarangil",
           "renfeirw",
+          "seany2",
           "semathew",
           "tingrayc",
           "yh4",
