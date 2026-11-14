@@ -29,17 +29,5 @@ github-username = "aapin1"
 title = "Technical"
 
 [[membership.members]]
-github-username = "woshizhaoyue"
-title = "Business Assist"
-
-[[membership.members]]
-github-username = "d4niellaa"
-title = "Design"
-
-[[membership.members]]
-github-username = "luhaky-cpu"
-title = "Design"
-
-[[membership.members]]
 github-username = "sahilmmehta"
 title = "Front End"
