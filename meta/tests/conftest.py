@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 @pytest.fixture(autouse=True)
 def verified_identities_cache() -> Iterator[None]:
-    """Clear cached GitHub usernames and Keycloak pairs around each test."""
+    """Clear cached GitHub usernames, Keycloak pairs, and repositories."""
     clear_verified_identities()
     yield
     clear_verified_identities()
