@@ -318,6 +318,34 @@
       "website": "cmubulletin.com",
       "server": "your-team-server.com"
     },
+    "cmu-livespace": {
+      "name": "cmu-livespace",
+      "description": "Privacy-preserving real-time space monitoring using ESP32, mmWave radar, and acoustic sensing to estimate ambient noise and crowd activity in shared environments.",
+      "members": {
+        "github_usernames": [
+          "appleorange",
+          "kevin20074321",
+          "sagelu1"
+        ],
+        "andrew_ids": [
+          "ktan2",
+          "sabellah",
+          "sagelu"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "kevin20074321"
+        ],
+        "andrew_ids": [
+          "ktan2"
+        ]
+      },
+      "repos": [
+        "CMU-Livespace"
+      ],
+      "create_oidc_clients": false
+    },
     "cmu-research": {
       "name": "CMU Research",
       "description": "CMU Research Team",
@@ -440,6 +468,7 @@
           "henhen1235",
           "jahuang24",
           "k3t6hup",
+          "kevin20074321",
           "nicholascui225",
           "ryanwong05",
           "stingray8",
@@ -458,6 +487,7 @@
           "hhxu",
           "jarretth",
           "kasubash",
+          "ktan2",
           "nainae",
           "ncui2",
           "ndishon",
