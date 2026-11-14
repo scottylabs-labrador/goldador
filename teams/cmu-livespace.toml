@@ -1,7 +1,10 @@
 name = "cmu-livespace"
 description = "Privacy-preserving real-time space monitoring using ESP32, mmWave radar, and acoustic sensing to estimate ambient noise and crowd activity in shared environments."
 create-oidc-clients = false
-repos = []
+
+[[repos]]
+name = "CMU-Livespace"
+description = "Explore study and gathering spaces by estimated noise and crowd levels, with live-style updates and privacy-conscious environmental sensing."
 
 [[membership]]
 timeframe = "2026-2027"
