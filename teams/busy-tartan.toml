@@ -1,0 +1,39 @@
+name = "BusyTartan"
+description = "Real-time occupancy tracking for busy CMU campus spots, starting with the mailroom."
+create-oidc-clients = false
+
+[[repos]]
+name = "BusyTartan"
+description = "On-device person counting and a live dashboard of campus crowd levels and estimated wait times."
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["rarangil"]
+
+[[membership.members]]
+github-username = "rarangil"
+title = "MTS"
+
+[[membership.members]]
+github-username = "charansr"
+title = "MTS"
+
+[[membership.members]]
+github-username = "arjunmaganti"
+title = "MTS"
+
+[[membership.members]]
+github-username = "HarishSenthilkumar"
+title = "MTS"
+
+[[membership.members]]
+github-username = "AA2026"
+title = "MTS"
+
+[[membership.members]]
+github-username = "hnaracodes"
+title = "MTS"
+
+[[membership.members]]
+github-username = "a-gupta123"
+title = "MTS"
