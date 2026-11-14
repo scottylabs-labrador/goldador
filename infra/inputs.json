@@ -420,7 +420,7 @@
       "repos": [
         "CMUResearch"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": true
     },
     "cmu-scottytasks": {
       "name": "CMU-ScottyTasks",
