@@ -1,0 +1,17 @@
+name = "CMU Research"
+description = "CMU Research Team"
+create-oidc-clients = false
+
+[[repos]]
+name = "CMUResearch"
+description = "CMU Research Project"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["jahuang24", "nicholascui225"]
+
+[[membership.members]]
+github-username = "jahuang24"
+
+[[membership.members]]
+github-username = "nicholascui225"

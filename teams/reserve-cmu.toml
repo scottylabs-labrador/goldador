@@ -1,0 +1,45 @@
+name = "ReserveCMU"
+
+description = """
+ReserveCMU is a one-stop-shop website/app for all things related to reservations on CMU campus. Users can reserve any facilities or spaces on campus, including study spaces, music rooms, meeting rooms, sports facilities, etc.
+"""
+
+create-oidc-clients = false
+
+
+[[repos]]
+
+name = "ReserveCMU"       # As it appears at the end of the GitHub repository URL
+description = "Main Repo"
+[[membership]]
+
+timeframe = "2026-2027"
+
+leads = ["davidx2-gif", "bmood25"]
+
+[[membership.members]]
+github-username = "sophiezxh"
+
+
+[[membership.members]]
+github-username = "sophiez3"
+
+
+[[membership.members]]
+github-username = "nosleep32"
+
+
+[[membership.members]]
+github-username = "faribahnuha"
+
+
+[[membership.members]]
+github-username = "amishigupta"
+
+
+[[membership.members]]
+github-username = "davidx2-gif"
+
+
+[[membership.members]]
+github-username = "bmood25"

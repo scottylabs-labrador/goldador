@@ -114,6 +114,9 @@ def main() -> None:
             from meta.validator.src.engine import (  # noqa: PLC0415
                 run_validation,
             )
+            from meta.validator.src.github_utils import (  # noqa: PLC0415
+                GitHubRateLimitError,
+            )
             from meta.validator.src.rules.members import (  # noqa: PLC0415
                 MemberValidationError,
             )
@@ -122,8 +125,12 @@ def main() -> None:
             )
 
             try:
-                payload: Mapping[str, object] = run_validation()
-            except (MemberValidationError, TeamValidationError) as e:
+                payload: Mapping[str, object] = run_validation(reporter=Reporter())
+            except (
+                GitHubRateLimitError,
+                MemberValidationError,
+                TeamValidationError,
+            ) as e:
                 logger.critical("%s", e)
                 raise SystemExit(1) from e
         else:

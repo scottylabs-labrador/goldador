@@ -22,6 +22,7 @@ class ErrorCode(Enum):
     TEAM_NOT_FILE = "Team not a file"
     MEMBER_KEY_ORDERING = "Member key ordering is invalid"
     TEAM_KEY_ORDERING = "Team key ordering is invalid"
+    TEAM_FILENAME_NOT_LOWERCASE = "Team file name is not lowercase"
     LEAD_CROSS_REFERENCE = "Lead missing from members in a team"
     MEMBER_CROSS_REFERENCE = "A member in team missing from members/"
     INVALID_GITHUB_USERNAME = "Invalid GitHub username"

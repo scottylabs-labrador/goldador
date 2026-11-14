@@ -21,7 +21,7 @@ from meta.validator.src.github_utils import (
     GoldadorGitHubError,
     fetch_goldador_toml_at_ref,
 )
-from meta.validator.src.reporter import ErrorCode, Reporter
+from meta.validator.src.reporter import ErrorCode, Reporter, bind_reporter
 from meta.validator.src.rules.members import MemberValidationError
 from meta.validator.src.rules.teams import TeamValidationError
 
@@ -68,12 +68,24 @@ class ValidateRequest(BaseModel):
 
 
 def run_validation_for_ref(ref: str) -> dict[str, Any]:
-    """Fetch TOML from GitHub at ``ref`` and return structured validation results."""
-    member_tomls, team_tomls = fetch_goldador_toml_at_ref(ref)
+    """Fetch TOML from GitHub at ``ref`` and return structured validation results.
+
+    Directory entries that are not ``.toml`` files are recorded on the same
+    reporter that ``run_validation`` returns, so they fail the run.
+    """
+    reporter = Reporter()
+    member_tomls, team_tomls = fetch_goldador_toml_at_ref(
+        ref,
+        record=bind_reporter(reporter),
+    )
     return {
         "repository": GOLDADOR_REPO_FULL_NAME,
         "ref": ref,
-        **run_validation(member_tomls=member_tomls, team_tomls=team_tomls),
+        **run_validation(
+            member_tomls=member_tomls,
+            team_tomls=team_tomls,
+            reporter=reporter,
+        ),
     }
 
 

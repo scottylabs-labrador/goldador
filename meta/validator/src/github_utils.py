@@ -5,13 +5,14 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import TYPE_CHECKING, NoReturn
 
-from github import GithubException
+from github import GithubException, RateLimitExceededException
 
 from meta.clients.github_client import get_github_client
 from meta.loaders.sources import TomlGlobSource
 from meta.loaders.types import LoaderErrorCode
 
 if TYPE_CHECKING:
+    from github.ContentFile import ContentFile
     from github.Repository import Repository
 
     from meta.loaders.types import RecordFn
@@ -44,6 +45,15 @@ class GoldadorGitHubError(Exception):
         self.status_code = status_code
 
 
+class GitHubRateLimitError(GoldadorGitHubError):
+    """Raised when GitHub rejects a request because a rate limit was exceeded."""
+
+    def __init__(self) -> None:
+        """Report a GitHub rate limit with HTTP 429 for API callers."""
+        msg = "GitHub API rate limit exceeded. Try again later."
+        super().__init__(msg, status_code=HTTPStatus.TOO_MANY_REQUESTS)
+
+
 def _raise_github_api_error(error: GithubException) -> NoReturn:
     """Wrap a ``GithubException`` as a 502-equivalent ``GoldadorGitHubError``."""
     msg = f"GitHub API error: {error}"
@@ -54,6 +64,8 @@ def verify_ref(repo: Repository, ref: str) -> None:
     """Ensure ``ref`` resolves to a commit on ``repo``."""
     try:
         repo.get_commit(ref)
+    except RateLimitExceededException as e:
+        raise GitHubRateLimitError from e
     except GithubException as e:
         if e.status == HTTPStatus.NOT_FOUND:
             msg = f"Ref {ref!r} not found in {GOLDADOR_REPO_FULL_NAME}"
@@ -73,6 +85,55 @@ def _record_directory_entry_error(
     record(path, glob_source.not_file_code, message)
 
 
+def _toml_row_for_entry(
+    repo: Repository,
+    ref: str,
+    entry: ContentFile,
+    glob_source: TomlGlobSource,
+    record: RecordFn | None,
+) -> tuple[str, str] | None:
+    """Return one TOML row, or ``None`` when ``entry`` is not a TOML file."""
+    if entry.type != "file":
+        _record_directory_entry_error(
+            record,
+            glob_source,
+            entry.name,
+            glob_source.not_file_message,
+        )
+        return None
+    if not entry.name.endswith(".toml"):
+        _record_directory_entry_error(
+            record,
+            glob_source,
+            entry.name,
+            _NOT_TOML_MESSAGE,
+        )
+        return None
+
+    try:
+        content_file = repo.get_contents(entry.path, ref=ref)
+    except RateLimitExceededException as e:
+        raise GitHubRateLimitError from e
+    except GithubException as e:
+        _raise_github_api_error(e)
+
+    if isinstance(content_file, list):
+        _record_directory_entry_error(
+            record,
+            glob_source,
+            entry.name,
+            glob_source.not_file_message,
+        )
+        return None
+
+    try:
+        text = content_file.decoded_content.decode("utf-8")
+    except UnicodeDecodeError as e:
+        msg = f"File {entry.path!r} is not valid UTF-8"
+        raise GoldadorGitHubError(msg, status_code=502) from e
+    return content_file.path, text
+
+
 def _list_toml_paths_and_contents(
     repo: Repository,
     ref: str,
@@ -84,6 +145,8 @@ def _list_toml_paths_and_contents(
     directory = glob_source.repo_subdir
     try:
         entries = repo.get_contents(directory, ref=ref)
+    except RateLimitExceededException as e:
+        raise GitHubRateLimitError from e
     except GithubException as e:
         if e.status == HTTPStatus.NOT_FOUND:
             return []
@@ -94,43 +157,9 @@ def _list_toml_paths_and_contents(
 
     pairs: TomlFileRows = []
     for entry in entries:
-        if entry.type != "file":
-            _record_directory_entry_error(
-                record,
-                glob_source,
-                entry.name,
-                glob_source.not_file_message,
-            )
-            continue
-        if not entry.name.endswith(".toml"):
-            _record_directory_entry_error(
-                record,
-                glob_source,
-                entry.name,
-                _NOT_TOML_MESSAGE,
-            )
-            continue
-
-        try:
-            content_file = repo.get_contents(entry.path, ref=ref)
-        except GithubException as e:
-            _raise_github_api_error(e)
-
-        if isinstance(content_file, list):
-            _record_directory_entry_error(
-                record,
-                glob_source,
-                entry.name,
-                glob_source.not_file_message,
-            )
-            continue
-
-        try:
-            text = content_file.decoded_content.decode("utf-8")
-        except UnicodeDecodeError as e:
-            msg = f"File {entry.path!r} is not valid UTF-8"
-            raise GoldadorGitHubError(msg, status_code=502) from e
-        pairs.append((content_file.path, text))
+        row = _toml_row_for_entry(repo, ref, entry, glob_source, record)
+        if row is not None:
+            pairs.append(row)
 
     return sorted(pairs, key=lambda pair: pair[0])
 
@@ -141,6 +170,8 @@ def resolve_default_branch_head_sha() -> str:
         client = get_github_client()
         repo = client.get_repo(GOLDADOR_REPO_FULL_NAME)
         branch = repo.get_branch(repo.default_branch)
+    except RateLimitExceededException as e:
+        raise GitHubRateLimitError from e
     except GithubException as e:
         _raise_github_api_error(e)
 
@@ -154,7 +185,12 @@ def fetch_goldador_toml_at_ref(
 ) -> tuple[TomlFileRows, TomlFileRows]:
     """Return ``(member_tomls, team_tomls)`` as GitHub path and TOML text pairs."""
     client = get_github_client()
-    repo = client.get_repo(GOLDADOR_REPO_FULL_NAME)
+    try:
+        repo = client.get_repo(GOLDADOR_REPO_FULL_NAME)
+    except RateLimitExceededException as e:
+        raise GitHubRateLimitError from e
+    except GithubException as e:
+        _raise_github_api_error(e)
     verify_ref(repo, ref)
     member_rows = _list_toml_paths_and_contents(
         repo,

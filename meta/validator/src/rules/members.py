@@ -6,12 +6,19 @@ import asyncio
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-from github import GithubException
+from github import GithubException, RateLimitExceededException
 
 from meta.clients.github_client import get_github_client
 from meta.clients.keycloak_client import get_keycloak_client
 from meta.logger import get_app_logger
+from meta.validator.src.github_utils import GitHubRateLimitError
 from meta.validator.src.reporter import ErrorCode
+from meta.validator.src.rules.verified_identities import (
+    github_username_verified,
+    keycloak_pair_verified,
+    remember_github_username,
+    remember_keycloak_pair,
+)
 
 if TYPE_CHECKING:
     from meta.models import Member
@@ -64,9 +71,14 @@ class MemberValidator:
 
     def _validate_github(self, github_username: str, member: Member) -> None:
         """Validate that ``github_username`` resolves to a real GitHub user."""
+        if github_username_verified(github_username):
+            return
+
         github_client = get_github_client()
         try:
             github_client.get_user(github_username)
+        except RateLimitExceededException as e:
+            raise GitHubRateLimitError from e
         except GithubException as e:
             if e.status == HTTPStatus.NOT_FOUND:
                 self.reporter.insert_error(
@@ -78,11 +90,15 @@ class MemberValidator:
 
             error_message = f"Unexpected GitHub API error: {e}"
             raise MemberValidationError(error_message) from e
+        else:
+            remember_github_username(github_username)
 
     def _validate_keycloak(self, github_username: str, member: Member) -> None:
         """Validate that the Andrew ID maps to a Keycloak user with the right links."""
         andrew_id = member.andrew_id
         if andrew_id is None:
+            return
+        if keycloak_pair_verified(andrew_id, github_username):
             return
 
         keycloak_client = get_keycloak_client()
@@ -126,3 +142,5 @@ class MemberValidator:
         except Exception as e:
             error_message = f"Unexpected Keycloak API error: {e}"
             raise MemberValidationError(error_message) from e
+        else:
+            remember_keycloak_pair(andrew_id, github_username)

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from github import GithubException
+from github import GithubException, RateLimitExceededException
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -39,7 +39,7 @@ class MockGithubClientRateLimitExceeded:
 
     def get_user(self, _github_username: str) -> None:
         """Raise a GitHub rate-limit response."""
-        raise GithubException(
+        raise RateLimitExceededException(
             status=403,
             data={"message": "API rate limit exceeded"},
             headers={"x-ratelimit-remaining": "0"},
@@ -47,15 +47,30 @@ class MockGithubClientRateLimitExceeded:
 
     def get_repo(self, _repo_name: str) -> None:
         """Raise a GitHub rate-limit response for repository reads."""
-        raise GithubException(
+        raise RateLimitExceededException(
             status=403,
             data={"message": "API rate limit exceeded"},
             headers={"x-ratelimit-remaining": "0"},
         )
 
 
+class MockGithubClientServerError:
+    """Mock GitHub client that always raises a non-rate-limit server error."""
+
+    def get_user(self, _github_username: str) -> None:
+        """Raise a GitHub server error."""
+        raise GithubException(status=500, data={"message": "Server Error"})
+
+    def get_repo(self, _repo_name: str) -> None:
+        """Raise a GitHub server error for repository reads."""
+        raise GithubException(status=500, data={"message": "Server Error"})
+
+
 type MockGithubClient = (
-    MockGithubClientValid | MockGithubClientNotFound | MockGithubClientRateLimitExceeded
+    MockGithubClientValid
+    | MockGithubClientNotFound
+    | MockGithubClientRateLimitExceeded
+    | MockGithubClientServerError
 )
 
 

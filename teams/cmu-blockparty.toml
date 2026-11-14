@@ -1,0 +1,70 @@
+name = "BlockParty"
+description = '''A way to track your meal block usage progress. This would help
+                you track if you are behind or ahead of schedule, and you can eat
+                accordingly. Integration with SIO will allow users to check past
+                orders + receipts.'''
+
+[[repos]]
+name = "BlockParty"
+description = '''A way to track your meal block usage progress. This would help
+                you track if you are behind or ahead of schedule, and you can eat
+                accordingly. Integration with SIO will allow users to check past
+                orders + receipts.'''
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["henhen1235"]
+
+[[membership.members]]
+github-username = "s520y"
+title = "Front-End Engineer"
+
+[[membership.members]]
+github-username = "henhen1235"
+title = "Project Lead"
+
+[[membership.members]]
+github-username = "csongfm"
+title = "Back-End Engineer"
+
+[[membership.members]]
+github-username = "justinwu80"
+title = "Back-End Engineer"
+
+# TODO: Jia Yi Hu (jiayihu) — GitHub username missing
+#[[membership.members]]
+#github-username = "jiayih08"
+#title = "Back-End Engineer"
+
+[[membership.members]]
+github-username = "rayank7674"
+title = "Back-End Engineer, Data Analyst"
+
+# TODO: Eitan Krajewski (ekrajews) — GitHub username missing
+[[membership.members]]
+github-username = "eitankrajewski"
+title = "Front-End Engineer"
+
+[[membership.members]]
+github-username = "klz037"
+title = "Back-End Engineer"
+
+[[membership.members]]
+github-username = "sdavidi-ai"
+title = "Data Analyst/Modeling"
+
+#[[membership.members]]
+#github-username = "lordkarv"
+#title = "Back-End Engineer"
+
+#[[membership.members]]
+#github-username = "j0shualiu"
+#title = "Back-End Engineer"
+
+#[[membership.members]]
+#github-username = "kaylin-h"
+#title = "UI/UX Designer"
+
+#[[membership.members]]
+#github-username = "vivianliyuwei"
+#title = "UI/UX Designer"

@@ -18,7 +18,11 @@ REPO_NAME = "scottylabs-labrador/Goldador"
 
 @lru_cache(maxsize=1)
 def get_github_client() -> Github:
-    """Get the Github client."""
+    """Get the Github client.
+
+    Retries are disabled so a GitHub rate limit fails immediately instead of
+    blocking until the limit resets.
+    """
     logger = get_app_logger()
 
     github_token = os.getenv("SYNC_GITHUB_TOKEN")
@@ -27,7 +31,7 @@ def get_github_client() -> Github:
         logger.critical(msg)
         raise RuntimeError(msg)
 
-    return Github(auth=Auth.Token(github_token))
+    return Github(auth=Auth.Token(github_token), retry=None)
 
 
 def create_or_update_github_file(

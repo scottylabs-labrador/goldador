@@ -6,11 +6,16 @@ import asyncio
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-from github import GithubException
+from github import GithubException, RateLimitExceededException
 
 from meta.clients.github_client import get_github_client
 from meta.logger import get_app_logger
+from meta.validator.src.github_utils import GitHubRateLimitError
 from meta.validator.src.reporter import ErrorCode
+from meta.validator.src.rules.verified_identities import (
+    github_repo_verified,
+    remember_github_repo,
+)
 
 if TYPE_CHECKING:
     from meta.models import Member, Team
@@ -87,11 +92,19 @@ class TeamValidator:
 
     def _validate_github_repos_exist(self, team: Team) -> None:
         """Ensure that all GitHub repositories for this team exist."""
-        github_client = get_github_client()
+        github_client = None
         for repo in team.repos:
             repo_name = f"{GITHUB_ORG_NAME}/{repo.name}"
+            if github_repo_verified(repo_name):
+                continue
+
+            if github_client is None:
+                github_client = get_github_client()
+
             try:
                 github_client.get_repo(repo_name)
+            except RateLimitExceededException as e:
+                raise GitHubRateLimitError from e
             except GithubException as e:
                 if e.status == HTTPStatus.NOT_FOUND:
                     self.reporter.insert_error(
@@ -103,3 +116,5 @@ class TeamValidator:
 
                 error_message = f"Unexpected GitHub API error: {e}"
                 raise TeamValidationError(error_message) from e
+            else:
+                remember_github_repo(repo_name)

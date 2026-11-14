@@ -8,9 +8,11 @@ from typing import TYPE_CHECKING
 
 from fastapi.testclient import TestClient
 
+from meta.clients.github_client import get_github_client
 from meta.loaders.errors import GovernanceLoadError
+from meta.loaders.types import LoaderErrorCode, RecordFn
 from meta.validator.src import server
-from meta.validator.src.github_utils import GoldadorGitHubError
+from meta.validator.src.github_utils import GitHubRateLimitError, GoldadorGitHubError
 
 if TYPE_CHECKING:
     from _pytest.logging import LogCaptureFixture
@@ -40,6 +42,35 @@ def test_validate_maps_governance_load_error(monkeypatch: MonkeyPatch) -> None:
     assert error_message in errors[file_path][0]["message"]
 
 
+def test_run_validation_for_ref_keeps_non_toml_errors(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    """Non-.toml directory entries must be returned as validation errors."""
+
+    def fake_fetch(
+        ref: str,
+        *,
+        record: RecordFn | None = None,
+    ) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
+        assert ref == "abc123"
+        assert record is not None
+        record(
+            "members/faribahnuha",
+            LoaderErrorCode.MEMBER_NOT_FILE,
+            "Not a .toml file",
+        )
+        return [], []
+
+    monkeypatch.setattr(server, "fetch_goldador_toml_at_ref", fake_fetch)
+
+    result = server.run_validation_for_ref("abc123")
+
+    errors = result["validation"]["errors"]
+    assert errors["members/faribahnuha"] == [
+        {"code": "MEMBER_NOT_FILE", "message": "Not a .toml file"},
+    ]
+
+
 def test_validate_maps_ref_not_found_to_404(monkeypatch: MonkeyPatch) -> None:
     """Ref-not-found should remain an HTTP error rather than validation data."""
     error_message = "missing ref"
@@ -56,6 +87,44 @@ def test_validate_maps_ref_not_found_to_404(monkeypatch: MonkeyPatch) -> None:
     detail = response.json()["detail"]
     assert detail["ref"] == "missing"
     assert error_message in detail["error"]
+
+
+def test_validate_maps_github_rate_limit_to_429(monkeypatch: MonkeyPatch) -> None:
+    """GitHub rate limits should be returned to the caller as HTTP 429."""
+    error_message = "GitHub API rate limit exceeded. Try again later."
+
+    def fail(_ref: str) -> dict[str, object]:
+        raise GitHubRateLimitError
+
+    monkeypatch.setattr(server, "run_validation_for_ref", fail)
+    client = TestClient(server.app)
+
+    response = client.post("/validate", json={"ref": "abc123"})
+
+    assert response.status_code == HTTPStatus.TOO_MANY_REQUESTS
+    detail = response.json()["detail"]
+    assert detail["ref"] == "abc123"
+    assert detail["error"] == error_message
+
+
+def test_github_client_does_not_retry(monkeypatch: MonkeyPatch) -> None:
+    """The GitHub client must not sleep through rate-limit windows."""
+    created: dict[str, object] = {}
+
+    class FakeGithub:
+        def __init__(self, *, auth: object, retry: object) -> None:
+            created["auth"] = auth
+            created["retry"] = retry
+
+    monkeypatch.setenv("SYNC_GITHUB_TOKEN", "token")
+    monkeypatch.setattr("meta.clients.github_client.Github", FakeGithub)
+    get_github_client.cache_clear()
+    try:
+        get_github_client()
+    finally:
+        get_github_client.cache_clear()
+
+    assert created["retry"] is None
 
 
 def test_unhandled_exception_returns_500(

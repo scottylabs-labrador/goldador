@@ -55,6 +55,7 @@ def load_teams(
             raise GovernanceLoadError(file_path, message) from e
 
         key_ordering.validate(file_path, data, LoaderErrorCode.TEAM_KEY_ORDERING)
+        _validate_filename_lowercase(file_path, record)
         try:
             teams[Path(file_path).stem] = _load_team(file_path, data)
         except GovernanceLoadError:
@@ -65,6 +66,18 @@ def load_teams(
             raise GovernanceLoadError(file_path, message) from e
 
     return teams
+
+
+def _validate_filename_lowercase(file_path: str, record: RecordFn | None) -> None:
+    """Record an error when the team file name is not fully lowercase."""
+    filename = Path(file_path).name
+    if record is None or filename == filename.lower():
+        return
+    record(
+        file_path,
+        LoaderErrorCode.TEAM_FILENAME_NOT_LOWERCASE,
+        f"Team file name {filename!r} must be lowercase",
+    )
 
 
 def _load_team(file_path: str, data: dict[str, Any]) -> Team:

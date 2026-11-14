@@ -38,8 +38,8 @@ Local and remote validation require credentials for the external services they
 check:
 
 - `SYNC_GITHUB_TOKEN` for GitHub API calls.
-- `KEYCLOAK_SERVER_URL`, `KEYCLOAK_PASSWORD`, `KEYCLOAK_REALM`,
-  `KEYCLOAK_CLIENT_ID`, and `KEYCLOAK_USER_REALM` for Keycloak checks.
+- `KEYCLOAK_SERVER_URL`, `KEYCLOAK_CLIENT_SECRET`, `KEYCLOAK_REALM`, and
+  `KEYCLOAK_CLIENT_ID` for Keycloak checks.
 
 ## Validator Checks
 
@@ -60,6 +60,7 @@ check:
 
 ### Teams
 
+- The team filename must be lowercase.
 - All leads in a team must also be listed as members.
 - All team members must be listed in the [`members/`](../../members/) directory.
 - Each team repository must exist in the

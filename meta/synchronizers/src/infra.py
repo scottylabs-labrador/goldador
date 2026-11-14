@@ -21,20 +21,6 @@ from .abstract import AbstractSynchronizer
 
 # Used for backwards compatibility
 LEGACY_DATA = {
-    "cmuresearch": {
-        "name": "CMU Research",
-        "description": "The CMU Research team.",
-        "members": {
-            "andrew_ids": ["bryung"],
-            "github_usernames": [],
-        },
-        "admins": {
-            "andrew_ids": ["bryung"],
-            "github_usernames": [],
-        },
-        "repos": [],
-        "create_oidc_clients": True,
-    },
     "cmuservice": {
         "name": "CMU Service",
         "description": "The CMU Service team.",
@@ -55,33 +41,17 @@ LEGACY_DATA = {
         "name": "CollegeCart",
         "description": "The CollegeCart team.",
         "members": {
-            "andrew_ids": ["yingyiw", "nayonk", "rushabhj", "mbatkhuu"],
+            "andrew_ids": ["mbatkhuu", "nayonk", "rushabhj", "yingyiw"],
             "github_usernames": [],
         },
         "admins": {
-            "andrew_ids": ["yingyiw", "nayonk", "rushabhj"],
+            "andrew_ids": ["nayonk", "rushabhj", "yingyiw"],
             "github_usernames": [],
         },
         "repos": [],
         "create_oidc_clients": True,
         "website": "collegecart.org",
         "server": "collegecart.org",
-    },
-    "cmustudy": {
-        "name": "CMU Study",
-        "description": "The CMU Study team.",
-        "members": {
-            "andrew_ids": ["annadavi"],
-            "github_usernames": [],
-        },
-        "admins": {
-            "andrew_ids": ["annadavi"],
-            "github_usernames": [],
-        },
-        "repos": [],
-        "create_oidc_clients": True,
-        "website": "study.scottylabs.org",
-        "server": "study.scottylabs.org",
     },
 }
 
@@ -131,6 +101,7 @@ class TeamMembersData(BaseModel):
 class InfraSynchronizer(AbstractSynchronizer):
     """Infrastructure synchronizer."""
 
+    GOLDADOR = "goldador"
     INFRA_FILE_PATH = "infra/inputs.json"
     COMMIT_MESSAGE = "chore: auto-update infra/inputs.json"
 
@@ -152,8 +123,8 @@ class InfraSynchronizer(AbstractSynchronizer):
     def generate_infra_file(self) -> str:
         """Generate the infrastructure file."""
         github_usernames = GithubUsernames(
-            admins=self.teams[LEADERSHIP].members,
-            non_admins=list(self.members.keys() - self.teams[LEADERSHIP].members),
+            admins=sorted(self.teams[LEADERSHIP].members),
+            non_admins=sorted(self.members.keys() - self.teams[LEADERSHIP].members),
         )
 
         andrew_ids = AndrewIds(
@@ -161,20 +132,28 @@ class InfraSynchronizer(AbstractSynchronizer):
             non_admins=self._get_andrew_ids(github_usernames.non_admins),
         )
 
+        all_team_leads = {lead for team in self.teams.values() for lead in team.leads}
+
         teams_data = {}
         for team_slug, team in self.teams.items():
+            # Team leads need write on goldador so GitHub CODEOWNERS can
+            # request them as reviewers.
+            member_usernames = set(team.members)
+            if team_slug == self.GOLDADOR:
+                member_usernames |= all_team_leads
+
             entry: dict[str, Any] = {
                 "name": team.name,
                 "description": team.description,
                 "members": TeamMembersData(
-                    github_usernames=team.members,
-                    andrew_ids=self._get_andrew_ids(team.members),
+                    github_usernames=sorted(member_usernames),
+                    andrew_ids=self._get_andrew_ids(sorted(member_usernames)),
                 ),
                 "admins": TeamMembersData(
-                    github_usernames=team.leads,
+                    github_usernames=sorted(team.leads),
                     andrew_ids=self._get_andrew_ids(team.leads),
                 ),
-                "repos": [repo.name for repo in team.repos],
+                "repos": sorted(repo.name for repo in team.repos),
                 "create_oidc_clients": team.create_oidc_clients,
                 "website": team.website,
                 "server": team.server,
@@ -197,7 +176,7 @@ class InfraSynchronizer(AbstractSynchronizer):
             self.members[github_username].andrew_id
             for github_username in github_usernames
         ]
-        return [andrew_id for andrew_id in raw if andrew_id is not None]
+        return sorted(andrew_id for andrew_id in raw if andrew_id is not None)
 
 
 def main() -> None:
