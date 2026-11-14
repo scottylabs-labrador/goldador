@@ -250,6 +250,42 @@
       "website": "",
       "server": ""
     },
+    "busy-tartan": {
+      "name": "BusyTartan",
+      "description": "Real-time occupancy tracking for busy CMU campus spots, starting with the mailroom.",
+      "members": {
+        "github_usernames": [
+          "AA2026",
+          "HarishSenthilkumar",
+          "a-gupta123",
+          "arjunmaganti",
+          "charansr",
+          "hnaracodes",
+          "rarangil"
+        ],
+        "andrew_ids": [
+          "aayana",
+          "amaganti",
+          "aryangup",
+          "csridhar",
+          "hnara",
+          "hsenthil",
+          "rarangil"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "rarangil"
+        ],
+        "andrew_ids": [
+          "rarangil"
+        ]
+      },
+      "repos": [
+        "BusyTartan"
+      ],
+      "create_oidc_clients": false
+    },
     "cmu-blockparty": {
       "name": "BlockParty",
       "description": "A way to track your meal block usage progress. This would help\n                you track if you are behind or ahead of schedule, and you can eat\n                accordingly. Integration with SIO will allow users to check past\n                orders + receipts.",
@@ -470,6 +506,7 @@
           "k3t6hup",
           "kevin20074321",
           "nicholascui225",
+          "rarangil",
           "ryanwong05",
           "stingray8",
           "veriivy",
@@ -491,6 +528,7 @@
           "nainae",
           "ncui2",
           "ndishon",
+          "rarangil",
           "renfeirw",
           "semathew",
           "tingrayc",
