@@ -13,7 +13,7 @@ description = '''A way to track your meal block usage progress. This would help
 
 [[membership]]
 timeframe = "2026-2027"
-leads = ["henhen1235"]
+leads = ["henhen1235", "s520y"]
 
 [[membership.members]]
 github-username = "s520y"
@@ -31,10 +31,9 @@ title = "Back-End Engineer"
 github-username = "justinwu80"
 title = "Back-End Engineer"
 
-# TODO: Jia Yi Hu (jiayihu) — GitHub username missing
-#[[membership.members]]
-#github-username = "jiayih08"
-#title = "Back-End Engineer"
+[[membership.members]]
+github-username = "JiayiH08"
+title = "Back-End Engineer"
 
 [[membership.members]]
 github-username = "rayank7674"
