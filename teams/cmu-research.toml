@@ -1,6 +1,5 @@
 name = "CMU Research"
 description = "CMU Research Team"
-create-oidc-clients = false
 
 [[repos]]
 name = "CMUResearch"
