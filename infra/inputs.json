@@ -63,6 +63,7 @@
       "klz037",
       "kzz9984",
       "lordkarv",
+      "luhaky-cpu",
       "mambabhi",
       "maxwellliu07",
       "mbatkhuu",
@@ -90,6 +91,7 @@
       "the-srianeesh",
       "veriivy",
       "victoriasun2007",
+      "woshizhaoyue",
       "ziwei-che"
     ]
   },
@@ -150,10 +152,12 @@
       "kevinlu3",
       "keyaans",
       "khushij",
+      "kittyz",
       "ktan2",
       "kvattem",
       "kzzhao",
       "liweix",
+      "luhaky",
       "mbatkhuu",
       "myliu2",
       "nainae",
@@ -503,6 +507,7 @@
           "Yuxiang-Huang",
           "a-varigonda",
           "aanya21gupta",
+          "arren51",
           "atimmins7",
           "bmood25",
           "cahove",
@@ -527,6 +532,7 @@
           "atimmins",
           "audreyz2",
           "avarigon",
+          "avijendr",
           "bmood",
           "carolyne",
           "chove",
@@ -647,6 +653,40 @@
       },
       "repos": [
         "wiki"
+      ],
+      "create_oidc_clients": false
+    },
+    "meder": {
+      "name": "Meder",
+      "description": "Personal health intelligence: estimates and tracks biomarkers from food, habits and wearable data.\n",
+      "members": {
+        "github_usernames": [
+          "aapin1",
+          "arren51",
+          "luhaky-cpu",
+          "maxwellliu07",
+          "sahilmmehta",
+          "woshizhaoyue"
+        ],
+        "andrew_ids": [
+          "appinto",
+          "avijendr",
+          "kittyz",
+          "luhaky",
+          "myliu2",
+          "sahilm"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "arren51"
+        ],
+        "andrew_ids": [
+          "avijendr"
+        ]
+      },
+      "repos": [
+        "Meder"
       ],
       "create_oidc_clients": false
     },
