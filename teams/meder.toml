@@ -1,0 +1,20 @@
+name = "Meder"
+
+description = """
+Personal health intelligence: estimates and tracks biomarkers from food, \
+habits and wearable data.
+"""
+
+# Meder uses its own auth, not ScottyLabs' OIDC.
+create-oidc-clients = false
+
+[[repos]]
+name = "Meder"
+description = "Personal Health"
+
+[[membership]]
+timeframe = "2026-2027"
+leads = ["arren51"]
+
+[[membership.members]]
+github-username = "arren51"
