@@ -33,6 +33,7 @@
       "arjunmaganti",
       "arren51",
       "ashah48",
+      "atimmins7",
       "ay93546",
       "bmood25",
       "brady-q",
@@ -116,6 +117,7 @@
       "angely",
       "appinto",
       "aryangup",
+      "atimmins",
       "audreyya",
       "audreyz2",
       "avarigon",
@@ -501,6 +503,7 @@
           "Yuxiang-Huang",
           "a-varigonda",
           "aanya21gupta",
+          "atimmins7",
           "bmood25",
           "cahove",
           "carolyne-chiang",
@@ -521,6 +524,7 @@
         ],
         "andrew_ids": [
           "aanyag2",
+          "atimmins",
           "audreyz2",
           "avarigon",
           "bmood",
@@ -671,6 +675,31 @@
       "create_oidc_clients": true,
       "website": "meet.scottylabs.org",
       "server": "api.meet.scottylabs.org"
+    },
+    "rentpgh": {
+      "name": "The Pittsburgh Student Renters Network",
+      "description": "The Pittsburgh Student Renters Network (TPSRN) helps students navigate the rental market",
+      "members": {
+        "github_usernames": [
+          "atimmins7"
+        ],
+        "andrew_ids": [
+          "atimmins"
+        ]
+      },
+      "admins": {
+        "github_usernames": [
+          "atimmins7"
+        ],
+        "andrew_ids": [
+          "atimmins"
+        ]
+      },
+      "repos": [
+        "student_housing_colab_with_gsa"
+      ],
+      "create_oidc_clients": false,
+      "website": "rent-pgh.com"
     },
     "reserve-cmu": {
       "name": "ReserveCMU",
