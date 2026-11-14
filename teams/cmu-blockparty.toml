@@ -52,9 +52,9 @@ title = "Back-End Engineer"
 github-username = "sdavidi-ai"
 title = "Data Analyst/Modeling"
 
-#[[membership.members]]
-#github-username = "lordkarv"
-#title = "Back-End Engineer"
+[[membership.members]]
+github-username = "lordkarv"
+title = "Back-End Engineer"
 
 #[[membership.members]]
 #github-username = "j0shualiu"
