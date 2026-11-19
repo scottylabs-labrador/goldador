@@ -1,8 +1,8 @@
 name = "Meder"
 
 description = """
-Personal health intelligence: estimates and tracks biomarkers from food, \
-habits and wearable data.
+Estimates your blood markers between lab tests from what you eat, how you \
+sleep and move, and your last lab results.
 """
 
 # Meder uses its own auth, not ScottyLabs' OIDC.
@@ -10,7 +10,7 @@ create-oidc-clients = false
 
 [[repos]]
 name = "Meder"
-description = "Personal Health"
+description = "The Meder app: blood-marker estimates between lab tests."
 
 [[membership]]
 timeframe = "2026-2027"
