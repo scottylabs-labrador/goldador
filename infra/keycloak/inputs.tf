@@ -27,6 +27,7 @@ variable "teams" {
     })
     website             = optional(string, "")
     server              = optional(string, "")
+    local_redirects     = optional(list(string), [])
     create_oidc_clients = bool
   }))
 }

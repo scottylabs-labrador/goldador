@@ -9,6 +9,7 @@ class Team(BaseModel):
     description: str
     website: str | None = None
     server: str | None = None
+    local_redirects: list[str] = []
     create_oidc_clients: bool = True
     repos: list[Repo]
     leads: list[str]

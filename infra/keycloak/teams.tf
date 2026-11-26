@@ -43,10 +43,23 @@ resource "keycloak_group_memberships" "team_admins_memberships" {
 locals {
   # Generate local clients
   local_clients = { for slug in local.team_slugs : "${slug}-local" => {
-    client_id   = "${slug}-local"
-    root_url    = "http://localhost:3000"
-    redirects   = ["http://localhost/api/auth/oauth2/callback/keycloak", "http://localhost/api/auth/callback/keycloak"]
-    web_origins = ["http://localhost"]
+    client_id = "${slug}-local"
+    root_url  = "http://localhost:3000"
+    redirects = concat(
+      [
+        "http://localhost/api/auth/oauth2/callback/keycloak",
+        "http://localhost/api/auth/callback/keycloak",
+      ],
+      flatten([
+        for d in var.teams[slug].local_redirects : [
+          "http://${d}/api/auth/oauth2/callback/keycloak",
+        ]
+      ])
+    )
+    web_origins = concat(
+      ["http://localhost"],
+      [for d in var.teams[slug].local_redirects : "http://${d}"]
+    )
   } if var.teams[slug].create_oidc_clients }
 
   # Generate development clients

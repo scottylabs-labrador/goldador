@@ -90,6 +90,7 @@ def _load_team(file_path: str, data: dict[str, Any]) -> Team:
             "description": data["description"],
             "website": data.get("website"),
             "server": data.get("server"),
+            "local_redirects": data.get("local-redirects", []),
             "create_oidc_clients": data.get("create-oidc-clients", True),
             "repos": [Repo.model_validate(repo) for repo in data.get("repos", [])],
             "leads": [str(x) for x in first["leads"]],

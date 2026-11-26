@@ -22,6 +22,11 @@ A brief description of the team.
 website = "your-team-website.com"
 server = "your-team-server.com"
 
+# Optional extra hosts for the local OIDC client only (host or host:port, no
+# scheme). Each entry is added as http://{host} web origin and the standard
+# /api/auth/.../callback/keycloak redirect URIs alongside http://localhost.
+# local-redirects = ["localhost:8080", "127.0.0.1:3000"]
+
 # Set the `create-oidc-clients` field to `false` if the team does not need OIDC
 # clients. OIDC clients are necessary if you want to use ScottyLabs' auth system!
 #

@@ -89,6 +89,7 @@ class TeamData(BaseModel):
     create_oidc_clients: bool
     website: str | None = None
     server: str | None = None
+    local_redirects: list[str] = []
 
 
 class TeamMembersData(BaseModel):
@@ -157,6 +158,7 @@ class InfraSynchronizer(AbstractSynchronizer):
                 "create_oidc_clients": team.create_oidc_clients,
                 "website": team.website,
                 "server": team.server,
+                "local_redirects": team.local_redirects,
             }
             teams_data[team_slug] = TeamData.model_validate(entry)
 

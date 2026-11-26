@@ -23,6 +23,14 @@
       "type": "string",
       "description": "Server domain associated with the team."
     },
+    "local-redirects": {
+      "type": "array",
+      "description": "Extra host or host:port values (no scheme) added to the local OIDC client's redirect URIs and web origins as http://.",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
     "create-oidc-clients": {
       "type": "boolean",
       "description": "Whether to create OIDC clients for the team.",
