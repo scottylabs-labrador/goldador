@@ -1,0 +1,44 @@
+# The name is used to identify the team publicly (e.g. GitHub org team name).
+name = "Posematic"
+
+description = """
+Posematic: building ML powered tools for artists to preserve creative control and streamline non-creative processes
+"""
+
+# The website and server are not required until the team is ready to deploy.
+# Omit the https:// prefix for the website and server.
+website = "posematic.art"
+# server = "your-team-server.com"
+
+# Set the `create-oidc-clients` field to `false` if the team does not need OIDC
+# clients. OIDC clients are necessary if you want to use ScottyLabs' auth system!
+#
+# It defaults to true if not specified, so please remove this section if the team
+# DO need OIDC clients.
+create-oidc-clients = false
+
+# List of repositories owned by the team.
+# Note that the owners of the repositories must be ScottyLabs-Labrador.
+[[repos]]
+name = "NA" # As it appears at the end of the GitHub repository URL
+description = "We have no scottylabs-labrador repos"
+
+# List of membership records by timeframe.
+# Note that only the first record will be used for synchronization.
+[[membership]]
+
+# The timeframe can be any string, but we suggest using either the year or semester.
+# E.g. "2026-2027" or "Spring 2026".
+timeframe = "2025-2026"
+
+# List of the GitHub usernames of the leads for this timeframe.
+leads = ["lead-1", "lead-2"]
+
+# List of members for this timeframe.
+[[membership.members]]
+github-username = "nmino-cmu"
+title = "Nick Mino: CTO, Cofounder, ML engineer" # The title is optional.
+
+[[membership.members]]
+github-username = "EnspikondPlusPlus"
+title = "Ivan Zhang: founding engineer"
