@@ -53,6 +53,7 @@ locals {
       flatten([
         for d in var.teams[slug].local_redirects : [
           "${d}/api/auth/callback/keycloak",
+          "${d}/api/auth/oauth2/callback/keycloak",
         ]
       ])
     )
