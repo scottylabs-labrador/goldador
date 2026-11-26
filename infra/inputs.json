@@ -478,7 +478,7 @@
       ],
       "create_oidc_clients": true,
       "website": "",
-      "server": "mobile.maps.scottylabs.org",
+      "server": "mobile.cmumaps.com",
       "local_redirects": [
         "https://local.cmumaps.com"
       ]
