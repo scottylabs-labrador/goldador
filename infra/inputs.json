@@ -224,7 +224,8 @@
       "repos": [
         "Andrew-Inbox"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": false,
+      "local_redirects": []
     },
     "brieflyai": {
       "name": "Briefly AI",
@@ -254,7 +255,8 @@
       ],
       "create_oidc_clients": false,
       "website": "",
-      "server": ""
+      "server": "",
+      "local_redirects": []
     },
     "busy-tartan": {
       "name": "BusyTartan",
@@ -290,7 +292,8 @@
       "repos": [
         "BusyTartan"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": false,
+      "local_redirects": []
     },
     "cmu-blockparty": {
       "name": "BlockParty",
@@ -334,7 +337,8 @@
       "repos": [
         "BlockParty"
       ],
-      "create_oidc_clients": true
+      "create_oidc_clients": true,
+      "local_redirects": []
     },
     "cmu-bulletin": {
       "name": "CMU Bulletin",
@@ -364,7 +368,8 @@
       ],
       "create_oidc_clients": true,
       "website": "cmubulletin.com",
-      "server": "your-team-server.com"
+      "server": "your-team-server.com",
+      "local_redirects": []
     },
     "cmu-livespace": {
       "name": "cmu-livespace",
@@ -392,7 +397,8 @@
       "repos": [
         "CMU-Livespace"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": false,
+      "local_redirects": []
     },
     "cmu-research": {
       "name": "CMU Research",
@@ -420,7 +426,8 @@
       "repos": [
         "CMUResearch"
       ],
-      "create_oidc_clients": true
+      "create_oidc_clients": true,
+      "local_redirects": []
     },
     "cmu-scottytasks": {
       "name": "CMU-ScottyTasks",
@@ -444,7 +451,8 @@
       "repos": [
         "CMU-ScottyTasks"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": false,
+      "local_redirects": []
     },
     "cmumaps-mobile": {
       "name": "CMU Maps Mobile",
@@ -470,7 +478,10 @@
       ],
       "create_oidc_clients": true,
       "website": "",
-      "server": "mobile.maps.scottylabs.org"
+      "server": "mobile.maps.scottylabs.org",
+      "local_redirects": [
+        "local.cmumaps.com"
+      ]
     },
     "go": {
       "name": "Go",
@@ -494,7 +505,8 @@
       "repos": [
         "go.scottylabs.org"
       ],
-      "create_oidc_clients": true
+      "create_oidc_clients": true,
+      "local_redirects": []
     },
     "goldador": {
       "name": "Goldador",
@@ -566,7 +578,8 @@
       "repos": [
         "goldador"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": false,
+      "local_redirects": []
     },
     "labrador-recruit": {
       "name": "Labrador Recruit",
@@ -612,7 +625,8 @@
       ],
       "create_oidc_clients": true,
       "website": "recruit.scottylabs.org",
-      "server": "api.recruit.scottylabs.org"
+      "server": "api.recruit.scottylabs.org",
+      "local_redirects": []
     },
     "leadership": {
       "name": "Leadership",
@@ -654,7 +668,8 @@
       "repos": [
         "wiki"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": false,
+      "local_redirects": []
     },
     "meder": {
       "name": "Meder",
@@ -688,7 +703,8 @@
       "repos": [
         "Meder"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": false,
+      "local_redirects": []
     },
     "meet": {
       "name": "Meet",
@@ -714,7 +730,8 @@
       ],
       "create_oidc_clients": true,
       "website": "meet.scottylabs.org",
-      "server": "api.meet.scottylabs.org"
+      "server": "api.meet.scottylabs.org",
+      "local_redirects": []
     },
     "rentpgh": {
       "name": "The Pittsburgh Student Renters Network",
@@ -739,7 +756,8 @@
         "student_housing_colab_with_gsa"
       ],
       "create_oidc_clients": false,
-      "website": "rent-pgh.com"
+      "website": "rent-pgh.com",
+      "local_redirects": []
     },
     "reserve-cmu": {
       "name": "ReserveCMU",
@@ -777,7 +795,8 @@
       "repos": [
         "ReserveCMU"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": false,
+      "local_redirects": []
     },
     "scotty-delivery": {
       "name": "Scotty Delivery",
@@ -839,7 +858,8 @@
       ],
       "create_oidc_clients": true,
       "website": "",
-      "server": ""
+      "server": "",
+      "local_redirects": []
     },
     "scottycoffee": {
       "name": "Scotty's Coffee",
@@ -875,7 +895,8 @@
       "repos": [
         "scotty-coffee"
       ],
-      "create_oidc_clients": false
+      "create_oidc_clients": false,
+      "local_redirects": []
     },
     "scottystack": {
       "name": "ScottyStack",
@@ -901,7 +922,8 @@
       ],
       "create_oidc_clients": true,
       "website": "stack.scottylabs.org",
-      "server": "api.stack.scottylabs.org"
+      "server": "api.stack.scottylabs.org",
+      "local_redirects": []
     },
     "wiki": {
       "name": "Wiki",
@@ -927,7 +949,8 @@
       ],
       "create_oidc_clients": true,
       "website": "wiki.scottylabs.org",
-      "server": "api.wiki.scottylabs.org"
+      "server": "api.wiki.scottylabs.org",
+      "local_redirects": []
     },
     "cmuservice": {
       "name": "CMU Service",
@@ -947,7 +970,8 @@
       "repos": [],
       "create_oidc_clients": true,
       "website": "cmuservice.shop",
-      "server": "cmuservice.shop"
+      "server": "cmuservice.shop",
+      "local_redirects": []
     },
     "collegecart": {
       "name": "CollegeCart",
@@ -972,7 +996,8 @@
       "repos": [],
       "create_oidc_clients": true,
       "website": "collegecart.org",
-      "server": "collegecart.org"
+      "server": "collegecart.org",
+      "local_redirects": []
     }
   }
 }
