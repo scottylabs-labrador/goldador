@@ -1,7 +1,7 @@
 name = "CMU Maps Mobile"
 description = "Mobile app for CMU Maps."
 website = ""
-server = "mobile.maps.scottylabs.org"
+server = "mobile.cmumaps.com"
 local-redirects = ["https://local.cmumaps.com"]
 
 [[repos]]
