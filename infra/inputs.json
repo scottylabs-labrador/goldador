@@ -480,7 +480,7 @@
       "website": "",
       "server": "mobile.maps.scottylabs.org",
       "local_redirects": [
-        "local.cmumaps.com"
+        "https://local.cmumaps.com"
       ]
     },
     "go": {

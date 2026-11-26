@@ -25,7 +25,7 @@
     },
     "local-redirects": {
       "type": "array",
-      "description": "Extra host or host:port values (no scheme) added to the local OIDC client's redirect URIs and web origins as http://.",
+      "description": "Extra full origins (scheme + host, e.g. https://local.example.com) added to the local OIDC client's redirect URIs and web origins.",
       "items": {
         "type": "string"
       },

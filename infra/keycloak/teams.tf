@@ -52,13 +52,13 @@ locals {
       ],
       flatten([
         for d in var.teams[slug].local_redirects : [
-          "http://${d}/api/auth/oauth2/callback/keycloak",
+          "${d}/api/auth/callback/keycloak",
         ]
       ])
     )
     web_origins = concat(
       ["http://localhost"],
-      [for d in var.teams[slug].local_redirects : "http://${d}"]
+      var.teams[slug].local_redirects
     )
   } if var.teams[slug].create_oidc_clients }
 
